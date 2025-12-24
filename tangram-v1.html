@@ -1,0 +1,43 @@
+<html>
+<style>
+     html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    object {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100vw;
+      height: 100vh;
+      display: block;
+      preserveAspectRatio: "xMaxYMin meet";
+    }
+</style>
+<body>
+
+<script>
+function test () {
+  console.log("test");
+  const obj = document.getElementById("svgObject");
+  const svgDoc = obj.contentDocument;
+  if (!svgDoc) return;
+
+  const svg = svgDoc.querySelector("svg");
+  const item = svgDoc.getElementById("Triangle-Large1");
+
+  const width = svg.viewBox.baseVal.width;
+  const height = svg.viewBox.baseVal.height;
+
+  const x = Math.floor(Math.random() * (width - 2));
+  const y = Math.floor(Math.random() * (height - 2));
+
+  item.setAttribute("transform", `translate(${x} ${y})`);
+}
+</script>
+<object id="svgObject" data="puzzle-rocket.svg" type="image/svg+xml" onload="test()"></object>
+
+</body>
+</html>

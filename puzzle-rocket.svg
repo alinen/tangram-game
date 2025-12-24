@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="400"
+   height="300"
+   viewBox="0 0 399.99999 299.99998"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="puzzle-rocket.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="0.25767182"
+     inkscape:cx="1135.1649"
+     inkscape:cy="816.93062"
+     inkscape:window-width="1440"
+     inkscape:window-height="890"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="PuzzleLayer">
+    <inkscape:grid
+       type="xygrid"
+       id="grid964"
+       originx="-139.84983"
+       originy="-19.740953" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect972"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect854"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect850"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="PuzzleLayer"
+     inkscape:label="PuzzleLayer"
+     transform="matrix(0.66279717,0,0,0.71417516,-24.518491,-3.7566582)">
+    <path
+       style="opacity:0.54;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
+       d="M 198.01806,243.26763 57.291389,102.31849 H 198.86977 Z"
+       id="Triangle-Large2"
+       sodipodi:nodetypes="cccc"
+       inkscape:label="Triangle-Large2" />
+    <path
+       style="opacity:0.540717;fill:#ffb600;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
+       d="m 197.77164,313.29615 v 70.91594 l -71.08891,-71.08891 z"
+       id="Triangle-Small2"
+       inkscape:label="Triangle-Small2" />
+    <path
+       style="opacity:0.540717;fill:#30ff00;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
+       d="m 125.8144,313.32552 v -70.57 h 72.29966 v 70.91594 z"
+       id="Square"
+       inkscape:label="Square" />
+    <g
+       id="g369"
+       inkscape:label="Triangle-Large1"
+       transform="translate(18.590718,24.442169)">
+      <path
+         style="opacity:0.540717;fill:#0004ff;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
+         d="M 179.12907,218.60138 H 38.680916 l 10e-7,-140.794083 z"
+         id="Triangle-Large1"
+         inkscape:label="Triangle-Path1" />
+    </g>
+    <path
+       style="opacity:0.540717;fill:#ff00d5;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
+       d="M 57.554374,313.14986 V 242.92579 H 127.77846 Z"
+       id="Triangle-Small1"
+       inkscape:label="Triangle-Small1" />
+    <path
+       style="opacity:0.540717;fill:#8400ff;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
+       d="M 198.01979,102.76962 H 58.609426 L 129.00648,32.372555 Z"
+       id="Triangle-Medium"
+       inkscape:label="Triangle-Medium" />
+    <path
+       style="opacity:0.540717;fill:#00ffed;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
+       d="m 57.756608,311.60113 68.885672,-67.39782 0.19782,68.72136 -70.880788,69.27342 z"
+       id="Parallelgram"
+       sodipodi:nodetypes="ccccc"
+       inkscape:label="Parallelgram" />
+  </g>
+  <g
+     inkscape:label="OutlineLayer"
+     inkscape:groupmode="layer"
+     id="OutlineLayer"
+     transform="matrix(0.66279717,0,0,0.71417516,-24.518491,-3.7566582)">
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
+       d="m 56.583167,102.48071 71.364193,-71.364192 72.90443,72.904432 v 281.8629 l -72.64772,-72.64773 -71.620903,71.62091 z"
+       id="Outline" />
+  </g>
+</svg>
