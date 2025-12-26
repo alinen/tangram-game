@@ -12,7 +12,7 @@ html, body {
   height: 100vh;
 }
 
-#mysvg, #overlay {
+#svgObject, #overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -39,6 +39,9 @@ html, body {
 const canvas = document.getElementById("overlay");
 const ctx = canvas.getContext("2d");
 
+var gameOverMessage = "You win!";
+var gameOver = false;
+
 function resize() {
   canvas.width  = canvas.clientWidth;
   canvas.height = canvas.clientHeight;
@@ -47,14 +50,16 @@ function resize() {
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  ctx.strokeStyle = "red";
-  ctx.lineWidth = 2;
-
-  ctx.beginPath();
-  ctx.moveTo(50, 50);
-  ctx.lineTo(200, 150);
-  ctx.stroke();
+  if (gameOver)
+  {
+    ctx.font = "64px Arial";
+    ctx.textAlign = "center";
+    ctx.lineWidth = 2;
+    ctx.fillStyle = "red";
+    ctx.strokeStyle = "black";
+    ctx.fillText(gameOverMessage, canvas.width/2, canvas.height/2);
+    ctx.strokeText(gameOverMessage, canvas.width/2, canvas.height/2);
+  }
 }
 
 window.addEventListener("resize", resize);

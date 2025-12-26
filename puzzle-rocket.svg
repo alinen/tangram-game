@@ -4,7 +4,7 @@
 <svg
    width="400"
    height="300"
-   viewBox="0 0 399.99999 299.99998"
+   viewBox="0 0 399.99999 300"
    version="1.1"
    id="svg5"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
@@ -24,9 +24,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="true"
-     inkscape:zoom="0.25767182"
-     inkscape:cx="1135.1649"
-     inkscape:cy="816.93062"
+     inkscape:zoom="1.4576119"
+     inkscape:cx="102.90805"
+     inkscape:cy="164.30986"
      inkscape:window-width="1440"
      inkscape:window-height="890"
      inkscape:window-x="-6"
@@ -78,59 +78,78 @@
   <g
      inkscape:groupmode="layer"
      id="PuzzleLayer"
-     inkscape:label="PuzzleLayer"
-     transform="matrix(0.66279717,0,0,0.71417516,-24.518491,-3.7566582)">
+     inkscape:label="PuzzleLayer">
     <path
-       style="opacity:0.54;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
-       d="M 198.01806,243.26763 57.291389,102.31849 H 198.86977 Z"
-       id="Triangle-Large2"
+       style="opacity:1;fill:#ff7676;fill-opacity:1;stroke:none;stroke-width:1.36277"
+       d="M 24.036603,69.405545 V 165.76806 L 120.39912,69.405545 Z"
+       id="T1"
        sodipodi:nodetypes="cccc"
-       inkscape:label="Triangle-Large2" />
+       inkscape:label="Triangle1" />
     <path
-       style="opacity:0.540717;fill:#ffb600;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
-       d="m 197.77164,313.29615 v 70.91594 l -71.08891,-71.08891 z"
-       id="Triangle-Small2"
-       inkscape:label="Triangle-Small2" />
+       style="opacity:1;fill:#6265ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
+       d="M 120.4228,164.74517 V 68.382666 L 24.060292,164.74517 Z"
+       id="T2"
+       inkscape:label="Triangle2" />
     <path
-       style="opacity:0.540717;fill:#30ff00;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
-       d="m 125.8144,313.32552 v -70.57 h 72.29966 v 70.91594 z"
-       id="Square"
-       inkscape:label="Square" />
-    <g
-       id="g369"
-       inkscape:label="Triangle-Large1"
-       transform="translate(18.590718,24.442169)">
-      <path
-         style="opacity:0.540717;fill:#0004ff;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
-         d="M 179.12907,218.60138 H 38.680916 l 10e-7,-140.794083 z"
-         id="Triangle-Large1"
-         inkscape:label="Triangle-Path1" />
-    </g>
+       style="opacity:1;fill:#ffcc4d;fill-opacity:1;stroke:none;stroke-width:1.36277"
+       d="m 120.09352,69.076237 -96.362527,5e-6 48.181262,-48.181261 z"
+       id="T3"
+       inkscape:label="Triangle3"
+       sodipodi:nodetypes="cccc" />
     <path
-       style="opacity:0.540717;fill:#ff00d5;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
-       d="M 57.554374,313.14986 V 242.92579 H 127.77846 Z"
-       id="Triangle-Small1"
-       inkscape:label="Triangle-Small1" />
+       style="opacity:1;fill:#ff49e1;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
+       d="m 22.675375,164.66004 v 48.18124 l 48.181256,-48.18124 z"
+       id="T4"
+       inkscape:label="Triangle4"
+       sodipodi:nodetypes="cccc" />
     <path
-       style="opacity:0.540717;fill:#8400ff;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
-       d="M 198.01979,102.76962 H 58.609426 L 129.00648,32.372555 Z"
-       id="Triangle-Medium"
-       inkscape:label="Triangle-Medium" />
-    <path
-       style="opacity:0.540717;fill:#00ffed;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
-       d="m 57.756608,311.60113 68.885672,-67.39782 0.19782,68.72136 -70.880788,69.27342 z"
-       id="Parallelgram"
+       style="opacity:1;fill:#66fff4;fill-opacity:1;stroke:none;stroke-width:1.36277"
+       d="m 22.895843,212.32704 48.181255,-48.18125 10e-7,48.18125 -48.181256,48.18126 z"
+       id="P"
        sodipodi:nodetypes="ccccc"
-       inkscape:label="Parallelgram" />
+       inkscape:label="Parallelegram" />
+    <path
+       style="opacity:1;fill:#ad54ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
+       d="M 119.07342,212.02423 H 70.892163 l 48.181257,48.18126 z"
+       id="T5"
+       inkscape:label="Triangle5"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="opacity:1;fill:#66ff43;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
+       d="m 71.194979,164.24558 h 48.181261 v 48.18126 H 71.194979 Z"
+       id="S"
+       inkscape:label="Square" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="TimebarLayer"
+     inkscape:label="Timebar"
+     style="image-rendering:auto">
+    <rect
+       style="fill:#00b500;fill-opacity:1;stroke:none;stroke-width:2.90695;stroke-dasharray:none;stroke-opacity:1"
+       id="TimebarInterior"
+       width="400"
+       height="10"
+       x="0"
+       y="290"
+       inkscape:label="Interior" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.45347;stroke-dasharray:none;stroke-opacity:1"
+       id="TimebarOutline"
+       width="400"
+       height="10"
+       x="0"
+       y="290"
+       inkscape:label="Outline" />
   </g>
   <g
      inkscape:label="OutlineLayer"
      inkscape:groupmode="layer"
-     id="OutlineLayer"
-     transform="matrix(0.66279717,0,0,0.71417516,-24.518491,-3.7566582)">
+     id="OutlineLayer">
     <path
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
-       d="m 56.583167,102.48071 71.364193,-71.364192 72.90443,72.904432 v 281.8629 l -72.64772,-72.64773 -71.620903,71.62091 z"
-       id="Outline" />
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.88181;stroke-linecap:butt;stroke-opacity:1"
+       d="M 22.907444,67.371468 71.35577,20.79301 121.2533,70.690557 120.31837,261.10237 70.662372,213.31622 22.907444,262.00608 Z"
+       id="Outline"
+       sodipodi:nodetypes="ccccccc" />
   </g>
 </svg>

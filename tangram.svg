@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="400"
+   height="300"
+   viewBox="0 0 399.99999 299.99998"
    version="1.1"
    id="svg5"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
@@ -24,18 +24,20 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="true"
-     inkscape:zoom="0.54082592"
-     inkscape:cx="281.97613"
-     inkscape:cy="629.5926"
-     inkscape:window-width="1126"
-     inkscape:window-height="762"
-     inkscape:window-x="34"
-     inkscape:window-y="31"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="layer2">
+     inkscape:zoom="1.0306873"
+     inkscape:cx="159.11713"
+     inkscape:cy="126.61454"
+     inkscape:window-width="1440"
+     inkscape:window-height="890"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="OutlineLayer">
     <inkscape:grid
        type="xygrid"
-       id="grid964" />
+       id="grid964"
+       originx="-139.84983"
+       originy="-19.740953" />
   </sodipodi:namedview>
   <defs
      id="defs2">
@@ -74,78 +76,74 @@
        only_selected="false" />
   </defs>
   <g
-     inkscape:label="Measurements"
      inkscape:groupmode="layer"
-     id="layer1"
-     sodipodi:insensitive="true">
-    <g
-       id="g1077"
-       inkscape:label="Lines">
-      <rect
-         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round"
-         id="rect238"
-         width="200"
-         height="200"
-         x="5.7841911"
-         y="58.731815" />
-      <path
-         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round"
-         d="M 5.3392554,258.50895 C 71.931631,191.91657 138.52401,125.32419 205.11639,58.731808"
-         id="path848"
-         inkscape:path-effect="#path-effect850"
-         inkscape:original-d="M 5.3392554,258.50895 C 71.9319,191.91684 138.52428,125.32446 205.11639,58.731808" />
-      <path
-         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round"
-         d="M 5.7841934,58.286872 C 38.709868,91.212547 71.635272,124.13795 104.56042,157.0631"
-         id="path852"
-         inkscape:path-effect="#path-effect854"
-         inkscape:original-d="M 5.7841934,58.286872 C 38.709867,91.212548 71.635273,124.13795 104.56042,157.0631" />
-      <path
-         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt"
-         d="m 155.42161,109.01536 c 0,0 50.33898,50.18167 50.33898,50.18167 -33.03496,33.03496 -66.06992,66.06991 -99.10487,99.10487"
-         id="path970"
-         inkscape:path-effect="#path-effect972"
-         inkscape:original-d="m 155.42161,109.01536 50.33898,50.18167 c 0,0 -66.06965,66.07018 -99.10487,99.10487"
-         sodipodi:nodetypes="ccc" />
-      <path
-         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round"
-         d="m 105.08263,158.5678 50.02436,50.02436 H 56.002118"
-         id="path1021"
-         sodipodi:nodetypes="ccc" />
-    </g>
+     id="PuzzleLayer"
+     inkscape:label="PuzzleLayer">
+    <path
+       style="opacity:1;fill:#ff7676;fill-opacity:1;stroke:none;stroke-width:1.32284"
+       d="M 73.700779,73.700786 139.84251,7.5590548 H 7.5590548 Z"
+       id="T1"
+       sodipodi:nodetypes="cccc"
+       inkscape:label="Triangle1" />
+    <path
+       style="opacity:1;fill:#6265ff;fill-opacity:1;stroke:none;stroke-width:1.32284"
+       d="M 73.700779,73.700786 7.5590548,7.5590548 V 139.84251 Z"
+       id="T2"
+       inkscape:label="Triangle2" />
+    <path
+       style="opacity:1;fill:#ffcc4d;fill-opacity:1;stroke:none;stroke-width:1.32284"
+       d="M 73.700779,139.84251 139.84251,73.700786 v 66.141724 z"
+       id="T3"
+       inkscape:label="Triangle3"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="opacity:1;fill:#ff49e1;fill-opacity:1;stroke:none;stroke-width:2.64566;stroke-linecap:butt;stroke-opacity:1"
+       d="m 106.77164,40.629922 33.07087,33.070864 V 7.5590548 Z"
+       id="T4"
+       inkscape:label="Triangle4"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="opacity:1;fill:#66fff4;fill-opacity:1;stroke:none;stroke-width:1.32284"
+       d="M 40.629919,106.77166 H 106.77164 L 73.700779,139.84251 H 7.5590548 Z"
+       id="P"
+       sodipodi:nodetypes="ccccc"
+       inkscape:label="Parallelegram" />
+    <path
+       style="opacity:1;fill:#ad54ff;fill-opacity:1;stroke:none;stroke-width:1.32284"
+       d="M 73.700779,73.700786 40.629919,106.77166 H 106.77164 Z"
+       id="T5"
+       inkscape:label="Triangle5"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="opacity:1;fill:#66ff43;fill-opacity:1;stroke:none;stroke-width:2.64566;stroke-linecap:butt;stroke-opacity:1"
+       d="M 73.700779,73.700786 106.77164,40.629922 139.84251,73.700786 106.77164,106.77166 Z"
+       id="S"
+       inkscape:label="Square" />
   </g>
   <g
      inkscape:groupmode="layer"
-     id="layer2"
-     inkscape:label="Puzzle">
-    <path
-       style="fill:#ff0000;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1;fill-opacity:1;opacity:0.54071661"
-       d="M 6.3864406,58.574499 205.56133,58.731808 105.45029,158.84285 Z"
-       id="path1080"
-       sodipodi:nodetypes="cccc" />
-    <path
-       style="opacity:0.540717;fill:#ffb600;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
-       d="M 155.08302,108.60703 205.22816,58.461893 V 158.99678 Z"
-       id="path1138" />
-    <path
-       style="opacity:0.540717;fill:#30ff00;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
-       d="m 105.18249,158.50756 49.90053,-49.90053 51.12358,51.12359 -50.14514,50.14514 z"
-       id="path1194" />
-    <path
-       style="opacity:0.540717;fill:#0004ff;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
-       d="M 5.3814297,59.195726 104.69327,158.50756 5.1368192,258.06401 Z"
-       id="path1522" />
-    <path
-       style="opacity:0.540717;fill:#ff00d5;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
-       d="m 55.771179,208.89731 49.655921,-49.65592 49.65592,49.65592 z"
-       id="path1578" />
-    <path
-       style="opacity:0.540717;fill:#8400ff;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
-       d="m 107.62859,257.8194 98.57801,-98.57801 v 99.55645 z"
-       id="path1634" />
-    <path
-       style="opacity:0.540717;fill:#00ffed;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-opacity:1"
-       d="M 55.281959,209.38653 H 154.5938 l -49.1667,49.1667 H 4.4029878 Z"
-       id="path1744" />
+     id="TimebarLayer"
+     inkscape:label="Timebar"
+     style="image-rendering:auto">
+    <rect
+       style="fill:#00b500;fill-opacity:1;stroke:none;stroke-width:2.90695;stroke-dasharray:none;stroke-opacity:1"
+       id="TimebarInterior"
+       width="400"
+       height="10"
+       x="0"
+       y="290"
+       inkscape:label="Interior" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.45347;stroke-dasharray:none;stroke-opacity:1"
+       id="TimebarOutline"
+       width="400"
+       height="10"
+       x="0"
+       y="290"
+       inkscape:label="Outline" />
   </g>
+  <g
+     inkscape:label="OutlineLayer"
+     inkscape:groupmode="layer"
+     id="OutlineLayer" />
 </svg>
