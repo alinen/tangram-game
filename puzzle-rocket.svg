@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="400"
+   width="600"
    height="300"
-   viewBox="0 0 399.99999 300"
+   viewBox="0 0 600 300"
    version="1.1"
    id="svg5"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
@@ -24,9 +24,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="true"
-     inkscape:zoom="1.4576119"
-     inkscape:cx="102.90805"
-     inkscape:cy="164.30986"
+     inkscape:zoom="1.0306873"
+     inkscape:cx="265.84204"
+     inkscape:cy="191.61972"
      inkscape:window-width="1440"
      inkscape:window-height="890"
      inkscape:window-x="-6"
@@ -37,7 +37,7 @@
        type="xygrid"
        id="grid964"
        originx="-139.84983"
-       originy="-19.740953" />
+       originy="-19.740954" />
   </sodipodi:namedview>
   <defs
      id="defs2">
@@ -89,7 +89,8 @@
        style="opacity:1;fill:#6265ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
        d="M 120.4228,164.74517 V 68.382666 L 24.060292,164.74517 Z"
        id="T2"
-       inkscape:label="Triangle2" />
+       inkscape:label="Triangle2"
+       sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#ffcc4d;fill-opacity:1;stroke:none;stroke-width:1.36277"
        d="m 120.09352,69.076237 -96.362527,5e-6 48.181262,-48.181261 z"
@@ -128,7 +129,7 @@
     <rect
        style="fill:#00b500;fill-opacity:1;stroke:none;stroke-width:2.90695;stroke-dasharray:none;stroke-opacity:1"
        id="TimebarInterior"
-       width="400"
+       width="600"
        height="10"
        x="0"
        y="290"
@@ -136,7 +137,7 @@
     <rect
        style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.45347;stroke-dasharray:none;stroke-opacity:1"
        id="TimebarOutline"
-       width="400"
+       width="600"
        height="10"
        x="0"
        y="290"

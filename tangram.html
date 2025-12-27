@@ -30,7 +30,8 @@ html, body {
   <object id="svgObject" 
           data="puzzle-rocket.svg" 
           type="image/svg+xml" 
-          preserveAspectRatio="xMidYMid meet">
+          preserveAspectRatio="xMidYMid meet"
+          onload="start()">
   </object>
   <canvas id="overlay"></canvas>
 </div>
@@ -38,9 +39,55 @@ html, body {
 <script>
 const canvas = document.getElementById("overlay");
 const ctx = canvas.getContext("2d");
+var svgDoc = null;
 
 var gameOverMessage = "You win!";
 var gameOver = false;
+
+
+class PuzzlePiece
+{
+  constructor(svgElement)
+  {
+    this.el = svgElement;
+    this.bbox = this.el.getBBox();     
+    console.log("puzzle piece:" + this.el.id);
+    console.log(`puzzle bbox: ${this.bbox.x} ${this.bbox.y} ${this.bbox.width} ${this.bbox.height}`);
+  }
+
+  move(x, y) {
+    var attrval =  `translate(${x} ${y})`;
+    this.el.setAttribute("transform", attrval);
+  }
+}
+var puzzlePieces = [];
+var selectedPiece = null;
+
+function start() {
+  console.log("start");
+  const obj = document.getElementById("svgObject");
+  svgDoc = obj.contentDocument;
+  if (!svgDoc) {
+    console.logError("Error: No SVG document found.");
+    return;
+  }
+
+  const svg = svgDoc.querySelector("svg");
+  //const width = svg.viewBox.baseVal.width;
+  //const height = svg.viewBox.baseVal.height;
+
+  const puzzleLayer = svgDoc.getElementById("PuzzleLayer");
+  for (const el of puzzleLayer.children) {
+    var piece = new PuzzlePiece(el);
+    var i = Math.floor(Math.random() * 2); 
+    var j = Math.floor(Math.random() * 4); 
+    var x = 300 + 75 * j;
+    var y = 150 * i;
+    piece.move(x, y);
+    puzzlePieces.push(piece);
+  }
+ 
+}
 
 function resize() {
   canvas.width  = canvas.clientWidth;
