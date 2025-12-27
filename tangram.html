@@ -44,6 +44,25 @@ var svgDoc = null;
 var gameOverMessage = "You win!";
 var gameOver = false;
 
+var selectedPiece = null;
+function mouseClick(piece, e) {
+  console.log("CLICK Client", e.clientX, e.clientY);
+  console.log("CLICK Offset", e.offsetX, e.offsetY);
+  console.log("CLICK Scrren", e.screenX, e.screenY);
+  if (selectedPiece == null) selectedPiece = piece;
+  else {
+    selectedPiece = null;
+  }
+}
+
+function mouseMove(piece, e) {
+  //console.log(e.offsetX, e.offsetY);
+  const svg = svgDoc.querySelector("svg");
+  var vb = svg.viewBox.baseVal;
+  var x = e.offsetX * vb.width / canvas.width;
+  var y = e.offsetY * vb.height / canvas.height;
+  if (selectedPiece != null) selectedPiece.translate(x, y); //piece.startx, piece.starty);
+}
 
 class PuzzlePiece
 {
@@ -51,17 +70,23 @@ class PuzzlePiece
   {
     this.el = svgElement;
     this.bbox = this.el.getBBox();     
-    console.log("puzzle piece:" + this.el.id);
-    console.log(`puzzle bbox: ${this.bbox.x} ${this.bbox.y} ${this.bbox.width} ${this.bbox.height}`);
+    this.startx = this.bbox.x;
+    this.starty = this.bbox.y;
+
+    this.el.addEventListener("mousemove", e => { mouseMove(this, e); });
+    this.el.addEventListener("click", e => { mouseClick(this, e); });
+    //console.log("puzzle piece:" + this.el.id);
+    //console.log(`puzzle bbox: ${this.bbox.x} ${this.bbox.y} ${this.bbox.width} ${this.bbox.height}`);
   }
 
-  move(x, y) {
+  translate(x, y) {
+    x = x - this.el.getBBox().x;
+    y = y - this.el.getBBox().y;
     var attrval =  `translate(${x} ${y})`;
     this.el.setAttribute("transform", attrval);
   }
 }
 var puzzlePieces = [];
-var selectedPiece = null;
 
 function start() {
   console.log("start");
@@ -75,18 +100,28 @@ function start() {
   const svg = svgDoc.querySelector("svg");
   //const width = svg.viewBox.baseVal.width;
   //const height = svg.viewBox.baseVal.height;
+  //Math.floor(Math.random() * 2); 
 
+  var idx = 0; 
+  var x = 200;
+  var y = 25;
+  var maxsize = 0;
   const puzzleLayer = svgDoc.getElementById("PuzzleLayer");
   for (const el of puzzleLayer.children) {
     var piece = new PuzzlePiece(el);
-    var i = Math.floor(Math.random() * 2); 
-    var j = Math.floor(Math.random() * 4); 
-    var x = 300 + 75 * j;
-    var y = 150 * i;
-    piece.move(x, y);
+    piece.translate(x, y);
     puzzlePieces.push(piece);
+    //console.log(`${el.id} ${i} ${j} ${x} ${y}`);
+
+    x = x + piece.bbox.width + 10;
+    if (maxsize < piece.bbox.height) maxsize = piece.bbox.height;
+
+    idx = idx + 1;
+    if (idx % 4 == 0) {
+      y = y + maxsize + 10;
+      x = 200;
+    }
   }
- 
 }
 
 function resize() {
