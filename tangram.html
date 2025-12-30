@@ -7,7 +7,7 @@ html, body {
 }
 
 #container {
-  position: relative;
+  position: absolute;
   width: 100vw;
   height: 100vh;
 }
@@ -39,65 +39,104 @@ html, body {
 <script>
 const canvas = document.getElementById("overlay");
 const ctx = canvas.getContext("2d");
-var svgDoc = null;
+var svg = null;
 
 var gameOverMessage = "You win!";
 var gameOver = false;
 
 var selectedPiece = null;
-function mouseClick(piece, e) {
-  console.log("CLICK Client", e.clientX, e.clientY);
-  console.log("CLICK Offset", e.offsetX, e.offsetY);
-  console.log("CLICK Scrren", e.screenX, e.screenY);
-  if (selectedPiece == null) selectedPiece = piece;
-  else {
-    selectedPiece = null;
-  }
-}
-
-function mouseMove(piece, e) {
-  //console.log(e.offsetX, e.offsetY);
-  const svg = svgDoc.querySelector("svg");
-  var vb = svg.viewBox.baseVal;
-  var x = e.offsetX * vb.width / canvas.width;
-  var y = e.offsetY * vb.height / canvas.height;
-  if (selectedPiece != null) selectedPiece.translate(x, y); //piece.startx, piece.starty);
-}
+var selectedOffsetX = 0;
+var selectedOffsetY = 0;
+var puzzlePieces = [];
 
 class PuzzlePiece
 {
   constructor(svgElement)
   {
     this.el = svgElement;
-    this.bbox = this.el.getBBox();     
-    this.startx = this.bbox.x;
-    this.starty = this.bbox.y;
+    this.bbox = this.el.getBBox();
+    this.startx = this.el.getBoundingClientRect().x;
+    this.starty = this.el.getBoundingClientRect().y;
 
-    this.el.addEventListener("mousemove", e => { mouseMove(this, e); });
-    this.el.addEventListener("click", e => { mouseClick(this, e); });
     //console.log("puzzle piece:" + this.el.id);
     //console.log(`puzzle bbox: ${this.bbox.x} ${this.bbox.y} ${this.bbox.width} ${this.bbox.height}`);
   }
 
   translate(x, y) {
-    x = x - this.el.getBBox().x;
-    y = y - this.el.getBBox().y;
+    x = x - this.bbox.x;
+    y = y - this.bbox.y;
     var attrval =  `translate(${x} ${y})`;
     this.el.setAttribute("transform", attrval);
   }
+
+  intersects(pos) {
+    const bbox = this.el.getBoundingClientRect();
+    if (pos.x >= bbox.x && pos.x <= bbox.x + bbox.width &&
+        pos.y >= bbox.y && pos.y <= bbox.y + bbox.height) {
+          return true;
+    }
+    return false;
+  }
 }
-var puzzlePieces = [];
+
+function canvas2svg(px, py) {
+  var vb = svg.viewBox.baseVal;
+  x = px * vb.width / canvas.width;
+  y = py * vb.height / canvas.height;
+  return {x: x, y: y};
+}
+
+function svg2canvas(px, py) {
+  var vb = svg.viewBox.baseVal;
+  x = px * canvas.width / vb.width;
+  y = py * canvas.height / vb.height;
+  return {x: x, y: y};
+}
+
+function mouseClick(e) {
+  var clickPos = {x: e.clientX, y: e.clientY};
+
+  var selected = null;
+  for (var piece of puzzlePieces) {
+    if (piece.intersects(clickPos)) {
+      selected = piece;
+      break;
+    }
+  }
+
+  if (selected)
+  {
+    console.log("CLICK ", selected.el.id);
+    selectedOffsetX = e.clientX - selected.el.getBoundingClientRect().x;
+    selectedOffsetY = e.clientX - selected.el.getBoundingClientRect().y;
+  }
+  selectedPiece = selected;
+}
+
+function mouseMove(e) {
+  if (selectedPiece == null) return;
+
+  // convert from client coordinates to SVG viewport coordinates
+  var vb = svg.viewBox.baseVal;
+  var factor = (vb.height / vb.width) * canvas.width;
+  var x = (e.clientX / canvas.width) * vb.width;
+  var y = (e.clientY - (canvas.height - factor) / 2) / factor * vb.height;
+  selectedPiece.translate(x, y); //piece.startx, piece.starty);
+}
 
 function start() {
   console.log("start");
   const obj = document.getElementById("svgObject");
-  svgDoc = obj.contentDocument;
+  const svgDoc = obj.contentDocument;
   if (!svgDoc) {
     console.logError("Error: No SVG document found.");
     return;
   }
 
-  const svg = svgDoc.querySelector("svg");
+  svg = svgDoc.querySelector("svg");
+  svg.addEventListener("mousemove", e => { mouseMove(e); });
+  svg.addEventListener("click", e => { mouseClick(e); });
+
   //const width = svg.viewBox.baseVal.width;
   //const height = svg.viewBox.baseVal.height;
   //Math.floor(Math.random() * 2); 

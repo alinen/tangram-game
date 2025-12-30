@@ -25,14 +25,14 @@
      inkscape:document-units="mm"
      showgrid="true"
      inkscape:zoom="1.0306873"
-     inkscape:cx="265.84204"
-     inkscape:cy="191.61972"
+     inkscape:cx="234.30968"
+     inkscape:cy="194.5304"
      inkscape:window-width="1440"
      inkscape:window-height="890"
      inkscape:window-x="-6"
      inkscape:window-y="-6"
      inkscape:window-maximized="1"
-     inkscape:current-layer="PuzzleLayer">
+     inkscape:current-layer="OutlineLayer">
     <inkscape:grid
        type="xygrid"
        id="grid964"
@@ -78,7 +78,8 @@
   <g
      inkscape:groupmode="layer"
      id="PuzzleLayer"
-     inkscape:label="PuzzleLayer">
+     inkscape:label="PuzzleLayer"
+     transform="translate(-3.7777372,-1.9973432)">
     <path
        style="opacity:1;fill:#ff7676;fill-opacity:1;stroke:none;stroke-width:1.36277"
        d="M 24.036603,69.405545 V 165.76806 L 120.39912,69.405545 Z"
@@ -122,6 +123,17 @@
        inkscape:label="Square" />
   </g>
   <g
+     inkscape:label="OutlineLayer"
+     inkscape:groupmode="layer"
+     id="OutlineLayer"
+     transform="translate(-3.0689012,-0.57769442)">
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.88181;stroke-linecap:butt;stroke-opacity:1"
+       d="M 22.907444,67.371468 71.35577,20.79301 121.2533,70.690557 120.31837,261.10237 70.662372,213.31622 22.907444,262.00608 Z"
+       id="Outline"
+       sodipodi:nodetypes="ccccccc" />
+  </g>
+  <g
      inkscape:groupmode="layer"
      id="TimebarLayer"
      inkscape:label="Timebar"
@@ -142,15 +154,5 @@
        x="0"
        y="290"
        inkscape:label="Outline" />
-  </g>
-  <g
-     inkscape:label="OutlineLayer"
-     inkscape:groupmode="layer"
-     id="OutlineLayer">
-    <path
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.88181;stroke-linecap:butt;stroke-opacity:1"
-       d="M 22.907444,67.371468 71.35577,20.79301 121.2533,70.690557 120.31837,261.10237 70.662372,213.31622 22.907444,262.00608 Z"
-       id="Outline"
-       sodipodi:nodetypes="ccccccc" />
   </g>
 </svg>
