@@ -49,53 +49,147 @@ var selectedOffsetX = 0;
 var selectedOffsetY = 0;
 var puzzlePieces = [];
 
+function client2svg(px, py) {
+  var vb = svg.viewBox.baseVal;
+  var scaledHeight = (vb.height / vb.width) * canvas.width;
+  var x = (px / canvas.width) * vb.width;
+  var y = (py - (canvas.height - scaledHeight) / 2) / scaledHeight * vb.height;
+  return {x: x, y: y};
+}
+
+const PathMode = {
+    NONE: 0,
+    MOVETO: 1,
+    LINETO: 2,
+    VERT: 3,
+    HORZ: 4
+};
+
 class PuzzlePiece
 {
   constructor(svgElement)
   {
     this.el = svgElement;
-    this.bbox = this.el.getBBox();
-    this.startx = this.el.getBoundingClientRect().x;
-    this.starty = this.el.getBoundingClientRect().y;
+    const path = this.el.getAttribute("d").toLowerCase();
+
+    // Assumes all paths are closed
+    var mode = PathMode.NONE; 
+    this.points = []
+    const tokens = path.split(" ");
+    for (const token of tokens) {
+      if (token == "m") mode = PathMode.MOVETO;
+      else if (token == "l") mode = PathMode.LINETO;
+      else if (token == "v") mode = PathMode.VERT;
+      else if (token == "h") mode = PathMode.HORZ;
+      else if (token == "z") mode = PathMode.NONE; // close loop
+      else if (token.indexOf(",") > -1) { // x,y point
+        const xy = token.split(",");
+        var x = Number(xy[0]);
+        var y = Number(xy[1]);
+        if (mode == PathMode.LINETO || this.points.length == 0){
+          this.points.push({x: x, y: y});
+        }      
+        else if (mode == PathMode.MOVETO) {
+          var lastp = this.points[this.points.length-1];
+          this.points.push({x: lastp.x + x, y: lastp.y + y});
+        }
+        else console.error("Unsupported path format:", path);
+      }
+      else { // single value
+        var u = Number(token);
+        var lastp = this.points[this.points.length-1];
+        if (mode == PathMode.VERT) {
+          this.points.push({x: lastp.x, y: u});
+        }      
+        else if (mode == PathMode.HORZ) {
+          var lastp = this.points[this.points.length-1];
+          this.points.push({x: u, y: lastp.y});
+        }
+        else console.error("Unsupported path format:", path);
+      }
+    }
+
+    console.log("===== ", this.el.id, "=========");
+    for (var p of this.points) {
+      console.log(p.x, p.y);
+    }
+
+    this.bbox = this.el.getBBox(); // asn todo: does this change? I don't think so
+    this.startx = this.bbox.x;
+    this.starty = this.bbox.y;
 
     //console.log("puzzle piece:" + this.el.id);
     //console.log(`puzzle bbox: ${this.bbox.x} ${this.bbox.y} ${this.bbox.width} ${this.bbox.height}`);
   }
 
-  translate(x, y) {
-    x = x - this.bbox.x;
-    y = y - this.bbox.y;
+  translate(x, y) { // in svg coordinates, e.g. (0,0, width, height)
+    x = x - this.startx;
+    y = y - this.starty;
     var attrval =  `translate(${x} ${y})`;
     this.el.setAttribute("transform", attrval);
   }
 
-  intersects(pos) {
-    const bbox = this.el.getBoundingClientRect();
-    if (pos.x >= bbox.x && pos.x <= bbox.x + bbox.width &&
-        pos.y >= bbox.y && pos.y <= bbox.y + bbox.height) {
-          return true;
+  transformPoint(matrix, p) {
+    var x = matrix.a * p.x + matrix.b * p.y + matrix.e;
+    var y = matrix.c * p.x + matrix.d * p.y + matrix.f;
+    return {x: x, y: y};
+  }
+
+  intersects(pos) { // in client coordinates
+    const transformList = this.el.transform.baseVal;
+
+    // Iterate through and log each transformation
+    var matrix = new DOMMatrix("matrix(1,0,0,1,0,0)");
+    for (let i = 0; i < transformList.numberOfItems; i++) {
+      const transform = transformList.getItem(i);
+      matrix.multiplySelf(transform.matrix); // ASN order is not clear
     }
-    return false;
+
+    var p1 = this.transformPoint(matrix, this.points[0]);
+    var p2 = this.transformPoint(matrix, this.points[1]);
+    var p3 = this.transformPoint(matrix, this.points[2]);
+    selectedOffsetX = -pos.x + p1.x;
+    selectedOffsetY = -pos.y + p1.y;
+
+    // computer barycentric coordinates
+    var lamnum1 = (p2.y - p3.y) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.y);
+    var lamdom1 = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
+    var lam1 = lamnum1 / lamdom1;
+
+    var lamnum2 = (p3.y - p1.y) * (pos.x - p3.x) + (p1.x - p3.x) * (pos.y - p3.y);
+    var lamdom2 = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
+    var lam2 = lamnum2 / lamdom2;
+
+    var lam3 = 1 - lam1 - lam2;
+    if (lam1 < 0 || lam1 > 1 || lam2 < 0 || lam2 > 1 || lam3 < 0 || lam3 > 1) {
+      return false;
+    }
+
+    return true;
+  }
+
+  anchor() {
+    const bbox = this.el.getBoundingClientRect();
+    var svgpos = client2svg(bbox.x, bbox.y);
+
+    const cellsize = 1;
+    const half = cellsize * 0.5;
+    var x = Math.floor(cellsize * ((svgpos.x + half)/ cellsize));
+    var y = Math.floor(cellsize * ((svgpos.y + half)/ cellsize));
+    console.log(svgpos.x, svgpos.y, x, y);
+    this.translate(x, y);
   }
 }
 
-function canvas2svg(px, py) {
-  var vb = svg.viewBox.baseVal;
-  x = px * vb.width / canvas.width;
-  y = py * vb.height / canvas.height;
-  return {x: x, y: y};
-}
-
-function svg2canvas(px, py) {
-  var vb = svg.viewBox.baseVal;
-  x = px * canvas.width / vb.width;
-  y = py * canvas.height / vb.height;
-  return {x: x, y: y};
-}
-
 function mouseClick(e) {
-  var clickPos = {x: e.clientX, y: e.clientY};
+  if (selectedPiece != null) { // drop it
+    selectedPiece.anchor();
+    selectedPiece = null;
+    return;
+  }
 
+  // pickup
+  var clickPos = client2svg(e.clientX, e.clientY);
   var selected = null;
   for (var piece of puzzlePieces) {
     if (piece.intersects(clickPos)) {
@@ -104,28 +198,18 @@ function mouseClick(e) {
     }
   }
 
-  if (selected)
-  {
-    console.log("CLICK ", selected.el.id);
-    selectedOffsetX = e.clientX - selected.el.getBoundingClientRect().x;
-    selectedOffsetY = e.clientX - selected.el.getBoundingClientRect().y;
-  }
-  selectedPiece = selected;
+  selectedPiece = selected; 
 }
 
 function mouseMove(e) {
   if (selectedPiece == null) return;
 
   // convert from client coordinates to SVG viewport coordinates
-  var vb = svg.viewBox.baseVal;
-  var factor = (vb.height / vb.width) * canvas.width;
-  var x = (e.clientX / canvas.width) * vb.width;
-  var y = (e.clientY - (canvas.height - factor) / 2) / factor * vb.height;
-  selectedPiece.translate(x, y); //piece.startx, piece.starty);
+  var svgpos = client2svg(e.clientX, e.clientY);
+  selectedPiece.translate(svgpos.x + selectedOffsetX, svgpos.y + selectedOffsetY); 
 }
 
 function start() {
-  console.log("start");
   const obj = document.getElementById("svgObject");
   const svgDoc = obj.contentDocument;
   if (!svgDoc) {
@@ -150,7 +234,7 @@ function start() {
     var piece = new PuzzlePiece(el);
     piece.translate(x, y);
     puzzlePieces.push(piece);
-    //console.log(`${el.id} ${i} ${j} ${x} ${y}`);
+    console.log(`${el.id} ${x} ${y}`);
 
     x = x + piece.bbox.width + 10;
     if (maxsize < piece.bbox.height) maxsize = piece.bbox.height;
