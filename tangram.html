@@ -49,9 +49,13 @@ var selectedOffsetX = 0;
 var selectedOffsetY = 0;
 var puzzlePieces = [];
 var threshold = 10; // pixels in svg space
+
+var timeBar = null;
 var duration = 60; // seconds
+var lastTime = 0;
 
 function client2svg(px, py) {
+  // Assumes width > height with aspect ratio and midpoint alignment
   var vb = svg.viewBox.baseVal;
   var scaledHeight = (vb.height / vb.width) * canvas.width;
   var x = (px / canvas.width) * vb.width;
@@ -59,10 +63,24 @@ function client2svg(px, py) {
   return {x: x, y: y};
 }
 
+class TimeBar
+{
+  constructor(svgElement) {
+    this.el = svgElement;
+    this.timeLeft = duration;
+  }
+
+  tick(dt) {
+    this.timeLeft = Math.max(0, this.timeLeft - dt);
+    var fraction = this.timeLeft / duration;
+    var width = fraction * svg.viewBox.baseVal.width;
+    this.el.setAttribute("width", width);
+  }
+}
+
 class PuzzlePiece
 {
-  constructor(svgElement)
-  {
+  constructor(svgElement) {
     this.el = svgElement;
     
     // Assert that there are no transforms on this puzzle piece 
@@ -137,6 +155,7 @@ class PuzzlePiece
     this.starty = this.y;
     
     this.translate(this.x, this.y);
+    this.isHome = false;
     //console.log("puzzle piece:" + this.el.id);
     //console.log(`puzzle bbox: ${this.bbox.x} ${this.bbox.y} ${this.bbox.width} ${this.bbox.height}`);
   }
@@ -199,6 +218,7 @@ class PuzzlePiece
 
     if (this.closeTo(svgpos, this.startx, this.starty)) {
       this.translate(this.startx, this.starty);
+      this.isHome = true;
     }
     else {
       const cellsize = 1;
@@ -206,6 +226,7 @@ class PuzzlePiece
       var x = Math.floor(cellsize * ((svgpos.x + half)/ cellsize));
       var y = Math.floor(cellsize * ((svgpos.y + half)/ cellsize));
       this.translate(x, y);
+      this.isHome = false;
     }
   }
 }
@@ -281,6 +302,41 @@ function start() {
       x = 200;
     }
   }
+  
+  // initialize time bar
+  const barElement = svgDoc.getElementById("TimebarInterior");
+  timeBar = new TimeBar(barElement);
+  
+  // start puzzle
+  lastTime = document.timeline.currentTime;
+  window.requestAnimationFrame(tick);
+}
+
+function puzzleSolved() {
+  for (const piece of puzzlePieces) {
+    if (!piece.isHome) return false;
+  }
+  return true;
+}
+
+function tick(timestamp) {
+  const dt = (timestamp - lastTime) / 1000.0; // convert from milliseconds to seconds 
+  lastTime = timestamp;
+  
+  timeBar.tick(dt);
+  if (timeBar.timeLeft <= 0) {
+    gameOver = true;
+    gameOverMessage = "You Lost :(";
+    draw();
+  }
+
+  if (puzzleSolved()) {
+    gameOver = true;
+    gameOverMessage = "You won! :)";
+    draw();
+  }
+
+  if (!gameOver) window.requestAnimationFrame(tick);
 }
 
 function resize() {
