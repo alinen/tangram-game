@@ -62,14 +62,16 @@ class PuzzlePiece
   constructor(svgElement)
   {
     this.el = svgElement;
-    const path = this.el.getAttribute("d").replaceAll(",", " ");
   
-    // Assumes all paths are closed
+    // Initialize polygon points for intersection tests
+    // Assume all paths are closed
+    this.points = []
+
+    var i = 0;
     var mode = '\0'; 
     const supportedOptions = ["m", "M", "l", "L", "h", "H", "v", "V", "z", "Z"];
-    this.points = []
+    const path = this.el.getAttribute("d").replaceAll(",", " ");
     const tokens = path.split(" ");
-    var i = 0;
     while (i < tokens.length) {
       if (supportedOptions.includes(tokens[i])) {
         mode = tokens[i++];
@@ -105,21 +107,34 @@ class PuzzlePiece
     }
 
     console.log("===== ", this.el.id, "=========");
-    for (var p of this.points) {
-      console.log(p.x, p.y);
+    var newPath = "M ";
+    this.x = this.el.getBBox().x;
+    this.y = this.el.getBBox().y;
+    for (var i = 0; i < this.points.length; i++) {
+      this.points[i].x -= this.x;
+      this.points[i].y -= this.y;
+      newPath += `${this.points[i].x} ${this.points[i].y} `
+      console.log(this.points[i].x, this.points[i].y);
     }
+    newPath += "Z";
+    this.el.setAttribute("d", newPath);
 
-    this.bbox = this.el.getBBox(); // asn todo: does this change? I don't think so
-    this.startx = this.bbox.x;
-    this.starty = this.bbox.y;
+    // Save width and height for positioning logic
+    this.width = this.el.getBBox().width;
+    this.height = this.el.getBBox().height;
 
+    // Use starting positions to detect win state
+    this.startx = this.x;
+    this.starty = this.y;
+    
+    this.translate(this.x, this.y);
     //console.log("puzzle piece:" + this.el.id);
     //console.log(`puzzle bbox: ${this.bbox.x} ${this.bbox.y} ${this.bbox.width} ${this.bbox.height}`);
   }
 
   translate(x, y) { // in svg coordinates, e.g. (0,0, width, height)
-    x = x - this.startx;
-    y = y - this.starty;
+    this.x = x;
+    this.y = y;
     var attrval =  `translate(${x} ${y})`;
     this.el.setAttribute("transform", attrval);
   }
@@ -233,14 +248,19 @@ function start() {
   var y = 25;
   var maxsize = 0;
   const puzzleLayer = svgDoc.getElementById("PuzzleLayer");
+  
+  // assert that puzzle layer does not have a transform on it
+  const transform = puzzleLayer.getAttribute("transform");
+  if (transform != undefined) console.error("ERROR: Transform on puzzle layer is not supported");
+
   for (const el of puzzleLayer.children) {
     var piece = new PuzzlePiece(el);
     piece.translate(x, y);
     puzzlePieces.push(piece);
     console.log(`${el.id} ${x} ${y}`);
 
-    x = x + piece.bbox.width + 10;
-    if (maxsize < piece.bbox.height) maxsize = piece.bbox.height;
+    x = x + piece.width + 10;
+    if (maxsize < piece.height) maxsize = piece.height;
 
     idx = idx + 1;
     if (idx % 4 == 0) {
