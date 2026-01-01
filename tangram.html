@@ -57,56 +57,51 @@ function client2svg(px, py) {
   return {x: x, y: y};
 }
 
-const PathMode = {
-    NONE: 0,
-    MOVETO: 1,
-    LINETO: 2,
-    VERT: 3,
-    HORZ: 4
-};
-
 class PuzzlePiece
 {
   constructor(svgElement)
   {
     this.el = svgElement;
-    const path = this.el.getAttribute("d").toLowerCase();
-
+    const path = this.el.getAttribute("d").replaceAll(",", " ");
+  
     // Assumes all paths are closed
-    var mode = PathMode.NONE; 
+    var mode = '\0'; 
+    const supportedOptions = ["m", "M", "l", "L", "h", "H", "v", "V", "z", "Z"];
     this.points = []
     const tokens = path.split(" ");
-    for (const token of tokens) {
-      if (token == "m") mode = PathMode.MOVETO;
-      else if (token == "l") mode = PathMode.LINETO;
-      else if (token == "v") mode = PathMode.VERT;
-      else if (token == "h") mode = PathMode.HORZ;
-      else if (token == "z") mode = PathMode.NONE; // close loop
-      else if (token.indexOf(",") > -1) { // x,y point
-        const xy = token.split(",");
-        var x = Number(xy[0]);
-        var y = Number(xy[1]);
-        if (mode == PathMode.LINETO || this.points.length == 0){
+    var i = 0;
+    while (i < tokens.length) {
+      if (supportedOptions.includes(tokens[i])) {
+        mode = tokens[i++];
+      }
+      else if (["m", "M", "l", "L"].includes(mode)) { // two values
+        var x = Number(tokens[i++]);
+        var y = Number(tokens[i++]);
+        if (this.points.length == 0 || mode == "M" || mode == "L") { // absolute
           this.points.push({x: x, y: y});
         }      
-        else if (mode == PathMode.MOVETO) {
+        else if (mode == "m" || mode == "l") { // relative
           var lastp = this.points[this.points.length-1];
           this.points.push({x: lastp.x + x, y: lastp.y + y});
         }
-        else console.error("Unsupported path format:", path);
       }
-      else { // single value
-        var u = Number(token);
+      else if (["h", "H", "v", "V"]) { // single value
         var lastp = this.points[this.points.length-1];
-        if (mode == PathMode.VERT) {
-          this.points.push({x: lastp.x, y: u});
-        }      
-        else if (mode == PathMode.HORZ) {
-          var lastp = this.points[this.points.length-1];
+        var u = Number(tokens[i++]);
+        if (mode == "h") {
+          this.points.push({x: lastp.x + u, y: lastp.y});
+        }
+        else if (mode == "H") {
           this.points.push({x: u, y: lastp.y});
         }
-        else console.error("Unsupported path format:", path);
+        else if (mode == "v") {
+          this.points.push({x: lastp.x, y: lastp.y + u});
+        }
+        else if (mode == "V") {
+          this.points.push({x: lastp.x, y: u});
+        }
       }
+      else console.error("Unsupported path format:", path);
     }
 
     console.log("===== ", this.el.id, "=========");
@@ -135,6 +130,24 @@ class PuzzlePiece
     return {x: x, y: y};
   }
 
+  checkTriangleIntersection(pos, p1, p2, p3) {
+    // computer barycentric coordinates
+    var lamnum1 = (p2.y - p3.y) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.y);
+    var denom = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
+    var lam1 = lamnum1 / denom;
+    if (lam1 < 0 || lam1 > 1) return false;
+
+    var lamnum2 = (p3.y - p1.y) * (pos.x - p3.x) + (p1.x - p3.x) * (pos.y - p3.y);
+    var lamdom2 = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
+    var lam2 = lamnum2 / denom;
+    if (lam2 < 0 || lam2 > 1) return false;
+
+    var lam3 = 1 - lam1 - lam2;
+    if (lam3 < 0 || lam3 > 1) return false;
+    
+    return true;
+  }
+
   intersects(pos) { // in client coordinates
     const transformList = this.el.transform.baseVal;
 
@@ -145,27 +158,16 @@ class PuzzlePiece
       matrix.multiplySelf(transform.matrix); // ASN order is not clear
     }
 
-    var p1 = this.transformPoint(matrix, this.points[0]);
-    var p2 = this.transformPoint(matrix, this.points[1]);
-    var p3 = this.transformPoint(matrix, this.points[2]);
-    selectedOffsetX = -pos.x + p1.x;
-    selectedOffsetY = -pos.y + p1.y;
+    const numVerts = this.points.length;
+    //const numTris = numVerts - 2;
+    for (var i = 1; i < numVerts-1; i++) {
+      var p1 = this.transformPoint(matrix, this.points[0]);
+      var p2 = this.transformPoint(matrix, this.points[i+0]);
+      var p3 = this.transformPoint(matrix, this.points[i+1]);
+      if (this.checkTriangleIntersection(pos, p1, p2, p3)) return true;
+    }    
 
-    // computer barycentric coordinates
-    var lamnum1 = (p2.y - p3.y) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.y);
-    var lamdom1 = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
-    var lam1 = lamnum1 / lamdom1;
-
-    var lamnum2 = (p3.y - p1.y) * (pos.x - p3.x) + (p1.x - p3.x) * (pos.y - p3.y);
-    var lamdom2 = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
-    var lam2 = lamnum2 / lamdom2;
-
-    var lam3 = 1 - lam1 - lam2;
-    if (lam1 < 0 || lam1 > 1 || lam2 < 0 || lam2 > 1 || lam3 < 0 || lam3 > 1) {
-      return false;
-    }
-
-    return true;
+    return false;
   }
 
   anchor() {
@@ -193,7 +195,8 @@ function mouseClick(e) {
   var selected = null;
   for (var piece of puzzlePieces) {
     if (piece.intersects(clickPos)) {
-      selected = piece;
+      //selected = piece;
+      console.log("HIT: ", piece.el.id);
       break;
     }
   }
