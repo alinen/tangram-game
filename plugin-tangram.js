@@ -113,7 +113,7 @@ var jsPsychTangram = (function (jspsych) {
         "beforeend",
         `<div id="container">
           <object id="svgObject" 
-                  data="puzzle-rocket.svg" 
+                  data="${this.params.svg}" 
                   type="image/svg+xml" 
                   preserveAspectRatio="xMidYMid meet"
                   onload="this.tangram.start()">
