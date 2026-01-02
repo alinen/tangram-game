@@ -30,6 +30,7 @@ class TangramGame {
     // pickup
     var clickPos = client2svg(e.clientX, e.clientY, this.svg, this.canvas);
     var selected = null;
+    // reverse order because later items display on top of earlier ones
     for (var i = this.puzzlePieces.length-1; i >= 0; i--) {
       const piece = this.puzzlePieces[i];
       if (piece.intersects(clickPos)) {
@@ -55,7 +56,7 @@ class TangramGame {
     const obj = document.getElementById("svgObject");
     const svgDoc = obj.contentDocument;
     if (!svgDoc) {
-      console.logError("Error: No SVG document found.");
+      console.error("Error: No SVG document found.");
       return;
     }
 

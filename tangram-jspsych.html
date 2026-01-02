@@ -2,9 +2,13 @@
 <html>
   <head>
     <script src="jspsych/dist/jspsych.js"></script>
-    <script src="jspsych/dist/plugin-sketchpad.js"></script>
     <link rel="stylesheet" href="jspsych/dist/jspsych.css">
-  </head
+    <script src="tangramutils.js"></script>
+    <script src="tangrampiece.js"></script>
+    <script src="timebar.js"></script>
+    <script src="tangram.js"></script>
+    <script src="plugin-tangram.js"></script>
+  </head>
   <body></body>
   <script>
 
@@ -14,28 +18,19 @@
       }
     });
 
-    var trial = {
-      type: jsPsychSketchpad,
-      prompt: '<p>Draw an apple!</p>',
-      prompt_location: 'abovecanvas',
-      canvas_width: 300,
-      canvas_height: 300,
-      canvas_border_width: 2,
-      show_redo_button: false,
+    var trial1 = {
+      type: jsPsychTangram,
+      svg: "puzzle-rocket.svg",
+      duration: 60
     }
 
     var trial2 = {
-      type: jsPsychSketchpad,
-      prompt: '<p>Circle the mouth using red. Circle the eyes using blue.</p>',
-      prompt_location: 'abovecanvas',
-      stroke_color_palette: ['red', 'blue'],
-      stroke_color: 'red',
-      background_image: 'img/sad_face_4.jpg',
-      canvas_width: 380,
-      canvas_height: 252
+      type: jsPsychTangram,
+      svg: 'puzzle-square.svg',
+      duration: 60
     }
     
-    jsPsych.run([trial, trial2]);
+    jsPsych.run([trial1, trial2]);
 
   </script>
 </html>
