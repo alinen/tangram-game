@@ -3,11 +3,11 @@
   <head>
     <script src="jspsych/dist/jspsych.js"></script>
     <link rel="stylesheet" href="jspsych/dist/jspsych.css">
-    <script src="tangramutils.js"></script>
-    <script src="tangrampiece.js"></script>
-    <script src="timebar.js"></script>
-    <script src="tangram.js"></script>
-    <script src="plugin-tangram.js"></script>
+    <script src="src/tangramutils.js"></script>
+    <script src="src/tangrampiece.js"></script>
+    <script src="src/timebar.js"></script>
+    <script src="src/tangram.js"></script>
+    <script src="src/plugin-tangram.js"></script>
   </head>
   <body></body>
   <script>
@@ -18,19 +18,25 @@
       }
     });
 
+    var tutorial = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-arrow.svg",
+      duration: 60
+    }
+
     var trial1 = {
       type: jsPsychTangram,
-      svg: "puzzle-rocket.svg",
+      svg: "puzzles/puzzle-rocket.svg",
       duration: 60
     }
 
     var trial2 = {
       type: jsPsychTangram,
-      svg: 'puzzle-square.svg',
+      svg: 'puzzles/puzzle-square.svg',
       duration: 60
     }
     
-    jsPsych.run([trial1, trial2]);
+    jsPsych.run([tutorial, trial1, trial2]);
 
   </script>
 </html>

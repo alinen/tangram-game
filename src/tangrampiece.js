@@ -1,5 +1,5 @@
 
-class PuzzlePiece
+class TangramPiece
 {
   static threshold = 9; // pixels in svg space
 
@@ -17,7 +17,7 @@ class PuzzlePiece
     // Assume all paths are closed
     this.points = svgComputePath(this.el); 
 
-    console.log("===== ", this.el.id, "=========");
+    //console.log("===== ", this.el.id, "=========");
     var newPath = "M ";
     this.x = this.el.getBBox().x;
     this.y = this.el.getBBox().y;
@@ -25,7 +25,7 @@ class PuzzlePiece
       this.points[i].x -= this.x;
       this.points[i].y -= this.y;
       newPath += `${this.points[i].x} ${this.points[i].y} `
-      console.log(this.points[i].x, this.points[i].y);
+      //console.log(this.points[i].x, this.points[i].y);
     }
     newPath += "Z";
     this.el.setAttribute("d", newPath);
@@ -53,7 +53,7 @@ class PuzzlePiece
 
   closeTo(pos, x, y) {
     var dSqr = (pos.x - x)*(pos.x - x) + (pos.y - y)*(pos.y - y);
-    return dSqr < PuzzlePiece.threshold * PuzzlePiece.threshold;
+    return dSqr < TangramPiece.threshold * TangramPiece.threshold;
   }
 
   transformPoint(p) {
@@ -103,10 +103,12 @@ class PuzzlePiece
       this.isHome = true;
     }
     else {
-      const cellsize = 1; // asn todo: is this needed?
-      const half = cellsize * 0.5;
-      var x = Math.floor(cellsize * ((svgpos.x + half)/ cellsize));
-      var y = Math.floor(cellsize * ((svgpos.y + half)/ cellsize));
+      //const cellsize = 1; // asn todo: is this needed?
+      //const half = cellsize * 0.5;
+      //var x = Math.floor(cellsize * ((svgpos.x + half)/ cellsize));
+      //var y = Math.floor(cellsize * ((svgpos.y + half)/ cellsize));
+      var x = svgpos.x;
+      var y = svgpos.y;
       this.translate(x, y);
       this.isHome = false;
     }

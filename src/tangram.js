@@ -65,7 +65,7 @@ class TangramGame {
     this.svg.addEventListener("click", e => { this.mouseClick(e); });
 
     var idx = 0; 
-    var x = 200;
+    var x = 275;
     var y = 25;
     var maxsize = 0;
     const puzzleLayer = svgDoc.getElementById("PuzzleLayer");
@@ -75,7 +75,7 @@ class TangramGame {
     if (transform != undefined) console.error("ERROR: Transform on puzzle layer is not supported");
 
     for (const el of puzzleLayer.children) {
-      var piece = new PuzzlePiece(el);
+      var piece = new TangramPiece(el);
       piece.translate(x, y);
       this.puzzlePieces.push(piece);
       //console.log(`${el.id} ${x} ${y}`);
@@ -84,9 +84,9 @@ class TangramGame {
       if (maxsize < piece.height) maxsize = piece.height;
 
       idx = idx + 1;
-      if (idx % 4 == 0) {
+      if (idx % 3 == 0 && idx < 4) {
         y = y + maxsize + 10;
-        x = 200;
+        x = 275;
       }
     }
     

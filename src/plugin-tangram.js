@@ -12,7 +12,7 @@ var jsPsychTangram = (function (jspsych) {
        */
       svg: {
         type: jspsych.ParameterType.STRING,
-        default: "puzzle-rocket.svg"
+        default: "puzzles/puzzle-rocket.svg"
       },
       /**
        * Length of time before the trial ends (seconds). 
@@ -107,7 +107,6 @@ var jsPsychTangram = (function (jspsych) {
       );
     }
 
-    //width="${this.params.canvas_diameter}" 
     add_html() {
       document.querySelector("body").insertAdjacentHTML(
         "beforeend",
@@ -124,23 +123,6 @@ var jsPsychTangram = (function (jspsych) {
 
       const svgDoc = document.getElementById("svgObject");
       svgDoc.onload = () => { this.tangram.start(); }
-    }
-    
-    // todo: make this load the svg?
-    add_svg_puzzle() {
-        /*
-      return new Promise((resolve, reject) => {
-        if (this.params.svg_puzzle !== null) { // asn: todo
-          this.background_image.src = this.params.background_image;
-          this.background_image.onload = () => {
-            this.ctx.drawImage(this.background_image, 0, 0);
-            resolve(true);
-          };
-        } 
-        else {
-          resolve(false);
-        }
-      });*/
     }
   }
   return TangramPlugin;
