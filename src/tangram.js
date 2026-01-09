@@ -15,7 +15,7 @@ class TangramGame {
     this.puzzlePieces = [];
 
     this.timeBar = null;
-    this.duration = 59; // seconds
+    this.duration = duration; // seconds
     this.lastTime = -1;
 
     // Sound effects

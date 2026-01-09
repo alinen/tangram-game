@@ -51,7 +51,7 @@ var jsPsychTangram = (function (jspsych) {
       this.params = trial;
       this.add_css();
       this.add_html();
-      this.tangram = new TangramGame(trial.trial_duration);
+      this.tangram = new TangramGame(trial.duration);
 
       const end_trial = () => {
         if (typeof keyboardListener !== "undefined") {
