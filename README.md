@@ -14,5 +14,3 @@ Then go to `http://127.0.0.1:8000/` in your browser and select `http://127.0.0.1
 To generate favicon.ico: 
 
 `convert -background transparent "tangram.png" -define icon:auto-resize=16,24,32,48,64,72,96,128,256 "favicon.ico"`
-
-

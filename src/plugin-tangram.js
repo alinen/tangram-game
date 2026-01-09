@@ -69,7 +69,7 @@ var jsPsychTangram = (function (jspsych) {
       };
 
       var animate_interval = setInterval(() => {
-        if (this.tangram.gameOver) {
+        if (this.tangram.finished) {
           end_trial(); 
           clearInterval(animate_interval);
         }

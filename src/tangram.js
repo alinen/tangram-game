@@ -7,6 +7,7 @@ class TangramGame {
 
     this.gameOverMessage = "You win!";
     this.gameOver = false;
+    this.finished = false;
 
     this.selectedPiece = null;
     this.selectedOffsetX = -1;
@@ -16,10 +17,18 @@ class TangramGame {
     this.timeBar = null;
     this.duration = 59; // seconds
     this.lastTime = -1;
+
+    // Sound effects
+    this.soundEffect = new Audio("puzzles/tap.mp3");
+    this.winSound = new Audio("puzzles/magic-spell.wav");
+    this.winSound.addEventListener("ended", (e) => {this.finished = true;});
+    this.loseSound = new Audio("puzzles/sad-trombone.wav");
+    this.loseSound.addEventListener("ended", (e) => {this.finished = true; });
   }
 
   mouseClick(e) {
     if (this.selectedPiece != null) { // drop it
+      this.soundEffect.play();
       var pos = this.selectedPiece.el.getBoundingClientRect();
       var svgpos = client2svg(pos.x, pos.y, this.svg, this.canvas);
       this.selectedPiece.anchor(svgpos);
@@ -37,6 +46,7 @@ class TangramGame {
         this.selectedOffsetX = piece.x - clickPos.x;
         this.selectedOffsetY = piece.y - clickPos.y;
         selected = piece;
+        this.soundEffect.play();
         break;
       }
     }
@@ -118,12 +128,14 @@ class TangramGame {
     if (this.timeBar.timeLeft <= 0) {
       this.gameOver = true;
       this.gameOverMessage = "You Lost :(";
+      this.loseSound.play();
       this.draw();
     }
 
     if (this.puzzleSolved()) {
       this.gameOver = true;
       this.gameOverMessage = "You won! :)";
+      this.winSound.play();
       this.draw();
     }
 
