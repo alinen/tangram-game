@@ -32,6 +32,7 @@ class TangramGame {
       var pos = this.selectedPiece.el.getBoundingClientRect();
       var svgpos = client2svg(pos.x, pos.y, this.svg, this.canvas);
       this.selectedPiece.anchor(svgpos);
+      this.selectedPiece.el.removeAttribute("filter");
       this.selectedPiece = null;
       return;
     }
@@ -47,6 +48,7 @@ class TangramGame {
         this.selectedOffsetY = piece.y - clickPos.y;
         selected = piece;
         this.soundEffect.play();
+        piece.el.setAttribute("filter", "drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4))");
         break;
       }
     }
