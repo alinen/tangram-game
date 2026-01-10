@@ -14,6 +14,17 @@ var jsPsychTangram = (function (jspsych) {
         type: jspsych.ParameterType.STRING,
         default: "puzzles/puzzle-rocket.svg"
       },
+      
+      resetPieces: {
+        type: jspsych.ParameterType.BOOLEAN,
+        default: true
+      },
+
+      resetPieceDuration: {
+        type: jspsych.ParameterType.Float, // seconds
+        default: 1.0
+      },
+
       /**
        * Length of time before the trial ends (seconds). 
        */
@@ -21,6 +32,7 @@ var jsPsychTangram = (function (jspsych) {
         type: jspsych.ParameterType.INT,
         default: null
       }
+
     },
     data: {
       /** The length of time from the start of the trial to the end of the trial. */
@@ -51,6 +63,9 @@ var jsPsychTangram = (function (jspsych) {
       this.params = trial;
       this.add_css();
       this.add_html();
+      
+      TangramPiece.duration = trial.resetPieceDuration;
+      TangramPiece.ResetPieces = trial.resetPieces;
       this.tangram = new TangramGame(trial.duration);
 
       const end_trial = () => {

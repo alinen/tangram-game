@@ -8,6 +8,11 @@ function client2svg(px, py, svg, canvas) {
   return {x: x, y: y};
 }
 
+// x is between 0 and 1
+function easeInOutSine(x) {
+  return -(Math.cos(Math.PI * x) - 1) / 2;
+}
+
 function svgComputePath(element) {
   var points = [];
   var i = 0;

@@ -2,6 +2,11 @@
 class TangramPiece
 {
   static threshold = 9; // pixels in svg space
+  static duration = 1; // seconds for reset animation 
+  static NONE = 0;
+  static DRAG = 1;
+  static ANIMATE = 2;
+  static ResetPieces = true;
 
   constructor(svgElement) {
     this.el = svgElement;
@@ -34,12 +39,13 @@ class TangramPiece
     this.width = this.el.getBBox().width;
     this.height = this.el.getBBox().height;
 
-    // Use starting positions to detect win state
-    this.startx = this.x;
-    this.starty = this.y;
-    this.isHome = false;
+    // Use target positions to detect win state
+    this.targetx = this.x;
+    this.targety = this.y;
+    this.isAtTarget = false;
     this.selectedOffsetX = -1;
     this.selectedOffsetY = -1;
+    this.state = TangramPiece.NONE; // not moving
     
     this.translate(this.x, this.y);
     //console.log("puzzle piece:" + this.el.id);
@@ -47,8 +53,8 @@ class TangramPiece
   }
 
   initPosition(x, y) {
-    this.resetx = x;
-    this.resety = y;
+    this.startx = x;
+    this.starty = y;
     this.translate(x, y);
   }
 
@@ -70,21 +76,39 @@ class TangramPiece
     //var y = matrix.c * p.x + matrix.d * p.y + matrix.f;
     return {x: p.x + this.x, y: p.y + this.y};
   }
-
+    
   drop(svgpos) {
-    var pos = this.el.getBoundingClientRect();
-    this.anchor(svgpos);
-    this.el.removeAttribute("filter");
+    if (this.state != TangramPiece.DRAG) return;
+    
+    if (this.closeTo(svgpos, this.targetx, this.targety)) {
+      this.translate(this.targetx, this.targety);
+      this.el.removeAttribute("filter");
+      this.isAtTarget = true;
+    }
+    else {
+      this.isAtTarget = false;
+      if (TangramPiece.ResetPieces) {
+        this.animate(svgpos);
+      }
+      else {
+        this.translate(svgpos.x, svgpos.y);
+        this.el.removeAttribute("filter");
+      }
+    }
   }
 
   drag(svgpos) {
+    if (this.state != TangramPiece.DRAG) return;
     this.translate(svgpos.x + this.selectedOffsetX, svgpos.y + this.selectedOffsetY); 
   }
 
   pickup(clickPos) {
+    if (this.state != TangramPiece.NONE) return;
+
     this.el.setAttribute("filter", "drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4))");
     this.selectedOffsetX = this.x - clickPos.x;
     this.selectedOffsetY = this.y - clickPos.y;
+    this.state = TangramPiece.DRAG;
   }
 
   checkTriangleIntersection(pos, p1, p2, p3) {
@@ -120,36 +144,28 @@ class TangramPiece
     return false;
   }
 
-  anchor(svgpos) {
+  tick(dt) {
+    if (this.state != TangramPiece.ANIMATE) return;
 
-    if (this.closeTo(svgpos, this.startx, this.starty)) {
-      this.translate(this.startx, this.starty);
-      this.isHome = true;
+    this.elapsedTime += dt;
+    if (this.elapsedTime < TangramPiece.duration) {
+      var u = this.elapsedTime / TangramPiece.duration; 
+      var t = easeInOutSine(u);
+      var xdt = this.dropx * (1 - t) + this.startx * t;
+      var ydt = this.dropy * (1 - t) + this.starty * t;
+      this.translate(xdt, ydt);
     }
     else {
-      var x = svgpos.x;
-      var y = svgpos.y;
-      this.translate(x, y);
-      this.isHome = false;
-      this.dropx = x;
-      this.dropy = y;
+      this.translate(this.startx, this.starty);
+      this.el.removeAttribute("filter");
+      this.state = TangramPiece.NONE;
     }
   }
 
-  // todo: add pickup/drop
-/*
-  animate(dt) {
-    if (!this.isHome)
-    {
-      this.elapsedTime += dt;
-      var svgpos = {x: this.x, y: this.y};
-      if (!this.closeTo(svgpos, this.resetx, this.resety)) {
-        var t = this.elapsedTime / TangramPiece.animateDuration; 
-        var xdt = this.dropx * (1 - t) + this.resetx * t;
-        var ydt = this.dropy * (1 - t) + this.resety * t;
-        this.translate(xdt, ydt);
-      }
-    }
+  animate(svgpos) {
+    this.dropx = svgpos.x;
+    this.dropy = svgpos.y;
+    this.elapsedTime = 0;
+    this.state = TangramPiece.ANIMATE;
   }
-    */
 }

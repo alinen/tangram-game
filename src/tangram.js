@@ -112,7 +112,7 @@ class TangramGame {
 
   puzzleSolved() {
     for (const piece of this.puzzlePieces) {
-      if (!piece.isHome) return false;
+      if (!piece.isAtTarget) return false;
     }
     return true;
   }
@@ -120,6 +120,10 @@ class TangramGame {
   tick(timestamp) {
     const dt = (timestamp - this.lastTime) / 1000.0; // convert from milliseconds to seconds 
     this.lastTime = timestamp;
+    
+    for (var piece of this.puzzlePieces) {
+      piece.tick(dt);
+    }
     
     this.timeBar.tick(dt);
     if (this.timeBar.timeLeft <= 0) {
