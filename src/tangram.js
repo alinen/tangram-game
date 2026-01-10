@@ -1,6 +1,6 @@
 class TangramGame {
 
-  constructor(duration) {
+  constructor(duration, resetPiece) {
     this.canvas = document.getElementById("overlay");
     this.ctx = this.canvas.getContext("2d");
     this.svg = null;
@@ -10,9 +10,8 @@ class TangramGame {
     this.finished = false;
 
     this.selectedPiece = null;
-    this.selectedOffsetX = -1;
-    this.selectedOffsetY = -1;
     this.puzzlePieces = [];
+    this.resetPiece = resetPiece;
 
     this.timeBar = null;
     this.duration = duration; // seconds
@@ -28,32 +27,28 @@ class TangramGame {
 
   mouseClick(e) {
     if (this.selectedPiece != null) { // drop it
-      this.soundEffect.play();
       var pos = this.selectedPiece.el.getBoundingClientRect();
       var svgpos = client2svg(pos.x, pos.y, this.svg, this.canvas);
-      this.selectedPiece.anchor(svgpos);
-      this.selectedPiece.el.removeAttribute("filter");
+      this.selectedPiece.drop(svgpos);
+      this.soundEffect.play();
       this.selectedPiece = null;
       return;
     }
 
     // pickup
     var clickPos = client2svg(e.clientX, e.clientY, this.svg, this.canvas);
-    var selected = null;
+    this.selectedPiece = null;
+
     // reverse order because later items display on top of earlier ones
     for (var i = this.puzzlePieces.length-1; i >= 0; i--) {
       const piece = this.puzzlePieces[i];
       if (piece.intersects(clickPos)) {
-        this.selectedOffsetX = piece.x - clickPos.x;
-        this.selectedOffsetY = piece.y - clickPos.y;
-        selected = piece;
+        this.selectedPiece = piece;
+        this.selectedPiece.pickup(clickPos)
         this.soundEffect.play();
-        piece.el.setAttribute("filter", "drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4))");
         break;
       }
     }
-
-    this.selectedPiece = selected; 
   }
 
   mouseMove(e) {
@@ -61,7 +56,7 @@ class TangramGame {
 
     // convert from client coordinates to SVG viewport coordinates
     var svgpos = client2svg(e.clientX, e.clientY, this.svg, this.canvas);
-    this.selectedPiece.translate(svgpos.x + this.selectedOffsetX, svgpos.y + this.selectedOffsetY); 
+    this.selectedPiece.drag(svgpos);
   }
 
   start() {
@@ -88,7 +83,7 @@ class TangramGame {
 
     for (const el of puzzleLayer.children) {
       var piece = new TangramPiece(el);
-      piece.translate(x, y);
+      piece.initPosition(x, y);
       this.puzzlePieces.push(piece);
       //console.log(`${el.id} ${x} ${y}`);
 

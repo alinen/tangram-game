@@ -38,10 +38,18 @@ class TangramPiece
     this.startx = this.x;
     this.starty = this.y;
     this.isHome = false;
+    this.selectedOffsetX = -1;
+    this.selectedOffsetY = -1;
     
     this.translate(this.x, this.y);
     //console.log("puzzle piece:" + this.el.id);
     //console.log(`puzzle bbox: ${this.bbox.x} ${this.bbox.y} ${this.bbox.width} ${this.bbox.height}`);
+  }
+
+  initPosition(x, y) {
+    this.resetx = x;
+    this.resety = y;
+    this.translate(x, y);
   }
 
   translate(x, y) { // in svg coordinates, e.g. (0,0, width, height)
@@ -61,6 +69,22 @@ class TangramPiece
     //var x = matrix.a * p.x + matrix.b * p.y + matrix.e;
     //var y = matrix.c * p.x + matrix.d * p.y + matrix.f;
     return {x: p.x + this.x, y: p.y + this.y};
+  }
+
+  drop(svgpos) {
+    var pos = this.el.getBoundingClientRect();
+    this.anchor(svgpos);
+    this.el.removeAttribute("filter");
+  }
+
+  drag(svgpos) {
+    this.translate(svgpos.x + this.selectedOffsetX, svgpos.y + this.selectedOffsetY); 
+  }
+
+  pickup(clickPos) {
+    this.el.setAttribute("filter", "drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4))");
+    this.selectedOffsetX = this.x - clickPos.x;
+    this.selectedOffsetY = this.y - clickPos.y;
   }
 
   checkTriangleIntersection(pos, p1, p2, p3) {
@@ -103,14 +127,29 @@ class TangramPiece
       this.isHome = true;
     }
     else {
-      //const cellsize = 1; // asn todo: is this needed?
-      //const half = cellsize * 0.5;
-      //var x = Math.floor(cellsize * ((svgpos.x + half)/ cellsize));
-      //var y = Math.floor(cellsize * ((svgpos.y + half)/ cellsize));
       var x = svgpos.x;
       var y = svgpos.y;
       this.translate(x, y);
       this.isHome = false;
+      this.dropx = x;
+      this.dropy = y;
     }
   }
+
+  // todo: add pickup/drop
+/*
+  animate(dt) {
+    if (!this.isHome)
+    {
+      this.elapsedTime += dt;
+      var svgpos = {x: this.x, y: this.y};
+      if (!this.closeTo(svgpos, this.resetx, this.resety)) {
+        var t = this.elapsedTime / TangramPiece.animateDuration; 
+        var xdt = this.dropx * (1 - t) + this.resetx * t;
+        var ydt = this.dropy * (1 - t) + this.resety * t;
+        this.translate(xdt, ydt);
+      }
+    }
+  }
+    */
 }
