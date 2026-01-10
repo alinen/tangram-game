@@ -19,7 +19,7 @@ class TangramGame {
 
     // Sound effects
     this.soundEffect = new Audio("puzzles/tap.mp3");
-    this.winSound = new Audio("puzzles/magic-spell.wav");
+    this.winSound = new Audio("puzzles/magic-spell-short.m4a");
     this.winSound.addEventListener("ended", (e) => {this.finished = true;});
     this.loseSound = new Audio("puzzles/sad-trombone.wav");
     this.loseSound.addEventListener("ended", (e) => {this.finished = true; });
