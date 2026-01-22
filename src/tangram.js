@@ -31,6 +31,7 @@ class TangramGame {
       var svgpos = client2svg(pos.x, pos.y, this.svg, this.canvas);
       this.selectedPiece.drop(svgpos);
       this.soundEffect.play();
+      //this.selectedPiece.isAtTarget is true when the piece was correctly placed
       this.selectedPiece = null;
       return;
     }
