@@ -3,6 +3,7 @@
   <head>
     <script src="jspsych/dist/jspsych.js"></script>
     <link rel="stylesheet" href="jspsych/dist/jspsych.css">
+    <script src="jspsych/dist/plugin-survey-likert.js"></script>
     <script src="src/tangramutils.js"></script>
     <script src="src/tangrampiece.js"></script>
     <script src="src/timebar.js"></script>
@@ -18,31 +19,74 @@
       }
     });
 
+    var child_rate = {
+      type: jsPsychSurveyLikert,
+      questions: [
+        {
+          prompt: "<p style='font-size:28px;'>Child, how frustrated do you feel?</p>",
+          labels: [
+        "<img src='img/very-sad.png' width='100'>",
+        "<img src='img/sad.png' width='100'>",
+        "<img src='img/neutral.png' width='100'>",
+        "<img src='img/happy.png' width='100'>",
+        "<img src='img/very-happy.png' width='100'>"
+        ]
+        }
+      ]
+    };
+
     var tutorial = {
       type: jsPsychTangram,
       svg: "puzzles/puzzle-arrow.svg",
-      duration: 30
+      duration: 60
     }
 
     var trial1 = {
       type: jsPsychTangram,
       svg: "puzzles/puzzle-monster.svg",
-      duration: 30
+      duration: 120
     }
 
     var trial2 = {
       type: jsPsychTangram,
       svg: "puzzles/puzzle-rocket.svg",
-      duration: 30
+      duration: 120
     }
 
     var trial3 = {
       type: jsPsychTangram,
       svg: 'puzzles/puzzle-square.svg',
-      duration: 30
+      duration: 120
     }
+
+    var parent_rate = {
+      type: jsPsychSurveyLikert,
+      questions: [
+        {
+          prompt: "<p style='font-size:28px;'>Parent, how do you feel right now?</p>",
+          labels: [
+            "<span style='font-size:20px;'>1<br>Very Negative</span>",
+            "<span style='font-size:20px;'>2<br>Negative</span>",
+            "<span style='font-size:20px;'>3<br>Neutral</span>",
+            "<span style='font-size:20px;'>4<br>Positive</span>",
+            "<span style='font-size:20px;'>5<br>Positive</span>"
+          ]
+        },
+        {
+          prompt: "<p style='font-size:28px;'>How confident are you in your ability to help your child regulate their negative emotions?</p>",
+          labels: [
+            "<span style='font-size:20px;'>1<br>Not At All</span>",
+            "<span style='font-size:20px;'>2<br>A Little Confident</span>",
+            "<span style='font-size:20px;'>3<br>Somewhat Confident</span>",
+            "<span style='font-size:20px;'>4<br>Confident</span>",
+            "<span style='font-size:20px;'>5<br>Very Confident</span>"
+          ]
+        }
+      ]
+    };
+
     
-    jsPsych.run([tutorial, trial1, trial2, trial3]);
+    jsPsych.run([child_rate, tutorial, trial1, trial2, child_rate, trial3, child_rate, parent_rate]);
 
   </script>
 </html>

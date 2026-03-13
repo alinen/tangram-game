@@ -5,7 +5,7 @@ class TangramGame {
     this.ctx = this.canvas.getContext("2d");
     this.svg = null;
 
-    this.gameOverMessage = "You win!";
+    this.gameOverMessage = "You did it!";
     this.gameOver = false;
     this.finished = false;
 
@@ -129,14 +129,14 @@ class TangramGame {
     this.timeBar.tick(dt);
     if (this.timeBar.timeLeft <= 0) {
       this.gameOver = true;
-      this.gameOverMessage = "You Lost :(";
+      this.gameOverMessage = "Time is up! :(";
       this.loseSound.play();
       this.draw();
     }
 
     if (this.puzzleSolved()) {
       this.gameOver = true;
-      this.gameOverMessage = "You won! :)";
+      this.gameOverMessage = "You did it!";
       this.winSound.play();
       this.draw();
     }
