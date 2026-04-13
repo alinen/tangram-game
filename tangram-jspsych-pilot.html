@@ -54,66 +54,150 @@
   `,
       require_movement: true,
       min: 1,
-      max: 5,
+      max: 10,
       step: 1,
-      slider_start: 3,
+      slider_start: 1,
       slider_width: 700,
       labels: [
-        "<img src='img/slider_not-frustrated_v4.png' width='150'>",
-        "<img src='img/slider_frustrated_v4.png' width='150'>",
-        "<img src='img/slider_very-frustrated_v4.png' width='150'>"
+        "<img src='puzzles/img/slider_not-frustrated.png' width='150'>",
+        "<img src='puzzles/img/slider_frustrated.png' width='150'>",
+        "<img src='puzzles/img/slider_very-frustrated.png' width='150'>"
         ],
       button_label: 'Next'
     };
 
-    var tutorial = {
+    var tutorial1 = {
+      type: jsPsychTangram,
+      svg: 'puzzles/puzzle-letter2.svg',
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60
+    }
+
+    var tutorial2 = {
       type: jsPsychTangram,
       svg: "puzzles/puzzle-arrow.svg",
       interactionSound: "puzzles/tap.mp3",
       successSound: "puzzles/win_applaud.mp3",
       failureSound: "puzzles/lose_buzz.mp3",
-      successMessage: "You did it!",
+      successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
       duration: 60
     }
 
-    var trial1 = {
+    var easy1 = {
       type: jsPsychTangram,
-      svg: "puzzles/OLD puzzles/puzzle-monster.svg",
-      overlayImage: "puzzles/no.png",
-      overlayImageLocation: "TOP_RIGHT",
-      overlayImageWidth: 50,
+      svg: "puzzles/puzzle-cat.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
       duration: 120
     }
 
-    var trial2 = {
+      var easy2 = {
       type: jsPsychTangram,
       svg: "puzzles/puzzle-rocket.svg",
       interactionSound: "puzzles/tap.mp3",
-      successMessage: "You did it!",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
       duration: 120
     }
 
-    var trial3 = {
+      var easy3 = {
       type: jsPsychTangram,
-      svg: 'puzzles/OLD puzzles/puzzle-square.svg',
+      svg: "puzzles/puzzle-bird.svg",
       interactionSound: "puzzles/tap.mp3",
       successSound: "puzzles/win_applaud.mp3",
       failureSound: "puzzles/lose_buzz.mp3",
-      successMessage: "You did it!",
+      successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
       duration: 120
     }
 
-    var trial4 = {
+      var easy4 = {
       type: jsPsychTangram,
-      svg: "puzzles/OLD puzzles/puzzle-child.svg",
+      svg: "puzzles/puzzle-music-note.svg",
       interactionSound: "puzzles/tap.mp3",
       successSound: "puzzles/win_applaud.mp3",
       failureSound: "puzzles/lose_buzz.mp3",
-      successMessage: "Nice!",
-      failureMessage: "Bad",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120
+    }
+
+      var easy5 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-runman.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120
+    }
+
+    var hard1 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-hexagon.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/img/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 30,
+      duration: 120
+    }
+
+    var hard2 = {
+      type: jsPsychTangram,
+      svg: 'puzzles/puzzle-incomplete-square.svg',
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120
+    }
+
+    var hard3 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-heart.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120
+    }
+
+    var hard4 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-pinwheel.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120
+    }
+
+    var hard5 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-shoe.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
       duration: 120
     }
 
@@ -143,8 +227,8 @@
       ],
       button_label: 'Next'  
     };
- 
-    jsPsych.run([child_rate, tutorial, trial1, trial2, child_rate, trial3, trial4, child_rate, parent_rate]);
+
+    jsPsych.run([hard1, child_rate, tutorial1, tutorial2, easy1, easy2, easy3, easy4, easy5, child_rate, hard1, hard2, hard3, hard4, hard5, child_rate, parent_rate]);
 
   </script>
 </html>

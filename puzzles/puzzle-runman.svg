@@ -7,8 +7,46 @@
    viewBox="0 0 600 300"
    version="1.1"
    id="svg5"
+   sodipodi:docname="puzzle-runman.svg"
+   inkscape:version="1.4.3 (0d15f750, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="true"
+     inkscape:zoom="6.1256219"
+     inkscape:cx="75.665786"
+     inkscape:cy="167.41157"
+     inkscape:window-width="1470"
+     inkscape:window-height="822"
+     inkscape:window-x="42"
+     inkscape:window-y="38"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="OutlineLayer">
+    <inkscape:grid
+       id="grid1"
+       units="px"
+       originx="0"
+       originy="0"
+       spacingx="1"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       enabled="true"
+       visible="true" />
+  </sodipodi:namedview>
   <defs
      id="defs2" />
   <g
@@ -34,9 +72,10 @@
        d="m 154.11988,129.34372 47.72541,46.0346 -0.68665,-47.0446 -47.7254,-46.034586 z"
        id="P" />
     <path
-       d="m 108.79327,227.08488 -34.028283,-34.1084 -0.0801,68.13862 z"
+       d="m 108.33872,228.18459 -34.028278,-34.1084 -0.0801,68.13862 z"
        style="opacity:1;fill:#ad54ff;stroke-width:1.36277"
-       id="path1" />
+       id="path1"
+       inkscape:label="T5" />
     <path
        style="opacity:1;fill:#66ff43;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
        d="m 79.822987,47.577513 34.069283,-34.069299 34.0693,34.069299 -34.0693,34.069291 z"
@@ -46,8 +85,8 @@
      id="OutlineLayer"
      transform="translate(0.36136717,0.79441293)">
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.36441;stroke-dasharray:none"
-       d="M 110.77933,12.240607 78.534806,46.543291 112.83749,80.159921 58.639249,78.787813 73.046376,96.625209 v 50.081921 l -45.965596,48.02376 48.023757,48.70981 -0.686053,17.83739 34.302676,-36.36084 -32.244515,-30.87242 91.931185,0.68606 48.02376,48.02375 -0.68605,-48.70981 -45.9656,-0.68605 -17.15134,-16.46529 1.37211,-48.70981 47.3377,48.02376 V 126.12552 L 154.68676,80.845974 114.89565,80.159921 147.82622,45.857237 Z"
+       d="m 113.73238,11.42629 -35.974607,35.50586 33.371097,32.927734 -54.892581,-0.908203 17.716797,19.154297 -0.449219,48.083982 -48.009765,47.09571 47.560546,48.93164 0.484375,20.38671 36.158207,-35.20703 -32.949222,-33.39453 91.695312,1.33594 48.69531,48.69531 v -50.9707 l -47.66992,0.45703 -16.86914,-17.31445 0.87305,-47.23242 49.15234,47.7871 -0.94531,-49.66601 -47.20899,-45.833985 -39.14648,-1.320313 33.46094,-33.460937 z m -0.006,1.921875 33.12891,33.13086 L 113.27535,80.059103 79.701133,46.93215 Z m -54.320309,67.021485 55.105469,0.910156 -0.002,-0.002 39.38867,1.328125 46.42773,45.076172 0.8711,45.78711 -49.0293,-47.66797 -0.94336,50.94922 16.77539,17.2168 -94.562499,-1.37696 34.324219,34.78711 -32.933594,32.06836 -0.423828,-17.79687 -46.984375,-48.3418 47.443359,-46.53906 0.460938,-49.191409 z M 215.77535,194.43996 v 46.30078 l -45.86133,-45.85937 z"
+       style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;enable-background:accumulate;stop-color:#000000;stop-opacity:1;stroke-width:0.5;stroke-dasharray:none"
        id="path2" />
   </g>
   <g

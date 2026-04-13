@@ -7,8 +7,8 @@
    viewBox="0 0 600 300"
    version="1.1"
    id="svg5"
-   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
-   sodipodi:docname="puzzle-Hexagon.svg"
+   inkscape:version="1.4.3 (0d15f750, 2025-12-25)"
+   sodipodi:docname="puzzle-hexagon.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -24,13 +24,13 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="true"
-     inkscape:zoom="1.0971691"
-     inkscape:cx="305.78695"
-     inkscape:cy="142.63982"
+     inkscape:zoom="3.1188317"
+     inkscape:cx="105.3279"
+     inkscape:cy="116.55005"
      inkscape:window-width="1240"
      inkscape:window-height="728"
      inkscape:window-x="0"
-     inkscape:window-y="33"
+     inkscape:window-y="38"
      inkscape:window-maximized="0"
      inkscape:current-layer="OutlineLayer">
     <inkscape:grid
@@ -130,7 +130,7 @@
      id="OutlineLayer"
      transform="translate(0.36136717,0.79441293)">
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.7423622;stroke-dasharray:none"
+       style="fill:none;stroke:#000000;stroke-width:1.88976378;stroke-dasharray:none"
        d="m 117.40249,83.434045 -67.850697,67.850705 68.240647,67.8507 h 68.63059 l 68.6306,-68.63059 -68.6306,-68.630601 z"
        id="path1" />
   </g>

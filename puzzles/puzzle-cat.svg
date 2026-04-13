@@ -8,7 +8,7 @@
    version="1.1"
    id="svg5"
    inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
-   sodipodi:docname="puzzle-rocket2.svg"
+   sodipodi:docname="puzzle-cat3.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -24,12 +24,12 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="true"
-     inkscape:zoom="1.1"
-     inkscape:cx="305.90909"
-     inkscape:cy="102.27273"
-     inkscape:window-width="1470"
+     inkscape:zoom="1.0472112"
+     inkscape:cx="220.58588"
+     inkscape:cy="244.93627"
+     inkscape:window-width="1229"
      inkscape:window-height="812"
-     inkscape:window-x="0"
+     inkscape:window-x="241"
      inkscape:window-y="38"
      inkscape:window-maximized="0"
      inkscape:current-layer="OutlineLayer">
@@ -84,43 +84,43 @@
      inkscape:label="PuzzleLayer">
     <path
        style="opacity:1;fill:#ff7676;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 60.196507,74.00698 v 96.36251 L 156.55902,74.00698 Z"
+       d="M 101.66827,113.31842 169.80684,181.457 H 33.529691 Z"
        id="T1"
        sodipodi:nodetypes="cccc"
        inkscape:label="Triangle1" />
     <path
        style="opacity:1;fill:#6265ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="M 156.09759,170.80195 V 74.43944 l -96.362507,96.36251 z"
+       d="m 195.16601,181.60878 -96.362463,-0.0768 96.285673,96.43928 z"
        id="T2"
        inkscape:label="Triangle2"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#ffcc4d;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 156.17019,74.363726 -96.362525,5e-6 48.181265,-48.181261 z"
+       d="m 5.2839399,113.13921 96.3632801,0.18602 -48.031287,48.08816 z"
        id="T3"
        inkscape:label="Triangle3"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#ff49e1;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
-       d="m 38.537844,218.25546 v 48.18124 l 48.18125,-48.18124 z"
+       d="m 229.23835,157.49683 -34.06293,-33.71171 -0.009,68.14276 z"
        id="T4"
        inkscape:label="Triangle4"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#66fff4;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 182.98708,219.27081 -48.18126,-48.18125 v 48.18125 l 48.18126,48.18126 z"
+       d="m 135.89572,79.384702 0.29041,-68.137965 -34.21418,33.923775 -0.29041,68.137958 z"
        id="P"
        sodipodi:nodetypes="ccccc"
        inkscape:label="Parallelegram" />
     <path
        style="opacity:1;fill:#ad54ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="M 86.5905,219.15317 87.143751,170.97511 38.41242,218.59993 Z"
+       d="m 229.26931,157.52429 34.0693,34.06931 v -68.13861 z"
        id="T5"
        inkscape:label="Triangle5"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#66ff43;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
-       d="m 86.371392,170.98841 h 48.181258 v 48.18126 H 86.371392 Z"
+       d="m 195.77323,191.37479 33.45856,-33.77064 34.69084,34.36796 -33.45856,33.77063 z"
        id="S"
        inkscape:label="Square" />
   </g>
@@ -131,7 +131,7 @@
      transform="translate(0.36136717,0.79441293)">
     <path
        style="fill:none;stroke:#000000;stroke-width:1.88976378;stroke-dasharray:none"
-       d="M 106.663,24.589573 58.639249,72.61333 v 98.10568 h 26.07004 l -47.337704,47.3377 v 48.70981 L 86.081396,218.05671 H 134.7912 l 47.33771,49.39587 1.3721,-48.70981 -47.3377,-47.33771 -1.37211,-1.37211 h 21.26767 V 73.299384 Z"
+       d="m 135.67642,10.387041 -34.10625,34.175152 -0.20671,67.936887 -96.4847523,-0.18427 48.3181633,48.24199 -20.033122,20.08391 65.253641,0.0254 96.30095,96.52303 0.19388,-86.39389 35.16203,34.14697 33.47407,-33.75919 -0.55885,-68.49923 -34.12743,34.03916 -34.05158,-33.73579 -0.0117,57.82031 -25.31536,-0.0915 -68.15858,-68.20897 34.22257,-33.907048 0.21859,-68.254407 z"
        id="path1" />
   </g>
   <g

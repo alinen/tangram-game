@@ -7,8 +7,8 @@
    viewBox="0 0 600 300"
    version="1.1"
    id="svg5"
-   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
-   sodipodi:docname="puzzle-rocket2.svg"
+   inkscape:version="1.4.3 (0d15f750, 2025-12-25)"
+   sodipodi:docname="puzzle-heart.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -24,12 +24,12 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="true"
-     inkscape:zoom="1.1"
-     inkscape:cx="305.90909"
-     inkscape:cy="102.27273"
-     inkscape:window-width="1470"
-     inkscape:window-height="812"
-     inkscape:window-x="0"
+     inkscape:zoom="2.3391543"
+     inkscape:cx="240.68527"
+     inkscape:cy="104.52496"
+     inkscape:window-width="1347"
+     inkscape:window-height="822"
+     inkscape:window-x="165"
      inkscape:window-y="38"
      inkscape:window-maximized="0"
      inkscape:current-layer="OutlineLayer">
@@ -84,43 +84,43 @@
      inkscape:label="PuzzleLayer">
     <path
        style="opacity:1;fill:#ff7676;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 60.196507,74.00698 v 96.36251 L 156.55902,74.00698 Z"
+       d="M 179.21998,178.09458 247.35856,109.956 H 111.0814 Z"
        id="T1"
        sodipodi:nodetypes="cccc"
        inkscape:label="Triangle1" />
     <path
        style="opacity:1;fill:#6265ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="M 156.09759,170.80195 V 74.43944 l -96.362507,96.36251 z"
+       d="m 110.92505,41.813733 -68.183739,68.093377 136.277149,0.0904 z"
        id="T2"
        inkscape:label="Triangle2"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#ffcc4d;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 156.17019,74.363726 -96.362525,5e-6 48.181265,-48.181261 z"
+       d="m 42.744845,109.91065 68.138615,68.13858 -2e-5,-68.1386 z"
        id="T3"
        inkscape:label="Triangle3"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#ff49e1;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
-       d="m 38.537844,218.25546 v 48.18124 l 48.18125,-48.18124 z"
+       d="m 145.00041,143.84824 -34.05711,-34.08146 -0.0244,68.13856 z"
        id="T4"
        inkscape:label="Triangle4"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#66fff4;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 182.98708,219.27081 -48.18126,-48.18125 v 48.18125 l 48.18126,48.18126 z"
+       d="m 179.07595,110.01462 68.13853,-0.0874 -34.11296,-34.025572 -68.13852,0.0874 z"
        id="P"
        sodipodi:nodetypes="ccccc"
        inkscape:label="Parallelegram" />
     <path
        style="opacity:1;fill:#ad54ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="M 86.5905,219.15317 87.143751,170.97511 38.41242,218.59993 Z"
+       d="m 179.06225,41.867934 -33.9991,34.139361 68.13845,-0.140263 z"
        id="T5"
        inkscape:label="Triangle5"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#66ff43;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
-       d="m 86.371392,170.98841 h 48.181258 v 48.18126 H 86.371392 Z"
+       d="m 110.95883,177.99905 34.06929,-34.0693 34.0693,34.0693 -34.0693,34.06929 z"
        id="S"
        inkscape:label="Square" />
   </g>
@@ -130,9 +130,9 @@
      id="OutlineLayer"
      transform="translate(0.36136717,0.79441293)">
     <path
+       d="M 110.40621,40.906759 42.304648,109.07668 144.66012,211.27981 246.98434,109.17434 178.56637,40.996603 144.64254,75.139181 Z"
        style="fill:none;stroke:#000000;stroke-width:1.88976378;stroke-dasharray:none"
-       d="M 106.663,24.589573 58.639249,72.61333 v 98.10568 h 26.07004 l -47.337704,47.3377 v 48.70981 L 86.081396,218.05671 H 134.7912 l 47.33771,49.39587 1.3721,-48.70981 -47.3377,-47.33771 -1.37211,-1.37211 h 21.26767 V 73.299384 Z"
-       id="path1" />
+       id="path2" />
   </g>
   <g
      inkscape:groupmode="layer"
