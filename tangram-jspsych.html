@@ -7,11 +7,7 @@
     <script src="jspsych/dist/plugin-html-slider-response.js"></script>
     <script src="jspsych/dist/plugin-video-keyboard-response.js"></script>
     <script src="jspsych/dist/plugin-video-button-response.js"></script>
-    <script src="src/tangramutils.js"></script>
-    <script src="src/tangrampiece.js"></script>
-    <script src="src/timebar.js"></script>
-    <script src="src/tangram.js"></script>
-    <script src="src/plugin-tangram.js"></script>
+    <script src="jspsych/dist/plugin-tangram-game.js"></script>
   </head>
   <body></body>
   <script>
@@ -73,30 +69,51 @@
     var tutorial = {
       type: jsPsychTangram,
       svg: "puzzles/puzzle-arrow.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it!",
+      failureMessage: "Time is up! :(",
       duration: 60
     }
 
     var trial1 = {
       type: jsPsychTangram,
       svg: "puzzles/puzzle-monster.svg",
+      overlayImage: "puzzles/no.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 50,
       duration: 120
     }
 
     var trial2 = {
       type: jsPsychTangram,
       svg: "puzzles/puzzle-rocket.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successMessage: "You did it!",
+      failureMessage: "Time is up! :(",
       duration: 120
     }
 
     var trial3 = {
       type: jsPsychTangram,
       svg: 'puzzles/puzzle-square.svg',
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it!",
+      failureMessage: "Time is up! :(",
       duration: 120
     }
 
     var trial4 = {
       type: jsPsychTangram,
       svg: "puzzles/puzzle-child.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "Nice!",
+      failureMessage: "Bad",
       duration: 120
     }
 

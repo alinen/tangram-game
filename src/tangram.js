@@ -1,37 +1,58 @@
 class TangramGame {
-
-  constructor(duration, resetPiece) {
+  constructor() {
     this.canvas = document.getElementById("overlay");
     this.ctx = this.canvas.getContext("2d");
     this.svg = null;
 
-    this.gameOverMessage = "You did it!";
+    this.duration = null;
+    this.successMessage = "You won!";
+    this.failureMessage = "You lost!";
+    this.gameOverMessage = "";
     this.gameOver = false;
     this.finished = false;
+    this.initialized = false;
+
+    // performance logging
+    this.clickCount = 0;
+    this.timeToFirstClick = -1;
+    this.missDropCount = 0;
+    this.percentComplete = 0;
+    this.piecesSolved = "";
 
     this.selectedPiece = null;
     this.puzzlePieces = [];
-    this.resetPiece = resetPiece;
 
     this.timeBar = null;
-    this.duration = duration; // seconds
     this.lastTime = -1;
 
-    // Sound effects
-    this.soundEffect = new Audio("puzzles/tap.mp3");
-    this.winSound = new Audio("puzzles/win_applaud.mp3");
-    this.winSound.addEventListener("ended", (e) => {this.finished = true;});
-    this.loseSound = new Audio("puzzles/lose_buzz.mp3");
-    this.loseSound.addEventListener("ended", (e) => {this.finished = true; });
+    this.interactionSound = "";
+    this.successSound = "";
+    this.failureSound = "";
+    this.endGameDelay = 3.0;
+
+    this.overlayImage = "";
+    this.overlayImagePosition = "";
+    this.overlayImageWidth = 30;
+    this.overlayIcon = null;
+
+    // Initialize canvas for drawing text
+    window.addEventListener("resize", (e) => {
+      this.resize(e);
+    });
+    this.resize();
   }
 
   mouseClick(e) {
-    if (this.selectedPiece != null) { // drop it
+    if (this.timeToFirstClick === -1) this.timeToFirstClick = this.timeBar.elapsedTime();
+    this.clickCount++;
+
+    if (this.selectedPiece != null) {
+      // drop it
       var pos = this.selectedPiece.el.getBoundingClientRect();
       var svgpos = client2svg(pos.x, pos.y, this.svg, this.canvas);
       this.selectedPiece.drop(svgpos);
-      this.soundEffect.play();
-      //this.selectedPiece.isAtTarget is true when the piece was correctly placed
+      if (!this.selectedPiece.isAtTarget) this.missDropCount++;
+      if (this.soundEffect !== null) this.soundEffect.play();
       this.selectedPiece = null;
       return;
     }
@@ -41,12 +62,12 @@ class TangramGame {
     this.selectedPiece = null;
 
     // reverse order because later items display on top of earlier ones
-    for (var i = this.puzzlePieces.length-1; i >= 0; i--) {
+    for (var i = this.puzzlePieces.length - 1; i >= 0; i--) {
       const piece = this.puzzlePieces[i];
       if (piece.intersects(clickPos)) {
         this.selectedPiece = piece;
-        this.selectedPiece.pickup(clickPos)
-        this.soundEffect.play();
+        this.selectedPiece.pickup(clickPos);
+        if (this.soundEffect !== null) this.soundEffect.play();
         break;
       }
     }
@@ -62,22 +83,35 @@ class TangramGame {
 
   start() {
     const obj = document.getElementById("svgObject");
-    const svgDoc = obj.contentDocument;
+    var svgDoc = obj.contentDocument;
     if (!svgDoc) {
-      console.error("Error: No SVG document found.");
-      return;
+      console.warn("Error: No SVG document loaded. Reverting to default puzzle.");
+      obj.removeAttribute("id");
+      obj.removeAttribute("data");
+      obj.removeAttribute("preserveAspectRatio");
+      obj.innerHTML = jsPsychTangramDefaultPuzzleSVG;
+      svgDoc = document;
     }
 
     this.svg = svgDoc.querySelector("svg");
-    this.svg.addEventListener("mousemove", e => { this.mouseMove(e); });
-    this.svg.addEventListener("click", e => { this.mouseClick(e); });
+    if (this.svg === null) {
+      console.error("Cannot load SVG.");
+      return;
+    }
 
-    var idx = 0; 
+    this.svg.addEventListener("mousemove", (e) => {
+      this.mouseMove(e);
+    });
+    this.svg.addEventListener("click", (e) => {
+      this.mouseClick(e);
+    });
+
+    var idx = 0;
     var x = 275;
     var y = 25;
     var maxsize = 0;
     const puzzleLayer = svgDoc.getElementById("PuzzleLayer");
-    
+
     // assert that puzzle layer does not have a transform on it
     const transform = puzzleLayer.getAttribute("transform");
     if (transform != undefined) console.error("ERROR: Transform on puzzle layer is not supported");
@@ -97,18 +131,47 @@ class TangramGame {
         x = 275;
       }
     }
-    
+    // After pieces have their starting positions, we are initialized
+    this.initialized = true;
+
+    // Sound effects
+    this.soundEffect = null;
+    if (this.interactionSound !== "") {
+      this.soundEffect = new Audio(this.interactionSound);
+    }
+
+    this.winSound = null;
+    if (this.successSound !== "") {
+      this.winSound = new Audio(this.successSound);
+      this.winSound.addEventListener("ended", (e) => {
+        this.finished = true;
+      });
+    }
+
+    this.loseSound = null;
+    if (this.failureSound !== "") {
+      this.loseSound = new Audio(this.failureSound);
+      this.loseSound.addEventListener("ended", (e) => {
+        this.finished = true;
+      });
+    }
+
+    // icon
+    this.overlayIcon = null;
+    if (this.overlayImage !== "") {
+      this.overlayIcon = new Image();
+      this.overlayIcon.src = this.overlayImage;
+    }
+
     // initialize time bar
     const barElement = svgDoc.getElementById("TimebarInterior");
     this.timeBar = new TimeBar(this.svg, barElement, this.duration);
-    
+
     // start puzzle
     this.lastTime = document.timeline.currentTime;
-    window.requestAnimationFrame((t) => { this.tick(t); });
-
-    // Initialize canvas for drawing text
-    window.addEventListener("resize", (e) => { this.resize(e); } );
-    this.resize();
+    window.requestAnimationFrame((t) => {
+      this.tick(t);
+    });
   }
 
   puzzleSolved() {
@@ -118,42 +181,91 @@ class TangramGame {
     return true;
   }
 
+  computePuzzleCompletionStats() {
+    var placedPieceCount = 0;
+    var placedPieceNames = "";
+    var sep = "";
+    for (const piece of this.puzzlePieces) {
+      if (piece.isAtTarget) {
+        placedPieceCount++;
+        placedPieceNames += sep + piece.el.id;
+        sep = ",";
+      }
+    }
+    this.percentComplete = placedPieceCount / this.puzzlePieces.length;
+    this.piecesSolved = placedPieceNames;
+  }
+
   tick(timestamp) {
-    const dt = (timestamp - this.lastTime) / 1000.0; // convert from milliseconds to seconds 
+    const dt = (timestamp - this.lastTime) / 1000.0; // convert from milliseconds to seconds
     this.lastTime = timestamp;
-    
+
     for (var piece of this.puzzlePieces) {
       piece.tick(dt);
     }
-    
+
     this.timeBar.tick(dt);
     if (this.timeBar.timeLeft <= 0) {
       this.gameOver = true;
-      this.gameOverMessage = "Time is up! :(";
-      this.loseSound.play();
-      this.draw();
+      this.gameOverMessage = this.failureMessage;
+      if (this.loseSound !== null) this.loseSound.play();
+      else
+        setTimeout(() => {
+          this.finished = true;
+        }, this.endGameDelay * 1000);
     }
 
     if (this.puzzleSolved()) {
       this.gameOver = true;
-      this.gameOverMessage = "You did it!";
-      this.winSound.play();
-      this.draw();
+      this.gameOverMessage = this.successMessage;
+      if (this.winSound !== null) this.winSound.play();
+      else
+        setTimeout(() => {
+          this.finished = true;
+        }, this.endGameDelay * 1000);
     }
+    this.draw();
 
-    if (!this.gameOver) window.requestAnimationFrame((t) => {this.tick(t); });
+    if (!this.gameOver) {
+      window.requestAnimationFrame((t) => {
+        this.tick(t);
+      });
+    }
   }
 
   resize() {
-    this.canvas.width  = this.canvas.clientWidth;
+    this.canvas.width = this.canvas.clientWidth;
     this.canvas.height = this.canvas.clientHeight;
     this.draw();
   }
 
   draw() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    if (this.gameOver)
-    {
+    if (!this.initialized) {
+      this.ctx.fillStyle = "#ffffff";
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    } else {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    if (this.overlayIcon) {
+      var imgw = this.overlayIcon.width;
+      var imgh = this.overlayIcon.height;
+      var aspect = imgh / imgw;
+      var x = 5;
+      var y = 5;
+      if (this.overlayImagePosition === "TOP_RIGHT") {
+        x = this.canvas.width - imgw - 5;
+      }
+      this.ctx.drawImage(
+        this.overlayIcon,
+        x,
+        y,
+        this.overlayImageWidth,
+        this.overlayImageWidth * aspect
+      );
+    }
+
+    if (this.gameOver) {
       this.ctx.font = "64px Arial";
       this.ctx.textAlign = "center";
       this.ctx.lineWidth = 2;

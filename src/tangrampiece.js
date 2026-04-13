@@ -1,8 +1,6 @@
-
-class TangramPiece
-{
+class TangramPiece {
   static threshold = 9; // pixels in svg space
-  static duration = 1; // seconds for reset animation 
+  static duration = 1; // seconds for reset animation
   static NONE = 0;
   static DRAG = 1;
   static ANIMATE = 2;
@@ -10,17 +8,17 @@ class TangramPiece
 
   constructor(svgElement) {
     this.el = svgElement;
-    
-    // Assert that there are no transforms on this puzzle piece 
+
+    // Assert that there are no transforms on this puzzle piece
     // Matrix transformations are not currently supported
     const transformList = this.el.transform.baseVal;
     if (transformList.numberOfItems != 0) {
       console.error("ERROR: Unsuppported transform type in puzzle piece.");
     }
-  
+
     // Initialize polygon points for intersection tests
     // Assume all paths are closed
-    this.points = svgComputePath(this.el); 
+    this.points = svgComputePath(this.el);
 
     //console.log("===== ", this.el.id, "=========");
     var newPath = "M ";
@@ -29,7 +27,7 @@ class TangramPiece
     for (var i = 0; i < this.points.length; i++) {
       this.points[i].x -= this.x;
       this.points[i].y -= this.y;
-      newPath += `${this.points[i].x} ${this.points[i].y} `
+      newPath += `${this.points[i].x} ${this.points[i].y} `;
       //console.log(this.points[i].x, this.points[i].y);
     }
     newPath += "Z";
@@ -46,7 +44,7 @@ class TangramPiece
     this.selectedOffsetX = -1;
     this.selectedOffsetY = -1;
     this.state = TangramPiece.NONE; // not moving
-    
+
     this.translate(this.x, this.y);
     //console.log("puzzle piece:" + this.el.id);
     //console.log(`puzzle bbox: ${this.bbox.x} ${this.bbox.y} ${this.bbox.width} ${this.bbox.height}`);
@@ -58,15 +56,16 @@ class TangramPiece
     this.translate(x, y);
   }
 
-  translate(x, y) { // in svg coordinates, e.g. (0,0, width, height)
+  translate(x, y) {
+    // in svg coordinates, e.g. (0,0, width, height)
     this.x = x;
     this.y = y;
-    var attrval =  `translate(${x} ${y})`;
+    var attrval = `translate(${x} ${y})`;
     this.el.setAttribute("transform", attrval);
   }
 
   closeTo(pos, x, y) {
-    var dSqr = (pos.x - x)*(pos.x - x) + (pos.y - y)*(pos.y - y);
+    var dSqr = (pos.x - x) * (pos.x - x) + (pos.y - y) * (pos.y - y);
     return dSqr < TangramPiece.threshold * TangramPiece.threshold;
   }
 
@@ -74,23 +73,21 @@ class TangramPiece
     // NOTE: matrix is not needed if we ensure no rotations/skew in pieces
     //var x = matrix.a * p.x + matrix.b * p.y + matrix.e;
     //var y = matrix.c * p.x + matrix.d * p.y + matrix.f;
-    return {x: p.x + this.x, y: p.y + this.y};
+    return { x: p.x + this.x, y: p.y + this.y };
   }
-    
+
   drop(svgpos) {
     if (this.state != TangramPiece.DRAG) return;
-    
+
     if (this.closeTo(svgpos, this.targetx, this.targety)) {
       this.translate(this.targetx, this.targety);
       this.el.removeAttribute("filter");
       this.isAtTarget = true;
-    }
-    else {
+    } else {
       this.isAtTarget = false;
       if (TangramPiece.ResetPieces) {
         this.animate(svgpos);
-      }
-      else {
+      } else {
         this.translate(svgpos.x, svgpos.y);
         this.el.removeAttribute("filter");
       }
@@ -99,7 +96,7 @@ class TangramPiece
 
   drag(svgpos) {
     if (this.state != TangramPiece.DRAG) return;
-    this.translate(svgpos.x + this.selectedOffsetX, svgpos.y + this.selectedOffsetY); 
+    this.translate(svgpos.x + this.selectedOffsetX, svgpos.y + this.selectedOffsetY);
   }
 
   pickup(clickPos) {
@@ -125,21 +122,22 @@ class TangramPiece
 
     var lam3 = 1 - lam1 - lam2;
     if (lam3 < 0 || lam3 > 1) return false;
-    
+
     return true;
   }
 
-  intersects(pos) { // in client coordinates
+  intersects(pos) {
+    // in client coordinates
 
     //NOTE: const numTris = numVerts - 2;
     const numVerts = this.points.length;
 
     var p1 = this.transformPoint(this.points[0]);
-    for (var i = 1; i < numVerts-1; i++) {
-      var p2 = this.transformPoint(this.points[i+0]);
-      var p3 = this.transformPoint(this.points[i+1]);
+    for (var i = 1; i < numVerts - 1; i++) {
+      var p2 = this.transformPoint(this.points[i + 0]);
+      var p3 = this.transformPoint(this.points[i + 1]);
       if (this.checkTriangleIntersection(pos, p1, p2, p3)) return true;
-    }    
+    }
 
     return false;
   }
@@ -149,13 +147,12 @@ class TangramPiece
 
     this.elapsedTime += dt;
     if (this.elapsedTime < TangramPiece.duration) {
-      var u = this.elapsedTime / TangramPiece.duration; 
+      var u = this.elapsedTime / TangramPiece.duration;
       var t = easeInOutSine(u);
       var xdt = this.dropx * (1 - t) + this.startx * t;
       var ydt = this.dropy * (1 - t) + this.starty * t;
       this.translate(xdt, ydt);
-    }
-    else {
+    } else {
       this.translate(this.startx, this.starty);
       this.el.removeAttribute("filter");
       this.state = TangramPiece.NONE;
