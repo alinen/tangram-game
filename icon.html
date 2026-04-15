@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="https://unpkg.com/jspsych@8"></script>
-    <link rel="stylesheet" href="https://unpkg.com/jspsych/css/jspsych.css" />
-    <script src="../dist/index.browser.min.js"></script>
+        <script src="jspsych/dist/jspsych.js"></script>
+    <link rel="stylesheet" href="jspsych/dist/jspsych.css">
+    <script src="jspsych/dist/plugin-tangram-game.js"></script>
   </head>
   <body></body>
   <script>
@@ -16,15 +16,16 @@
 
      var trial1 = {
       type: jsPsychTangram,
-      svg: "puzzles/puzzle-monster.svg",
+      svg: "puzzles/puzzle-heart.svg",
       successMessage: "You did it!",
       failureMessage: "Maybe next time.",
       interactionSound: "puzzles/tap.mp3",
       successSound: "puzzles/magic-spell-short.m4a",
       failureSound: "puzzles/sad-trombone.wav",
-      overlayImage: "puzzles/no.png",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
       overlayImagePosition: "TOP_RIGHT",
-      duration: 10
+      overlayImageWidth: 50,
+      duration: 9999
     }
 
     jsPsych.run([trial1]);

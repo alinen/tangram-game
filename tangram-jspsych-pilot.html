@@ -146,6 +146,11 @@
     var hard1 = {
       type: jsPsychTangram,
       svg: "puzzles/puzzle-hexagon.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
       overlayImage: "puzzles/ParentalCue_nobg.png",
       overlayImageLocation: "TOP_RIGHT",
       overlayImageWidth: 50,
@@ -223,7 +228,7 @@
       button_label: 'Next'  
     };
 
-    jsPsych.run([hard1, child_rate, tutorial1, tutorial2, easy1, easy2, easy3, easy4, easy5, child_rate, hard1, hard2, hard3, hard5, child_rate, parent_rate]);
+    jsPsych.run([child_rate, tutorial1, tutorial2, easy1, easy2, child_rate, hard1, hard2, child_rate, parent_rate]);
 
   </script>
 </html>
