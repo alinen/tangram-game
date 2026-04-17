@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="jspsych/dist/jspsych.js"></script>
+    <link rel="stylesheet" href="jspsych/dist/jspsych.css">
+    <script src="jspsych/dist/plugin-survey-likert.js"></script>
+    <script src="jspsych/dist/plugin-html-slider-response.js"></script>
+    <script src="jspsych/dist/plugin-video-keyboard-response.js"></script>
+    <script src="jspsych/dist/plugin-video-button-response.js"></script>
+    <script src="jspsych/dist/plugin-tangram-game.js"></script>
+  </head>
+  <body></body>
+
+  <script>
+    var jsPsych = initJsPsych({
+      on_finish: () => {
+        jsPsych.data.displayData();
+      }
+    });
+
+    // ---------------------------
+    // Child affect rating (after each puzzle)
+    // ---------------------------
+    var child_rate = {
+      type: jsPsychHtmlSliderResponse,
+      stimulus: `
+        <style>
+          #jspsych-content {
+            margin-top: 180px;
+          }
+
+          .jspsych-content-wrapper {
+            vertical-align: middle;
+          }
+
+          #jspsych-html-slider-response-wrapper {
+            width: 750px;
+            margin: 40px auto;
+          }
+
+          .jspsych-slider {
+            height: 20px;
+          }
+
+          .jspsych-html-slider-response-labels {
+            margin-top: 20px;
+            margin-bottom: 40px;
+          }
+
+          #jspsych-html-slider-response-next {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+          }
+        </style>
+
+        <p style="font-size:32px;">Child, how frustrated do you feel right now?</p>
+      `,
+      require_movement: true,
+      min: 1,
+      max: 10,
+      step: 1,
+      slider_start: 1,
+      slider_width: 700,
+      labels: [
+        "<img src='puzzles/img/slider_not-frustrated.png' width='150'>",
+        "<img src='puzzles/img/slider_frustrated.png' width='150'>",
+        "<img src='puzzles/img/slider_very-frustrated.png' width='150'>"
+      ],
+      button_label: "Next",
+      data: {
+        trial_name: "child_affect_rating"
+      }
+    };
+
+    // ---------------------------
+    // End-of-game child feedback
+    // ---------------------------
+    var child_feedback = {
+      type: jsPsychSurveyLikert,
+      questions: [
+        {
+          prompt: "<p style='font-size:28px;'>Child, how much did you enjoy the puzzle game?</p>",
+          labels: [
+            "1<br>Not at all",
+            "2",
+            "3",
+            "4",
+            "5<br>A lot"
+          ],
+          required: true
+        },
+        {
+          prompt: "<p style='font-size:28px;'>Child, how hard were the puzzles overall?</p>",
+          labels: [
+            "1<br>Very easy",
+            "2",
+            "3",
+            "4",
+            "5<br>Very hard"
+          ],
+          required: true
+        }
+      ],
+      button_label: "Next",
+      data: {
+        trial_name: "child_end_feedback"
+      }
+    };
+
+    // ---------------------------
+    // End-of-game parent feedback
+    // ---------------------------
+    var parent_feedback = {
+      type: jsPsychSurveyLikert,
+      questions: [
+        {
+          prompt: "<p style='font-size:28px;'>Parent, how do you feel right now?</p>",
+          labels: [
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>1<div style='margin-top:10px;'>Very Negative</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>2<div style='margin-top:10px;'>Negative</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>3<div style='margin-top:10px;'>Neutral</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>4<div style='margin-top:10px;'>Positive</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>5<div style='margin-top:10px;'>Very Positive</div></span>"
+          ],
+          required: true
+        },
+        {
+          prompt: "<p style='font-size:28px;'>How confident are you in your ability to help your child regulate their negative emotions?</p>",
+          labels: [
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>1<div style='margin-top:10px;'>Not At All</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>2<div style='margin-top:10px;'>A Little Confident</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>3<div style='margin-top:10px;'>Somewhat Confident</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>4<div style='margin-top:10px;'>Confident</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>5<div style='margin-top:10px;'>Very Confident</div></span>"
+          ],
+          required: true
+        }
+      ],
+      button_label: "Next",
+      data: {
+        trial_name: "parent_end_feedback"
+      }
+    };
+
+    // ---------------------------
+    // Tutorials
+    // ---------------------------
+    var tutorial1 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-letter.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60,
+      data: {
+        trial_name: "tutorial1",
+        difficulty: "tutorial",
+        puzzle_id: "puzzle-letter"
+      }
+    };
+
+    var tutorial2 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-arrow.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60,
+      data: {
+        trial_name: "tutorial2",
+        difficulty: "tutorial",
+        puzzle_id: "puzzle-arrow"
+      }
+    };
+
+    // ---------------------------
+    // Easy puzzle pool (5 total)
+    // ---------------------------
+    var easy_puzzles = [
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-cat.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: {
+          trial_name: "easy_puzzle",
+          difficulty: "easy",
+          puzzle_id: "puzzle-cat"
+        }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-rocket.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: {
+          trial_name: "easy_puzzle",
+          difficulty: "easy",
+          puzzle_id: "puzzle-rocket"
+        }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-bird.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: {
+          trial_name: "easy_puzzle",
+          difficulty: "easy",
+          puzzle_id: "puzzle-bird"
+        }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-music-note.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: {
+          trial_name: "easy_puzzle",
+          difficulty: "easy",
+          puzzle_id: "puzzle-music-note"
+        }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-runman.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: {
+          trial_name: "easy_puzzle",
+          difficulty: "easy",
+          puzzle_id: "puzzle-runman"
+        }
+      }
+    ];
+
+    // ---------------------------
+    // Hard puzzle pool (5 total)
+    // ---------------------------
+    var hard_puzzles = [
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-hexagon.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        overlayImage: "puzzles/ParentalCue_nobg.png",
+        overlayImageLocation: "TOP_RIGHT",
+        overlayImageWidth: 50,
+        duration: 120,
+        data: {
+          trial_name: "hard_puzzle",
+          difficulty: "hard",
+          puzzle_id: "puzzle-hexagon"
+        }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-incomplete-square.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: {
+          trial_name: "hard_puzzle",
+          difficulty: "hard",
+          puzzle_id: "puzzle-incomplete-square"
+        }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-heart.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: {
+          trial_name: "hard_puzzle",
+          difficulty: "hard",
+          puzzle_id: "puzzle-heart"
+        }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-pinwheel.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: {
+          trial_name: "hard_puzzle",
+          difficulty: "hard",
+          puzzle_id: "puzzle-pinwheel"
+        }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-shoe.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: {
+          trial_name: "hard_puzzle",
+          difficulty: "hard",
+          puzzle_id: "puzzle-shoe"
+        }
+      }
+    ];
+
+    // ---------------------------
+    // Randomization logic
+    // ---------------------------
+
+    // randomly sample 2 from each difficulty pool, without replacement
+    var selected_easy = jsPsych.randomization.sampleWithoutReplacement(easy_puzzles, 2);
+    var selected_hard = jsPsych.randomization.sampleWithoutReplacement(hard_puzzles, 2);
+
+    // counterbalance block order: EEHH or HHEE
+    var block_order = jsPsych.randomization.sampleWithoutReplacement(["EEHH", "HHEE"], 1)[0];
+
+    // save condition info in the dataset
+    jsPsych.data.addProperties({
+      block_order: block_order
+    });
+
+    // build main puzzle timeline
+    var main_puzzle_timeline = [];
+
+    if (block_order === "EEHH") {
+      main_puzzle_timeline.push(selected_easy[0]);
+      main_puzzle_timeline.push(child_rate);
+
+      main_puzzle_timeline.push(selected_easy[1]);
+      main_puzzle_timeline.push(child_rate);
+
+      main_puzzle_timeline.push(selected_hard[0]);
+      main_puzzle_timeline.push(child_rate);
+
+      main_puzzle_timeline.push(selected_hard[1]);
+      main_puzzle_timeline.push(child_rate);
+    } else {
+      main_puzzle_timeline.push(selected_hard[0]);
+      main_puzzle_timeline.push(child_rate);
+
+      main_puzzle_timeline.push(selected_hard[1]);
+      main_puzzle_timeline.push(child_rate);
+
+      main_puzzle_timeline.push(selected_easy[0]);
+      main_puzzle_timeline.push(child_rate);
+
+      main_puzzle_timeline.push(selected_easy[1]);
+      main_puzzle_timeline.push(child_rate);
+    }
+
+    // ---------------------------
+    // Final full timeline
+    // ---------------------------
+    var full_timeline = [
+      tutorial1,
+      tutorial2
+    ].concat(main_puzzle_timeline).concat([
+      child_feedback,
+      parent_feedback
+    ]);
+
+    jsPsych.run(full_timeline);
+  </script>
+</html>
