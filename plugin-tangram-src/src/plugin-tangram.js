@@ -179,7 +179,6 @@ var jsPsychTangram = (function (jspsych) {
         document.querySelector("#tangram-styles").remove();
         document.querySelector("#container").remove();
 
-        this.tangram.computePuzzleCompletionStats();
         var trial_data = {
           solve_duration: this.tangram.timeBar.elapsedTime(),
           puzzle_solved: this.tangram.percentComplete,

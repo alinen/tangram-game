@@ -559,16 +559,19 @@ class TangramGame {
           this.finished = true;
         }, this.endGameDelay * 1000);
       }
+      this.computePuzzleCompletionStats();
     }
 
     if (this.puzzleSolved()) {
       this.gameOver = true;
       this.gameOverMessage = this.successMessage;
       if (this.winSound !== null) this.winSound.play();
-      else
+      else {
         setTimeout(() => {
           this.finished = true;
         }, this.endGameDelay * 1000);
+      }
+      this.computePuzzleCompletionStats();
     }
     this.draw();
 
@@ -599,7 +602,6 @@ class TangramGame {
       var aspect = imgh / imgw;
       var x = 5;
       var y = 5;
-      console.log(this.overlayImage, imgw, imgh, aspect);
       if (this.overlayImagePosition === "TOP_RIGHT") {
         x = this.canvas.width - this.overlayImageWidth - 5;
       }
@@ -616,7 +618,9 @@ class TangramGame {
       this.ctx.font = "64px Arial";
       this.ctx.textAlign = "center";
       this.ctx.lineWidth = 2;
-      if (Math.abs(this.percentComplete - 1.0) < 0.001) {
+      var completion = Math.abs(this.percentComplete - 1.0); 
+      console.log(completion, this.percentComplete);
+      if (completion < 0.001) { 
         this.ctx.fillStyle = "#00AA00";
         this.ctx.strokeStyle = "black";
       }
@@ -813,7 +817,6 @@ var jsPsychTangram = (function (jspsych) {
         document.querySelector("#tangram-styles").remove();
         document.querySelector("#container").remove();
 
-        this.tangram.computePuzzleCompletionStats();
         var trial_data = {
           solve_duration: this.tangram.timeBar.elapsedTime(),
           puzzle_solved: this.tangram.percentComplete,
