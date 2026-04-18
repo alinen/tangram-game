@@ -43,6 +43,7 @@ class TangramGame {
   }
 
   mouseClick(e) {
+    if (this.gameOver) return;
     if (this.timeToFirstClick === -1) this.timeToFirstClick = this.timeBar.elapsedTime();
     this.clickCount++;
 
@@ -206,13 +207,22 @@ class TangramGame {
 
     this.timeBar.tick(dt);
     if (this.timeBar.timeLeft <= 0) {
+
+      if (this.selectedPiece) { // drop the piece
+        var pos = this.selectedPiece.el.getBoundingClientRect();
+        var svgpos = client2svg(pos.x, pos.y, this.svg, this.canvas);
+        this.selectedPiece.drop(svgpos);
+        this.selectedPiece = null;
+      }
+
       this.gameOver = true;
       this.gameOverMessage = this.failureMessage;
       if (this.loseSound !== null) this.loseSound.play();
-      else
+      else {
         setTimeout(() => {
           this.finished = true;
         }, this.endGameDelay * 1000);
+      }
     }
 
     if (this.puzzleSolved()) {
@@ -270,7 +280,7 @@ class TangramGame {
       this.ctx.font = "64px Arial";
       this.ctx.textAlign = "center";
       this.ctx.lineWidth = 2;
-      if ((this.percentComplete - 1.0) < 0.001) {
+      if (Math.abs(this.percentComplete - 1.0) < 0.001) {
         this.ctx.fillStyle = "#00AA00";
         this.ctx.strokeStyle = "black";
       }
