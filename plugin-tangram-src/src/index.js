@@ -33,11 +33,19 @@ function safeset(inputVal, defaultVal) {
 }
 
 function client2svg(px, py, svg, canvas) {
-  // Assumes width > height with aspect ratio and midpoint alignment
+  // Assumes SVG width > height with aspect ratio and midpoint alignment
   var vb = svg.viewBox.baseVal;
-  var scaledHeight = (vb.height / vb.width) * canvas.width;
-  var x = (px / canvas.width) * vb.width;
-  var y = ((py - (canvas.height - scaledHeight) / 2) / scaledHeight) * vb.height;
+  if (canvas.height < vb.height) { // scale the width
+    var scaledWidth = (vb.width / vb.height) * canvas.height;
+    var y = (py / canvas.height) * vb.height;
+    var x = ((px - (canvas.width - scaledWidth) / 2) / scaledWidth) * vb.width;
+  }
+  else { // scale the height
+    var scaledHeight = (vb.height / vb.width) * canvas.width;
+    var x = (px / canvas.width) * vb.width;
+    var y = ((py - (canvas.height - scaledHeight) / 2) / scaledHeight) * vb.height;
+  }
+  //console.log(canvas.height, px, py, "=>", x, y)
   return { x: x, y: y };
 }
 
@@ -460,7 +468,6 @@ class TangramGame {
         x = 275;
         maxheight = 0;
       }
-      console.log(svgDoc.width, x, y, piece.width);
       piece.initPosition(x, y);
       this.puzzlePieces.push(piece);
       //console.log(`${el.id} ${x} ${y}`);
@@ -468,7 +475,6 @@ class TangramGame {
       x = x + piece.width + 10;
       if (maxheight < piece.height) maxheight = piece.height;
       idx = idx + 1;
-
     }
     // After pieces have their starting positions, we are initialized
     this.initialized = true;
@@ -621,7 +627,6 @@ class TangramGame {
       this.ctx.textAlign = "center";
       this.ctx.lineWidth = 2;
       var completion = Math.abs(this.percentComplete - 1.0); 
-      console.log(completion, this.percentComplete);
       if (completion < 0.001) { 
         this.ctx.fillStyle = "#00AA00";
         this.ctx.strokeStyle = "black";

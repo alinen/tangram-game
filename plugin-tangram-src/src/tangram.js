@@ -283,7 +283,6 @@ class TangramGame {
       this.ctx.textAlign = "center";
       this.ctx.lineWidth = 2;
       var completion = Math.abs(this.percentComplete - 1.0); 
-      console.log(completion, this.percentComplete);
       if (completion < 0.001) { 
         this.ctx.fillStyle = "#00AA00";
         this.ctx.strokeStyle = "black";

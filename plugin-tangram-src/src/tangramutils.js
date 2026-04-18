@@ -8,11 +8,19 @@ function safeset(inputVal, defaultVal) {
 }
 
 function client2svg(px, py, svg, canvas) {
-  // Assumes width > height with aspect ratio and midpoint alignment
+  // Assumes SVG width > height with aspect ratio and midpoint alignment
   var vb = svg.viewBox.baseVal;
-  var scaledHeight = (vb.height / vb.width) * canvas.width;
-  var x = (px / canvas.width) * vb.width;
-  var y = ((py - (canvas.height - scaledHeight) / 2) / scaledHeight) * vb.height;
+  if (canvas.height < vb.height) { // scale the width
+    var scaledWidth = (vb.width / vb.height) * canvas.height;
+    var y = (py / canvas.height) * vb.height;
+    var x = ((px - (canvas.width - scaledWidth) / 2) / scaledWidth) * vb.width;
+  }
+  else { // scale the height
+    var scaledHeight = (vb.height / vb.width) * canvas.width;
+    var x = (px / canvas.width) * vb.width;
+    var y = ((py - (canvas.height - scaledHeight) / 2) / scaledHeight) * vb.height;
+  }
+  //console.log(canvas.height, px, py, "=>", x, y)
   return { x: x, y: y };
 }
 
