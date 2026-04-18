@@ -148,7 +148,7 @@ var jsPsychTangram = (function (jspsych) {
       // Configure Tangram Game piece behavior
       TangramPiece.duration = safeset(trial.resetPieceDuration, 1.0);
       TangramPiece.ResetPieces = safeset(trial.resetPieces, true);
-      TangramPiece.threshold = safeset(trial.dropThreshold, 9);
+      TangramPiece.threshold = safeset(trial.dropThreshold, 20);
 
       // Create and configure Tangram Game
       this.tangram = new TangramGame();

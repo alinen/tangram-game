@@ -1,0 +1,16 @@
+*~
+*.swp
+*.swo
+.DS_Store
+node_modules/
+Thumbs.db
+/.settings/
+/.project
+/.tern-project
+site/
+dist/
+coverage/
+.vscode/
+dist.zip
+.idea
+.claude/
