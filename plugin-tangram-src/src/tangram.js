@@ -110,7 +110,7 @@ class TangramGame {
     var idx = 0;
     var x = 275;
     var y = 25;
-    var maxsize = 0;
+    var maxheight = 0;
     const puzzleLayer = svgDoc.getElementById("PuzzleLayer");
 
     // assert that puzzle layer does not have a transform on it
@@ -119,18 +119,18 @@ class TangramGame {
 
     for (const el of puzzleLayer.children) {
       var piece = new TangramPiece(el);
+      if (x + piece.width > 600) {
+        y = y + maxheight + 10;
+        x = 275;
+        maxheight = 0;
+      }
       piece.initPosition(x, y);
       this.puzzlePieces.push(piece);
       //console.log(`${el.id} ${x} ${y}`);
 
       x = x + piece.width + 10;
-      if (maxsize < piece.height) maxsize = piece.height;
-
+      if (maxheight < piece.height) maxheight = piece.height;
       idx = idx + 1;
-      if (idx % 3 == 0 && idx < 4) {
-        y = y + maxsize + 10;
-        x = 275;
-      }
     }
     // After pieces have their starting positions, we are initialized
     this.initialized = true;
