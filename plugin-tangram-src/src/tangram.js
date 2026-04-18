@@ -253,8 +253,9 @@ class TangramGame {
       var aspect = imgh / imgw;
       var x = 5;
       var y = 5;
+      console.log(this.overlayImage, imgw, imgh, aspect);
       if (this.overlayImagePosition === "TOP_RIGHT") {
-        x = this.canvas.width - imgw - 5;
+        x = this.canvas.width - this.overlayImageWidth - 5;
       }
       this.ctx.drawImage(
         this.overlayIcon,
@@ -269,8 +270,14 @@ class TangramGame {
       this.ctx.font = "64px Arial";
       this.ctx.textAlign = "center";
       this.ctx.lineWidth = 2;
-      this.ctx.fillStyle = "red";
-      this.ctx.strokeStyle = "black";
+      if ((this.percentComplete - 1.0) < 0.001) {
+        this.ctx.fillStyle = "#00AA00";
+        this.ctx.strokeStyle = "black";
+      }
+      else {
+        this.ctx.fillStyle = "red";
+        this.ctx.strokeStyle = "black";
+      }
       var halfx = this.canvas.width * 0.5;
       var halfy = this.canvas.height * 0.5;
       this.ctx.fillText(this.gameOverMessage, halfx, halfy);
