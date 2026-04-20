@@ -8,6 +8,7 @@
     <script src="jspsych/dist/plugin-video-keyboard-response.js"></script>
     <script src="jspsych/dist/plugin-video-button-response.js"></script>
     <script src="jspsych/dist/plugin-tangram-game.js"></script>
+    <script src="jspsych/dist/plugin-fullscreen.js"></script>
   </head>
   <body></body>
   <script>
@@ -17,6 +18,11 @@
         jsPsych.data.displayData();
       }
     });
+
+    var enter_fullscreen = {
+      type: jsPsychFullscreen,
+      fullscreen_mode: true
+    }   
 
     var child_rate = {
       type: jsPsychHtmlSliderResponse,
@@ -153,7 +159,7 @@
       failureMessage: "Time is up! :(",
       overlayImage: "puzzles/ParentalCue_nobg.png",
       overlayImageLocation: "TOP_RIGHT",
-      overlayImageWidth: 50,
+      overlayImageWidth: 100,
       duration: 120
     }
 
@@ -165,6 +171,9 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 100,
       duration: 120
     }
 
@@ -176,6 +185,9 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 100,
       duration: 120
     }
 
@@ -187,6 +199,9 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 100,
       duration: 120
     }
 
@@ -198,6 +213,9 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 100,
       duration: 120
     }
 
@@ -228,7 +246,13 @@
       button_label: 'Next'  
     };
 
-    jsPsych.run([child_rate, tutorial1, tutorial2, easy1, easy2, child_rate, hard1, hard2, child_rate, parent_rate]);
+    var exit_fullscreen = {
+      type: jsPsychFullscreen,
+      fullscreen_mode: false,
+      delay_after: 0
+    }
+
+    jsPsych.run([enter_fullscreen, tutorial1, tutorial2, easy1, easy2, child_rate, hard1, hard2, hard3, hard4, hard5, child_rate, parent_rate, exit_fullscreen]);
 
   </script>
 </html>
