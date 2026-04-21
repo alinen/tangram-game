@@ -7,8 +7,8 @@
    viewBox="0 0 600 300"
    version="1.1"
    id="svg5"
-   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
-   sodipodi:docname="puzzle-square.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   sodipodi:docname="Pinwheel Tangram 3.0.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -29,13 +29,13 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="true"
-     inkscape:zoom="1.4576119"
-     inkscape:cx="240.46181"
-     inkscape:cy="162.93775"
+     inkscape:zoom="2.72"
+     inkscape:cx="75.183824"
+     inkscape:cy="163.97059"
      inkscape:window-width="1350"
      inkscape:window-height="681"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="25"
      inkscape:window-maximized="0"
      inkscape:current-layer="OutlineLayer">
     <inkscape:grid
@@ -89,31 +89,31 @@
      inkscape:label="PuzzleLayer">
     <path
        style="opacity:1;fill:#ff7676;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 175.33316,117.44293 96.36242,0.13227 -96.23014,-96.494671 z"
+       d="m 110.84411,117.44293 96.36242,0.13227 -96.23014,-96.494671 z"
        id="T1"
        sodipodi:nodetypes="cccc"
        inkscape:label="Triangle1" />
     <path
        style="opacity:1;fill:#6265ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="M 175.33485,166.98293 175.34865,70.620433 78.9723,166.9691 Z"
+       d="M 110.8458,166.98293 110.8596,70.620433 14.483255,166.9691 Z"
        id="T2"
        inkscape:label="Triangle2"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#ffcc4d;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 175.55857,166.38619 96.36234,-0.19578 -48.08328,48.27906 z"
+       d="m 111.06952,166.38619 96.36234,-0.19578 -48.08328,48.27906 z"
        id="T3"
        inkscape:label="Triangle3"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#ff49e1;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
-       d="m 175.14316,166.75094 -48.18109,0.12782 48.30888,48.05326 z"
+       d="m 110.65411,166.75094 -48.181085,0.12782 48.308875,48.05326 z"
        id="T4"
        inkscape:label="Triangle4"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#66fff4;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 175.47369,214.53451 48.39059,47.97102 -0.20979,-48.18079 -48.39059,-47.97101 z"
+       d="m 110.98464,214.53451 48.39059,47.97102 -0.20979,-48.18079 -48.39059,-47.97101 z"
        id="P"
        sodipodi:nodetypes="ccccc"
        inkscape:label="Parallelegram"
@@ -121,7 +121,7 @@
        inkscape:transform-center-y="0.15671981" />
     <path
        style="opacity:1;fill:#ad54ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 271.44554,117.49678 0.0269,48.18126 48.15435,-48.20816 z"
+       d="m 206.95649,117.49678 0.0269,48.18126 48.15435,-48.20816 z"
        id="T5"
        inkscape:label="Triangle5"
        sodipodi:nodetypes="cccc"
@@ -129,7 +129,7 @@
        inkscape:transform-center-y="-12.571177" />
     <path
        style="opacity:1;fill:#66ff43;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
-       d="m 223.38456,117.58658 48.18125,-0.0162 0.0162,48.18126 -48.18125,0.0161 z"
+       d="m 158.89551,117.58658 48.18125,-0.0162 0.0162,48.18126 -48.18125,0.0161 z"
        id="S"
        inkscape:label="Square" />
   </g>
@@ -140,19 +140,16 @@
      transform="translate(0.36136717,0.79441293)">
     <path
        style="fill:none;stroke:#000000"
-       d="m 175.45823,117.65821 0.17151,48.70981 47.68073,-0.17152 0.17151,-48.53829 z"
-       id="path2"
-       transform="translate(-0.36136717,-0.79441293)" />
+       d="m 110.60782,116.8638 0.17151,48.70981 47.68073,-0.17152 0.17151,-48.53829 z"
+       id="path2" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.88976378;stroke-dasharray:none"
-       d="m 175.36842,20.859868 v 50.451773 l -96.052411,95.082189 48.753881,0.48511 95.80985,96.53753 v -49.48155 l 96.29498,-96.78008 -48.51132,0.24256 z"
-       id="path1"
-       transform="translate(-0.36136717,-0.79441293)" />
+       style="fill:none;stroke:#000000;stroke-width:1.88976;stroke-dasharray:none"
+       d="m 110.51801,20.065455 v 50.451773 l -96.052414,95.082192 48.753881,0.48511 95.809853,96.53753 v -49.48155 l 96.29498,-96.78008 -48.51132,0.24256 z"
+       id="path1" />
     <path
-       style="fill:#000000;stroke:#000000;stroke-width:0.686054"
-       d="m 176.65286,145.61489 c -0.003,-10.84822 -0.20065,-21.34484 -0.43859,-23.32582 l -0.43262,-3.60178 h 23.42138 23.42139 v 23.32582 23.32583 h -22.9828 -22.9828 z"
-       id="path3"
-       transform="translate(-0.36136717,-0.79441293)" />
+       style="fill:#000000;stroke:#000000;stroke-width:0.701992"
+       d="m 111.45689,144.9328 c -0.003,-11.18652 -0.20373,-22.01048 -0.44533,-24.05323 l -0.43925,-3.7141 h 23.78064 23.78065 v 24.05323 24.05324 h -23.33533 -23.33533 z"
+       id="path3" />
   </g>
   <g
      inkscape:groupmode="layer"

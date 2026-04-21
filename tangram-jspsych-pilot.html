@@ -8,6 +8,8 @@
     <script src="jspsych/dist/plugin-video-keyboard-response.js"></script>
     <script src="jspsych/dist/plugin-video-button-response.js"></script>
     <script src="jspsych/dist/plugin-tangram-game.js"></script>
+    <script src="jspsych/dist/plugin-fullscreen.js"></script>
+    <script src="jspsych/dist/plugin-html-button-response.js"></script>
   </head>
   <body></body>
   <script>
@@ -18,40 +20,96 @@
       }
     });
 
+    var enter_fullscreen = {
+      type: jsPsychFullscreen,
+      fullscreen_mode: true
+    }   
+    
     var child_rate = {
       type: jsPsychHtmlSliderResponse,
       stimulus: `
-    <style>
-      #jspsych-content {
-        margin-top: 180px; 
-      }   
+        <style>
+          #jspsych-content {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            }
 
-      .jspsych-content-wrapper {
-        vertical-align: middle;
-      }
-      #jspsych-html-slider-response-wrapper {
-        width: 750px; 
-        margin: 40px auto; 
-      }
-      .jspsych-slider {
-        height: 20px; 
-      }
+          #jspsych-html-slider-response-wrapper {
+            width: 750px;
+            text-align: center;
+          }
 
-      .jspsych-html-slider-response-labels {
-        margin-top: 20px;
-        margin-bottom: 40px; 
-      }
+          .jspsych-slider {
+            height: 20px;
+          }
 
-      #jspsych-html-slider-response-next {
-        position: fixed;
-        bottom: 70px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 999;
-      }
-    </style>
-    <p style='font-size:32px;'>Child, how frustrated do you feel right now?</p>
-  `,
+          .jspsych-html-slider-response-labels {
+            margin-top: 20px;
+          }
+          #jspsych-html-slider-response-next {
+            display: block;      
+            margin: 80px auto 0; 
+          }
+        </style>
+
+        <div>
+          <p style="font-size:32px;">
+            Child, how frustrated do you feel right now?
+          </p>
+        </div>
+      `,
+      require_movement: true,
+      min: 1,
+      max: 10,
+      step: 1,
+      slider_start: 1,
+      slider_width: 700,
+      labels: [
+        "<img src='puzzles/img/slider_not-frustrated.png' width='150'>",
+        "<img src='puzzles/img/slider_frustrated.png' width='150'>",
+        "<img src='puzzles/img/slider_very-frustrated.png' width='150'>"
+      ],
+      button_label: 'Next'
+    };
+
+
+    var child_rate2 = {
+      type: jsPsychHtmlSliderResponse,
+      stimulus: `
+        <style>
+          #jspsych-content {
+            margin-top: 180px; 
+          }   
+
+          .jspsych-content-wrapper {
+            vertical-align: middle;
+          }
+          #jspsych-html-slider-response-wrapper {
+            width: 750px; 
+            margin: 40px auto; 
+          }
+          .jspsych-slider {
+            height: 20px; 
+          }
+
+          .jspsych-html-slider-response-labels {
+            margin-top: 20px;
+            margin-bottom: 40px; 
+          }
+
+          #jspsych-html-slider-response-next {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+          }
+        </style>
+        <p style='font-size:32px;'>Child, how frustrated do you feel right now?</p>
+      `,
       require_movement: true,
       min: 1,
       max: 10,
@@ -153,7 +211,7 @@
       failureMessage: "Time is up! :(",
       overlayImage: "puzzles/ParentalCue_nobg.png",
       overlayImageLocation: "TOP_RIGHT",
-      overlayImageWidth: 50,
+      overlayImageWidth: 120,
       duration: 120
     }
 
@@ -165,6 +223,9 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 120,
       duration: 120
     }
 
@@ -176,6 +237,9 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 120,
       duration: 120
     }
 
@@ -187,6 +251,9 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 120,
       duration: 120
     }
 
@@ -198,8 +265,94 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 120,
       duration: 120
     }
+
+    var child_feedback3 = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="
+          height: 70vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+        ">
+          <p style="font-size: 30px;">
+            When playing the puzzle game, how easy was it to move the pieces?
+          </p>
+        </div>
+      `, 
+      choices: ['Continue'],
+      }
+
+    var child_feedback4 = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="
+          height: 70vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+        ">
+          <p style="font-size: 30px;">
+            Was the instruction video helpful?
+          </p>
+        </div>
+      `, 
+      choices: ['Continue'],
+      }
+
+    var parent_feedback3 = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="
+          height: 70vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          max-width: 800px;
+          margin: 0 auto;
+          gap: 20px;
+        ">
+          <p style="font-size: 30px;">
+            We are also interested in your thoughts on how easy it was for your child to navigate the game.
+          </p>
+          <p style="font-size: 30px;">
+            Was there anything else during the game that you found your child was struggling with?
+          </p>
+        </div>
+      `,
+      choices: ['Continue'],
+      }
+
+    var parent_feedback4 = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="
+          height: 70vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+        ">
+          <p style="font-size: 30px;">
+            Was your child using a mouse or trackpad during the puzzle game? 
+            </p>
+        </div>
+      `,
+      choices: ['Continue'],
+      }
+
 
     var parent_rate = {
       type: jsPsychSurveyLikert,
@@ -228,7 +381,13 @@
       button_label: 'Next'  
     };
 
-    jsPsych.run([child_rate, tutorial1, tutorial2, easy1, easy2, child_rate, hard1, hard2, child_rate, parent_rate]);
+    var exit_fullscreen = {
+      type: jsPsychFullscreen,
+      fullscreen_mode: false,
+      delay_after: 0
+    }
+
+    jsPsych.run([enter_fullscreen, child_feedback3, child_feedback4, parent_feedback3, parent_feedback4, tutorial1, tutorial2, easy1, easy2, child_rate, hard1, hard2, hard3, hard4, hard5, child_rate, parent_rate, exit_fullscreen]);
 
   </script>
 </html>

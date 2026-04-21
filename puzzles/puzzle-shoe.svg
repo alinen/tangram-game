@@ -7,8 +7,8 @@
    viewBox="0 0 600 300"
    version="1.1"
    id="svg5"
-   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
-   sodipodi:docname="puzzle-square.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   sodipodi:docname="puzzle-shoe.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -29,14 +29,14 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="true"
-     inkscape:zoom="2.0613745"
-     inkscape:cx="194.28784"
-     inkscape:cy="149.65742"
-     inkscape:window-width="1366"
-     inkscape:window-height="697"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
+     inkscape:zoom="1.27"
+     inkscape:cx="194.48819"
+     inkscape:cy="149.6063"
+     inkscape:window-width="1024"
+     inkscape:window-height="949"
+     inkscape:window-x="146"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
      inkscape:current-layer="OutlineLayer">
     <inkscape:grid
        type="xygrid"
@@ -89,43 +89,43 @@
      inkscape:label="PuzzleLayer">
     <path
        style="opacity:1;fill:#ff7676;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 203.73922,206.10605 68.13857,-68.13858 H 135.60064 Z"
+       d="m 176.18016,175.39739 68.13857,-68.13858 H 108.04158 Z"
        id="T1"
        sodipodi:nodetypes="cccc"
        inkscape:label="Triangle1" />
     <path
        style="opacity:1;fill:#6265ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="M 102.14236,171.56394 34.108148,239.80671 170.38515,239.59815 Z"
+       d="M 74.583305,140.85528 6.5490929,209.09805 142.82609,208.88949 Z"
        id="T2"
        inkscape:label="Triangle2"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#ffcc4d;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 170.08385,239.67875 68.13859,-68.1386 v 68.1386 z"
+       d="m 142.52479,208.97009 68.13859,-68.1386 v 68.1386 z"
        id="T3"
        inkscape:label="Triangle3"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#ff49e1;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
-       d="m 136.03622,138.12781 -34.06929,34.06929 68.13857,1e-5 z"
+       d="m 108.47716,107.41915 -34.069285,34.06929 68.138565,1e-5 z"
        id="T4"
        inkscape:label="Triangle4"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#66fff4;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 237.92061,172.20197 0.19813,68.1383 33.97008,-34.16821 -0.19813,-68.1383 z"
+       d="m 210.36155,141.49331 0.19813,68.1383 33.97008,-34.16821 -0.19813,-68.1383 z"
        id="P"
        sodipodi:nodetypes="ccccc"
        inkscape:label="Parallelegram" />
     <path
        style="opacity:1;fill:#ad54ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 136.26048,206.03691 34.23977,-33.89798 -68.13775,-0.34178 z"
+       d="m 108.70142,175.32825 34.23977,-33.89798 -68.137745,-0.34178 z"
        id="T5"
        inkscape:label="Triangle5"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#66ff43;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
-       d="m 136.07939,205.71288 34.06929,-34.0693 34.0693,34.0693 -34.0693,34.06929 z"
+       d="m 108.52033,175.00422 34.06929,-34.0693 34.0693,34.0693 -34.0693,34.06929 z"
        id="S"
        inkscape:label="Square" />
   </g>
@@ -135,8 +135,8 @@
      id="OutlineLayer"
      transform="translate(0.36136717,0.79441293)">
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.88976378;stroke-dasharray:none"
-       d="M 33.596557,237.88129 136.198,137.2203 l 134.86147,-0.24256 0.72767,68.15841 -33.47281,33.95792 z"
+       style="fill:none;stroke:#000000;stroke-width:1.88976;stroke-dasharray:none"
+       d="M 6.0375019,207.17263 108.63894,106.51164 l 134.86147,-0.24256 0.72767,68.15841 -33.47281,33.95792 z"
        id="path1" />
   </g>
   <g
