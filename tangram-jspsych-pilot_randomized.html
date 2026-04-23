@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="jspsych/dist/jspsych.css">
     <script src="jspsych/dist/plugin-survey-likert.js"></script>
     <script src="jspsych/dist/plugin-html-slider-response.js"></script>
+    <script src="jspsych/dist/plugin-html-button-response.js"></script>
     <script src="jspsych/dist/plugin-video-keyboard-response.js"></script>
     <script src="jspsych/dist/plugin-video-button-response.js"></script>
     <script src="jspsych/dist/plugin-tangram-game.js"></script>
@@ -76,76 +77,6 @@
     };
 
     // ---------------------------
-    // End-of-game child feedback
-    // ---------------------------
-    var child_feedback = {
-      type: jsPsychSurveyLikert,
-      questions: [
-        {
-          prompt: "<p style='font-size:28px;'>Child, how much did you enjoy the puzzle game?</p>",
-          labels: [
-            "1<br>Not at all",
-            "2",
-            "3",
-            "4",
-            "5<br>A lot"
-          ],
-          required: true
-        },
-        {
-          prompt: "<p style='font-size:28px;'>Child, how hard were the puzzles overall?</p>",
-          labels: [
-            "1<br>Very easy",
-            "2",
-            "3",
-            "4",
-            "5<br>Very hard"
-          ],
-          required: true
-        }
-      ],
-      button_label: "Next",
-      data: {
-        trial_name: "child_end_feedback"
-      }
-    };
-
-    // ---------------------------
-    // End-of-game parent feedback
-    // ---------------------------
-    var parent_feedback = {
-      type: jsPsychSurveyLikert,
-      questions: [
-        {
-          prompt: "<p style='font-size:28px;'>Parent, how do you feel right now?</p>",
-          labels: [
-            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>1<div style='margin-top:10px;'>Very Negative</div></span>",
-            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>2<div style='margin-top:10px;'>Negative</div></span>",
-            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>3<div style='margin-top:10px;'>Neutral</div></span>",
-            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>4<div style='margin-top:10px;'>Positive</div></span>",
-            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>5<div style='margin-top:10px;'>Very Positive</div></span>"
-          ],
-          required: true
-        },
-        {
-          prompt: "<p style='font-size:28px;'>How confident are you in your ability to help your child regulate their negative emotions?</p>",
-          labels: [
-            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>1<div style='margin-top:10px;'>Not At All</div></span>",
-            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>2<div style='margin-top:10px;'>A Little Confident</div></span>",
-            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>3<div style='margin-top:10px;'>Somewhat Confident</div></span>",
-            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>4<div style='margin-top:10px;'>Confident</div></span>",
-            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>5<div style='margin-top:10px;'>Very Confident</div></span>"
-          ],
-          required: true
-        }
-      ],
-      button_label: "Next",
-      data: {
-        trial_name: "parent_end_feedback"
-      }
-    };
-
-    // ---------------------------
     // Tutorials
     // ---------------------------
     var tutorial1 = {
@@ -193,11 +124,7 @@
         successMessage: "You did it! :)",
         failureMessage: "Time is up! :(",
         duration: 120,
-        data: {
-          trial_name: "easy_puzzle",
-          difficulty: "easy",
-          puzzle_id: "puzzle-cat"
-        }
+        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-cat" }
       },
       {
         type: jsPsychTangram,
@@ -208,11 +135,7 @@
         successMessage: "You did it! :)",
         failureMessage: "Time is up! :(",
         duration: 120,
-        data: {
-          trial_name: "easy_puzzle",
-          difficulty: "easy",
-          puzzle_id: "puzzle-rocket"
-        }
+        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-rocket" }
       },
       {
         type: jsPsychTangram,
@@ -223,11 +146,7 @@
         successMessage: "You did it! :)",
         failureMessage: "Time is up! :(",
         duration: 120,
-        data: {
-          trial_name: "easy_puzzle",
-          difficulty: "easy",
-          puzzle_id: "puzzle-bird"
-        }
+        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-bird" }
       },
       {
         type: jsPsychTangram,
@@ -238,11 +157,7 @@
         successMessage: "You did it! :)",
         failureMessage: "Time is up! :(",
         duration: 120,
-        data: {
-          trial_name: "easy_puzzle",
-          difficulty: "easy",
-          puzzle_id: "puzzle-music-note"
-        }
+        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-music-note" }
       },
       {
         type: jsPsychTangram,
@@ -253,11 +168,7 @@
         successMessage: "You did it! :)",
         failureMessage: "Time is up! :(",
         duration: 120,
-        data: {
-          trial_name: "easy_puzzle",
-          difficulty: "easy",
-          puzzle_id: "puzzle-runman"
-        }
+        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-runman" }
       }
     ];
 
@@ -277,11 +188,7 @@
         overlayImageLocation: "TOP_RIGHT",
         overlayImageWidth: 50,
         duration: 120,
-        data: {
-          trial_name: "hard_puzzle",
-          difficulty: "hard",
-          puzzle_id: "puzzle-hexagon"
-        }
+        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-hexagon" }
       },
       {
         type: jsPsychTangram,
@@ -292,11 +199,7 @@
         successMessage: "You did it! :)",
         failureMessage: "Time is up! :(",
         duration: 120,
-        data: {
-          trial_name: "hard_puzzle",
-          difficulty: "hard",
-          puzzle_id: "puzzle-incomplete-square"
-        }
+        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-incomplete-square" }
       },
       {
         type: jsPsychTangram,
@@ -307,11 +210,7 @@
         successMessage: "You did it! :)",
         failureMessage: "Time is up! :(",
         duration: 120,
-        data: {
-          trial_name: "hard_puzzle",
-          difficulty: "hard",
-          puzzle_id: "puzzle-heart"
-        }
+        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-heart" }
       },
       {
         type: jsPsychTangram,
@@ -322,11 +221,7 @@
         successMessage: "You did it! :)",
         failureMessage: "Time is up! :(",
         duration: 120,
-        data: {
-          trial_name: "hard_puzzle",
-          difficulty: "hard",
-          puzzle_id: "puzzle-pinwheel"
-        }
+        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-pinwheel" }
       },
       {
         type: jsPsychTangram,
@@ -337,55 +232,196 @@
         successMessage: "You did it! :)",
         failureMessage: "Time is up! :(",
         duration: 120,
-        data: {
-          trial_name: "hard_puzzle",
-          difficulty: "hard",
-          puzzle_id: "puzzle-shoe"
-        }
+        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-shoe" }
       }
     ];
 
     // ---------------------------
     // Randomization logic
     // ---------------------------
-
-    // randomly sample 2 from each difficulty pool, without replacement
     var selected_easy = jsPsych.randomization.sampleWithoutReplacement(easy_puzzles, 2);
     var selected_hard = jsPsych.randomization.sampleWithoutReplacement(hard_puzzles, 2);
 
-    // counterbalance block order: EEHH or HHEE
     var block_order = jsPsych.randomization.sampleWithoutReplacement(["EEHH", "HHEE"], 1)[0];
 
-    // save condition info in the dataset
-    jsPsych.data.addProperties({
-      block_order: block_order
-    });
+    jsPsych.data.addProperties({ block_order: block_order });
 
-    // build main puzzle timeline
+    // ---------------------------
+    // Helper: build puzzle image HTML from puzzle_id
+    // puzzle images are named like: puzzle-cat-img.png
+    // special case: puzzle-music-note has no "-img" suffix in the img folder
+    // ---------------------------
+    function puzzleImgSrc(puzzle_id) {
+      // From the GitHub screenshots:
+      // Most files are named: puzzle-{name}-img.png
+      // Exception: puzzle-music-note.png (no -img suffix)
+      if (puzzle_id === "puzzle-music-note") {
+        return `puzzles/img/puzzle-music-note.png`;
+      }
+      return `puzzles/img/${puzzle_id}-img.png`;
+    }
+
+    function puzzleImagesHTML(puzzle1, puzzle2) {
+      var id1 = puzzle1.data.puzzle_id;
+      var id2 = puzzle2.data.puzzle_id;
+      return `
+        <div style="display:flex; justify-content:center; align-items:center; gap:60px; margin: 30px auto;">
+          <img src="${puzzleImgSrc(id1)}" style="max-width:220px; max-height:220px; border:3px solid #ccc; border-radius:12px; padding:10px; background:#f9f9f9;">
+          <img src="${puzzleImgSrc(id2)}" style="max-width:220px; max-height:220px; border:3px solid #ccc; border-radius:12px; padding:10px; background:#f9f9f9;">
+        </div>
+      `;
+    }
+
+
+// ---------------------------
+// Child feedback trials 
+// ---------------------------
+var child_feedback1 = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
+      <p style="font-size: 30px;">Hi friend, how did you feel when working on these puzzles?</p>
+      ${puzzleImagesHTML(selected_easy[0], selected_easy[1])}
+    </div>
+  `,
+  choices: ['Next'],
+  data: { trial_name: "child_feedback1" }
+};
+
+var child_feedback2 = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
+      <p style="font-size: 30px;">How did you feel when working on these puzzles?</p>
+      ${puzzleImagesHTML(selected_hard[0], selected_hard[1])}
+    </div>
+  `,
+  choices: ['Next'],
+  data: { trial_name: "child_feedback2" }
+};
+
+var child_feedback3 = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
+      <p style="font-size: 30px;">When playing the puzzle game, how easy was it to move the pieces?</p>
+    </div>
+  `,
+  choices: ['Next'],
+  data: { trial_name: "child_feedback3" }
+};
+
+var child_feedback4 = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
+      <p style="font-size: 30px;">Was the instruction video helpful?</p>
+    </div>
+  `,
+  choices: ['Next'],
+  data: { trial_name: "child_feedback4" }
+};
+
+// ---------------------------
+// Parent feedback trials (built after randomization)
+// ---------------------------
+var parent_feedback1 = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 900px; margin: 0 auto;">
+      <p style="font-size: 30px;">Parent, did you notice your child becoming frustrated during these puzzles? How did their level of frustration compare to other parts of their day when they might feel frustrated — were they more frustrated than usual, less frustrated than usual, or about the same?</p>
+      ${puzzleImagesHTML(selected_easy[0], selected_easy[1])}
+    </div>
+  `,
+  choices: ['Next'],
+  data: { trial_name: "parent_feedback1" }
+};
+
+var parent_feedback2 = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 900px; margin: 0 auto;">
+      <p style="font-size: 30px;">Did you notice your child becoming frustrated during these puzzles? How did their level of frustration compare to other parts of their day when they might feel frustrated — were they more frustrated than usual, less frustrated than usual, or about the same?</p>
+      ${puzzleImagesHTML(selected_hard[0], selected_hard[1])}
+    </div>
+  `,
+  choices: ['Next'],
+  data: { trial_name: "parent_feedback2" }
+};
+
+var parent_feedback3 = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
+      <p style="font-size: 30px;">We are also interested in your thoughts on how easy it was for your child to navigate the game. Was there anything else during the game that you found your child was struggling with?</p>
+    </div>
+  `,
+  choices: ['Next'],
+  data: { trial_name: "parent_feedback3" }
+};
+
+var parent_feedback4 = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
+      <p style="font-size: 30px;">Was your child using a mouse or trackpad during the puzzle game?</p>
+    </div>
+  `,
+  choices: ['Next'],
+  data: { trial_name: "parent_feedback4" }
+};
+
+    var parent_rate = {
+      type: jsPsychSurveyLikert,
+      questions: [
+        {
+          prompt: "<p style='font-size:28px;'>Parent, how do you feel right now?</p>",
+          labels: [
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>1<div style='margin-top:10px;'>Very Negative</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>2<div style='margin-top:10px;'>Negative</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>3<div style='margin-top:10px;'>Neutral</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>4<div style='margin-top:10px;'>Positive</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>5<div style='margin-top:10px;'>Very Positive</div></span>"
+          ],
+          required: true
+        },
+        {
+          prompt: "<p style='font-size:28px;'>How confident are you in your ability to help your child regulate their negative emotions?</p>",
+          labels: [
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>1<div style='margin-top:10px;'>Not At All</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>2<div style='margin-top:10px;'>A Little Confident</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>3<div style='margin-top:10px;'>Somewhat Confident</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>4<div style='margin-top:10px;'>Confident</div></span>",
+            "<span style='font-size:20px; display:inline-block; margin-top:15px;'>5<div style='margin-top:10px;'>Very Confident</div></span>"
+          ],
+          required: true
+        }
+      ],
+      button_label: 'Next',
+      data: { trial_name: "parent_rate" }
+    };
+
+    // ---------------------------
+    // Build main puzzle timeline
+    // ---------------------------
     var main_puzzle_timeline = [];
 
     if (block_order === "EEHH") {
       main_puzzle_timeline.push(selected_easy[0]);
       main_puzzle_timeline.push(child_rate);
-
       main_puzzle_timeline.push(selected_easy[1]);
       main_puzzle_timeline.push(child_rate);
-
       main_puzzle_timeline.push(selected_hard[0]);
       main_puzzle_timeline.push(child_rate);
-
       main_puzzle_timeline.push(selected_hard[1]);
       main_puzzle_timeline.push(child_rate);
     } else {
       main_puzzle_timeline.push(selected_hard[0]);
       main_puzzle_timeline.push(child_rate);
-
       main_puzzle_timeline.push(selected_hard[1]);
       main_puzzle_timeline.push(child_rate);
-
       main_puzzle_timeline.push(selected_easy[0]);
       main_puzzle_timeline.push(child_rate);
-
       main_puzzle_timeline.push(selected_easy[1]);
       main_puzzle_timeline.push(child_rate);
     }
@@ -397,8 +433,15 @@
       tutorial1,
       tutorial2
     ].concat(main_puzzle_timeline).concat([
-      child_feedback,
-      parent_feedback
+      child_feedback1,
+      child_feedback2,
+      child_feedback3,
+      child_feedback4,
+      parent_feedback1,
+      parent_feedback2,
+      parent_feedback3,
+      parent_feedback4,
+      parent_rate
     ]);
 
     jsPsych.run(full_timeline);
