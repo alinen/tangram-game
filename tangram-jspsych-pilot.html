@@ -65,7 +65,7 @@
       min: 1,
       max: 10,
       step: 1,
-      slider_start: 1,
+      slider_start: 5,
       slider_width: 700,
       labels: [
         "<img src='puzzles/img/slider_not-frustrated.png' width='150'>",
@@ -75,54 +75,17 @@
       button_label: 'Next'
     };
 
-
-    var child_rate2 = {
-      type: jsPsychHtmlSliderResponse,
-      stimulus: `
-        <style>
-          #jspsych-content {
-            margin-top: 180px; 
-          }   
-
-          .jspsych-content-wrapper {
-            vertical-align: middle;
-          }
-          #jspsych-html-slider-response-wrapper {
-            width: 750px; 
-            margin: 40px auto; 
-          }
-          .jspsych-slider {
-            height: 20px; 
-          }
-
-          .jspsych-html-slider-response-labels {
-            margin-top: 20px;
-            margin-bottom: 40px; 
-          }
-
-          #jspsych-html-slider-response-next {
-            position: fixed;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 999;
-          }
-        </style>
-        <p style='font-size:32px;'>Child, how frustrated do you feel right now?</p>
-      `,
-      require_movement: true,
-      min: 1,
-      max: 10,
-      step: 1,
-      slider_start: 1,
-      slider_width: 700,
-      labels: [
-        "<img src='puzzles/img/slider_not-frustrated.png' width='150'>",
-        "<img src='puzzles/img/slider_frustrated.png' width='150'>",
-        "<img src='puzzles/img/slider_very-frustrated.png' width='150'>"
-        ],
-      button_label: 'Next'
-    };
+    var task_demo = {
+        type: jsPsychTangram,
+        svg: 'puzzles/OLD puzzles/puzzle-scorpion.svg',
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120
+    }
+   
 
     var tutorial1 = {
       type: jsPsychTangram,
@@ -387,7 +350,7 @@
       delay_after: 0
     }
 
-    jsPsych.run([enter_fullscreen, child_rate, child_feedback3, child_feedback4, parent_feedback3, parent_feedback4, tutorial1, tutorial2, easy1, easy2, child_rate, hard1, hard2, hard3, hard4, hard5, child_rate, parent_rate, exit_fullscreen]);
+    jsPsych.run([enter_fullscreen, task_demo, child_rate, child_feedback3, child_feedback4, parent_feedback3, parent_feedback4, tutorial1, tutorial2, easy1, easy2, child_rate, hard1, hard2, hard3, hard4, hard5, child_rate, parent_rate, exit_fullscreen]);
 
   </script>
 </html>
