@@ -14,7 +14,56 @@
   <body></body>
   <script>
 
+    var should_be_in_fullscreen = false;
+
     var jsPsych = initJsPsych({
+
+      on_interaction_data_update: function(data){
+
+        if (data.event === 'fullscreenexit' && should_be_in_fullscreen){
+
+          if (document.querySelector('#message-div')) return;
+
+          console.log('exited fullscreen');
+
+          jsPsych.getDisplayElement().style.visibility = 'hidden';
+
+          document.body.insertAdjacentHTML('beforeend',
+            `<div id="message-div" style="
+              position: fixed;
+              top: 0; left: 0;
+              width: 100%; height: 100%;
+              background: white;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              text-align: center;
+              z-index: 9999;
+            ">
+              <p>Please remain in full-screen mode during the study.</p>
+              <button id="jspsych-fullscreen-btn" class="jspsych-btn">Continue</button>
+            </div>`
+          );
+
+          document.querySelector('#jspsych-fullscreen-btn').onclick = () => {
+            document.documentElement.requestFullscreen();
+          };
+        }
+
+        if (data.event === 'fullscreenenter'){
+
+          console.log('entered fullscreen');
+
+          var msg_div = document.querySelector('#message-div');
+
+          if (msg_div){
+            msg_div.remove();
+            jsPsych.getDisplayElement().style.visibility = 'visible';
+          }
+        }
+      },
+
       on_finish: () => {
         jsPsych.data.displayData();
       }
@@ -22,7 +71,10 @@
 
     var enter_fullscreen = {
       type: jsPsychFullscreen,
-      fullscreen_mode: true
+      fullscreen_mode: true,
+      on_start: function() {
+        should_be_in_fullscreen = true;
+      }
     }   
     
     var child_rate = {
@@ -76,28 +128,28 @@
     };
 
     var task_demo = {
-        type: jsPsychTangram,
-        svg: 'puzzles/OLD puzzles/puzzle-scorpion.svg',
-        interactionSound: "puzzles/tap.mp3",
-        successSound: "puzzles/win_applaud.mp3",
-        failureSound: "puzzles/lose_buzz.mp3",
-        successMessage: "You did it! :)",
-        failureMessage: "Time is up! :(",
-        duration: 120
+      type: jsPsychTangram,
+      svg: 'puzzles/OLD puzzles/puzzle-scorpion.svg',
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120
     }
 
     var task_demo_img = {
-        type: jsPsychTangram,
-        svg: 'puzzles/OLD puzzles/puzzle-scorpion.svg',
-        interactionSound: "puzzles/tap.mp3",
-        successSound: "puzzles/win_applaud.mp3",
-        failureSound: "puzzles/lose_buzz.mp3",
-        successMessage: "You did it! :)",
-        failureMessage: "Time is up! :(",
-        overlayImage: "puzzles/ParentalCue_nobg.png",
-        overlayImageLocation: "TOP_RIGHT",
-        overlayImageWidth: 120,
-        duration: 120
+      type: jsPsychTangram,
+      svg: 'puzzles/OLD puzzles/puzzle-scorpion.svg',
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 120,
+      duration: 120
     }
    
 
@@ -361,7 +413,10 @@
     var exit_fullscreen = {
       type: jsPsychFullscreen,
       fullscreen_mode: false,
-      delay_after: 0
+      delay_after: 0,
+      on_start: function() {
+        should_be_in_fullscreen = false;
+      }
     }
 
     jsPsych.run([enter_fullscreen, task_demo, task_demo_img, child_rate, child_feedback3, child_feedback4, parent_feedback3, parent_feedback4, tutorial1, tutorial2, easy1, easy2, easy3, easy4, easy5, hard1, hard2, hard3, hard4, hard5, child_rate, parent_rate, exit_fullscreen]);
