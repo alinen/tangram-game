@@ -7,12 +7,17 @@
    viewBox="0 0 600 300"
    version="1.1"
    id="svg5"
-   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
-   sodipodi:docname="puzzle-fish.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   sodipodi:docname="Barn Tangram Puzzle.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title2">Barn Tangram Puzzle</title>
   <sodipodi:namedview
      id="namedview7"
      pagecolor="#ffffff"
@@ -24,13 +29,13 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="true"
-     inkscape:zoom="0.84550137"
-     inkscape:cx="278.53296"
-     inkscape:cy="88.704765"
-     inkscape:window-width="1280"
-     inkscape:window-height="721"
-     inkscape:window-x="0"
-     inkscape:window-y="38"
+     inkscape:zoom="0.51534363"
+     inkscape:cx="240.61615"
+     inkscape:cy="539.44588"
+     inkscape:window-width="1256"
+     inkscape:window-height="961"
+     inkscape:window-x="769"
+     inkscape:window-y="0"
      inkscape:window-maximized="0"
      inkscape:current-layer="OutlineLayer">
     <inkscape:grid
@@ -84,43 +89,43 @@
      inkscape:label="PuzzleLayer">
     <path
        style="opacity:1;fill:#ff7676;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="M 120.24225,140.06845 119.98762,43.70629 23.880078,140.32307 Z"
+       d="m 123.76891,205.04164 96.361,0.53537 -95.82563,-96.89639 z"
        id="T1"
        sodipodi:nodetypes="cccc"
        inkscape:label="Triangle1" />
     <path
        style="opacity:1;fill:#6265ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="M 120.12704,140.50917 23.764729,140.32133 119.93921,236.8715 Z"
+       d="m 124.37997,253.50977 -0.45141,-96.36144 -95.910056,96.81284 z"
        id="T2"
        inkscape:label="Triangle2"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#ffcc4d;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 216.59637,116.52388 -0.23306,96.36226 -48.0646,-48.29766 z"
+       d="m 95.386106,186.17235 -67.783451,68.49189 -0.35422,-68.13768 z"
        id="T3"
        inkscape:label="Triangle3"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#ff49e1;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
-       d="m 120.22873,116.57514 48.18106,-0.13678 -48.31783,-48.044287 z"
+       d="M 61.133822,152.29066 27.234017,186.5286 95.371749,186.19047 Z"
        id="T4"
        inkscape:label="Triangle4"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#66fff4;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="M 168.36531,116.58365 216.90057,68.759022 216.54526,116.93896 168.01,164.76359 Z"
+       d="m 172.49479,108.89879 -47.85558,-48.504734 -0.32461,48.180164 47.85558,48.50473 z"
        id="P"
        sodipodi:nodetypes="ccccc"
        inkscape:label="Parallelegram" />
     <path
        style="opacity:1;fill:#ad54ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
-       d="m 120.1798,164.89507 0.024,48.18126 48.15721,-48.20531 z"
+       d="m 172.93177,60.960481 -48.17945,-0.419584 47.75986,48.599023 z"
        id="T5"
        inkscape:label="Triangle5"
        sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:#66ff43;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
-       d="m 120.14301,164.8334 -0.0374,-48.18126 48.18126,-0.0374 0.0374,48.18124 z"
+       d="m 171.61326,253.36861 -0.21955,-48.18076 48.18077,-0.21954 0.21953,48.18076 z"
        id="S"
        inkscape:label="Square" />
   </g>
@@ -128,11 +133,13 @@
      inkscape:label="OutlineLayer"
      inkscape:groupmode="layer"
      id="OutlineLayer"
-     transform="translate(0.36136717,0.79441293)">
+     transform="translate(0.36136717,0.79441293)"
+     style="stroke-width:0.37795276;stroke-dasharray:none">
     <path
        style="fill:none;stroke:#000000;stroke-width:1.88976378;stroke-dasharray:none"
-       d="m 24.063513,138.69226 95.345317,-95.345323 0.29427,24.42488 48.26121,47.672663 48.26121,-47.672663 V 212.26117 l -48.26121,-48.26121 -48.26121,48.55549 v 23.54205 z"
-       id="path1" />
+       d="m 61.124264,152.20427 -33.866966,34.29144 0.527876,67.77293 96.905086,-0.85756 -0.54676,-48.35979 47.20758,0.24256 0.25772,48.07168 48.19296,-0.22739 0.19708,-48.17781 -47.84429,-48.02621 0.84895,-96.052413 -48.32941,-0.363835 -0.66703,96.598168 -28.742954,28.92487 z"
+       id="path2"
+       transform="translate(-0.36136717,-0.79441293)" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -156,4 +163,13 @@
        y="290"
        inkscape:label="Outline" />
   </g>
+  <metadata
+     id="metadata2">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Barn Tangram Puzzle</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
 </svg>
