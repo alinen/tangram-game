@@ -139,14 +139,14 @@
       },
       {
         type: jsPsychTangram,
-        svg: "puzzles/puzzle-bird.svg",
+        svg: "puzzles/puzzle-fish.svg",
         interactionSound: "puzzles/tap.mp3",
         successSound: "puzzles/win_applaud.mp3",
         failureSound: "puzzles/lose_buzz.mp3",
         successMessage: "You did it! :)",
         failureMessage: "Time is up! :(",
         duration: 120,
-        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-bird" }
+        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-fish" }
       },
       {
         type: jsPsychTangram,
@@ -184,9 +184,6 @@
         failureSound: "puzzles/lose_buzz.mp3",
         successMessage: "You did it! :)",
         failureMessage: "Time is up! :(",
-        overlayImage: "puzzles/ParentalCue_nobg.png",
-        overlayImageLocation: "TOP_RIGHT",
-        overlayImageWidth: 50,
         duration: 120,
         data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-hexagon" }
       },
@@ -225,14 +222,14 @@
       },
       {
         type: jsPsychTangram,
-        svg: "puzzles/puzzle-shoe.svg",
+        svg: "puzzles/puzzle-barn.svg",
         interactionSound: "puzzles/tap.mp3",
         successSound: "puzzles/win_applaud.mp3",
         failureSound: "puzzles/lose_buzz.mp3",
         successMessage: "You did it! :)",
         failureMessage: "Time is up! :(",
         duration: 120,
-        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-shoe" }
+        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-barn" }
       }
     ];
 
@@ -248,13 +245,8 @@
 
     // ---------------------------
     // Helper: build puzzle image HTML from puzzle_id
-    // puzzle images are named like: puzzle-cat-img.png
-    // special case: puzzle-music-note has no "-img" suffix in the img folder
     // ---------------------------
     function puzzleImgSrc(puzzle_id) {
-      // From the GitHub screenshots:
-      // Most files are named: puzzle-{name}-img.png
-      // Exception: puzzle-music-note.png (no -img suffix)
       if (puzzle_id === "puzzle-music-note") {
         return `puzzles/img/puzzle-music-note.png`;
       }
@@ -272,104 +264,103 @@
       `;
     }
 
+    // ---------------------------
+    // Child feedback trials
+    // ---------------------------
+    var child_feedback1 = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
+          <p style="font-size: 30px;">Hi friend, how did you feel when working on these puzzles?</p>
+          ${puzzleImagesHTML(selected_easy[0], selected_easy[1])}
+        </div>
+      `,
+      choices: ['Next'],
+      data: { trial_name: "child_feedback1" }
+    };
 
-// ---------------------------
-// Child feedback trials 
-// ---------------------------
-var child_feedback1 = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
-      <p style="font-size: 30px;">Hi friend, how did you feel when working on these puzzles?</p>
-      ${puzzleImagesHTML(selected_easy[0], selected_easy[1])}
-    </div>
-  `,
-  choices: ['Next'],
-  data: { trial_name: "child_feedback1" }
-};
+    var child_feedback2 = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
+          <p style="font-size: 30px;">How did you feel when working on these puzzles?</p>
+          ${puzzleImagesHTML(selected_hard[0], selected_hard[1])}
+        </div>
+      `,
+      choices: ['Next'],
+      data: { trial_name: "child_feedback2" }
+    };
 
-var child_feedback2 = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
-      <p style="font-size: 30px;">How did you feel when working on these puzzles?</p>
-      ${puzzleImagesHTML(selected_hard[0], selected_hard[1])}
-    </div>
-  `,
-  choices: ['Next'],
-  data: { trial_name: "child_feedback2" }
-};
+    var child_feedback3 = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
+          <p style="font-size: 30px;">When playing the puzzle game, how easy was it to move the pieces?</p>
+        </div>
+      `,
+      choices: ['Next'],
+      data: { trial_name: "child_feedback3" }
+    };
 
-var child_feedback3 = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
-      <p style="font-size: 30px;">When playing the puzzle game, how easy was it to move the pieces?</p>
-    </div>
-  `,
-  choices: ['Next'],
-  data: { trial_name: "child_feedback3" }
-};
+    var child_feedback4 = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
+          <p style="font-size: 30px;">Was the instruction video helpful?</p>
+        </div>
+      `,
+      choices: ['Next'],
+      data: { trial_name: "child_feedback4" }
+    };
 
-var child_feedback4 = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
-      <p style="font-size: 30px;">Was the instruction video helpful?</p>
-    </div>
-  `,
-  choices: ['Next'],
-  data: { trial_name: "child_feedback4" }
-};
+    // ---------------------------
+    // Parent feedback trials
+    // ---------------------------
+    var parent_feedback1 = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 900px; margin: 0 auto;">
+          <p style="font-size: 30px;">Parent, did you notice your child becoming frustrated during these puzzles? How did their level of frustration compare to other parts of their day when they might feel frustrated — were they more frustrated than usual, less frustrated than usual, or about the same?</p>
+          ${puzzleImagesHTML(selected_easy[0], selected_easy[1])}
+        </div>
+      `,
+      choices: ['Next'],
+      data: { trial_name: "parent_feedback1" }
+    };
 
-// ---------------------------
-// Parent feedback trials (built after randomization)
-// ---------------------------
-var parent_feedback1 = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 900px; margin: 0 auto;">
-      <p style="font-size: 30px;">Parent, did you notice your child becoming frustrated during these puzzles? How did their level of frustration compare to other parts of their day when they might feel frustrated — were they more frustrated than usual, less frustrated than usual, or about the same?</p>
-      ${puzzleImagesHTML(selected_easy[0], selected_easy[1])}
-    </div>
-  `,
-  choices: ['Next'],
-  data: { trial_name: "parent_feedback1" }
-};
+    var parent_feedback2 = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 900px; margin: 0 auto;">
+          <p style="font-size: 30px;">Did you notice your child becoming frustrated during these puzzles? How did their level of frustration compare to other parts of their day when they might feel frustrated — were they more frustrated than usual, less frustrated than usual, or about the same?</p>
+          ${puzzleImagesHTML(selected_hard[0], selected_hard[1])}
+        </div>
+      `,
+      choices: ['Next'],
+      data: { trial_name: "parent_feedback2" }
+    };
 
-var parent_feedback2 = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 900px; margin: 0 auto;">
-      <p style="font-size: 30px;">Did you notice your child becoming frustrated during these puzzles? How did their level of frustration compare to other parts of their day when they might feel frustrated — were they more frustrated than usual, less frustrated than usual, or about the same?</p>
-      ${puzzleImagesHTML(selected_hard[0], selected_hard[1])}
-    </div>
-  `,
-  choices: ['Next'],
-  data: { trial_name: "parent_feedback2" }
-};
+    var parent_feedback3 = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
+          <p style="font-size: 30px;">We are also interested in your thoughts on how easy it was for your child to navigate the game. Was there anything else during the game that you found your child was struggling with?</p>
+        </div>
+      `,
+      choices: ['Next'],
+      data: { trial_name: "parent_feedback3" }
+    };
 
-var parent_feedback3 = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
-      <p style="font-size: 30px;">We are also interested in your thoughts on how easy it was for your child to navigate the game. Was there anything else during the game that you found your child was struggling with?</p>
-    </div>
-  `,
-  choices: ['Next'],
-  data: { trial_name: "parent_feedback3" }
-};
-
-var parent_feedback4 = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
-      <p style="font-size: 30px;">Was your child using a mouse or trackpad during the puzzle game?</p>
-    </div>
-  `,
-  choices: ['Next'],
-  data: { trial_name: "parent_feedback4" }
-};
+    var parent_feedback4 = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
+          <p style="font-size: 30px;">Was your child using a mouse or trackpad during the puzzle game?</p>
+        </div>
+      `,
+      choices: ['Next'],
+      data: { trial_name: "parent_feedback4" }
+    };
 
     var parent_rate = {
       type: jsPsychSurveyLikert,
