@@ -27,16 +27,16 @@
       stimulus: `
         <style>
           #jspsych-content {
-            margin-top: 180px;
-          }
-
-          .jspsych-content-wrapper {
-            vertical-align: middle;
-          }
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            }
 
           #jspsych-html-slider-response-wrapper {
             width: 750px;
-            margin: 40px auto;
+            text-align: center;
           }
 
           .jspsych-slider {
@@ -45,32 +45,31 @@
 
           .jspsych-html-slider-response-labels {
             margin-top: 20px;
-            margin-bottom: 40px;
           }
-
           #jspsych-html-slider-response-next {
-            position: fixed;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 999;
+            display: block;
+            margin: 80px auto 0;
           }
         </style>
 
-        <p style="font-size:32px;">Child, how frustrated do you feel right now?</p>
+        <div>
+          <p style="font-size:32px;">
+            Child, how frustrated do you feel right now?
+          </p>
+        </div>
       `,
       require_movement: true,
       min: 1,
       max: 10,
       step: 1,
-      slider_start: 1,
+      slider_start: 5,
       slider_width: 700,
       labels: [
         "<img src='puzzles/img/slider_not-frustrated.png' width='150'>",
         "<img src='puzzles/img/slider_frustrated.png' width='150'>",
         "<img src='puzzles/img/slider_very-frustrated.png' width='150'>"
       ],
-      button_label: "Next",
+      button_label: 'Next',
       data: {
         trial_name: "child_affect_rating"
       }
