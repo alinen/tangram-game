@@ -14,10 +14,9 @@
   <body></body>
   <script>
 
+
     var should_be_in_fullscreen = false;
-
     var jsPsych = initJsPsych({
-
       on_interaction_data_update: function(data){
 
         if (data.event === 'fullscreenexit' && should_be_in_fullscreen){
@@ -64,10 +63,11 @@
         }
       },
 
-      on_finish: () => {
+      on_finish: function () {
         jsPsych.data.displayData();
-      }
+          }
     });
+
 
     var enter_fullscreen = {
       type: jsPsychFullscreen,
@@ -75,7 +75,18 @@
       on_start: function() {
         should_be_in_fullscreen = true;
       }
-    }   
+    }  
+ 
+
+    var task_video_1 = {
+      type: jsPsychVideoKeyboard,
+      autoplay: true,
+      trial_ends_after_video: true,
+      choices: "NO_KEYS",
+      stimulus: [
+        'puzzles/video/puzzle-orientation-video_1_updated.mp4'
+      ],
+    }
     
     var child_rate = {
       type: jsPsychHtmlSliderResponse,
@@ -151,7 +162,6 @@
       overlayImageWidth: 120,
       duration: 120
     }
-   
 
     var tutorial1 = {
       type: jsPsychTangram,
@@ -300,6 +310,25 @@
       duration: 120
     }
 
+    var child_persis = {
+      type: jsPsychHtmlButtonResponse, 
+      stimulus: `
+        <div style="
+          height: 70vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+        ">
+          <p style="font-size: 30px;">
+            Would you like to play a puzzle like this again?
+          </p>
+        </div>
+      `, 
+      choices: ['Yes', 'No']
+    }
+
     var child_feedback3 = {
       type: jsPsychHtmlButtonResponse,
       stimulus: `
@@ -419,9 +448,7 @@
       }
     }
 
-    jsPsych.run([enter_fullscreen, task_demo, exit_fullscreen]);
-
-    //jsPsych.run([enter_fullscreen, task_demo, task_demo_img, child_rate, child_feedback3, child_feedback4, parent_feedback3, parent_feedback4, tutorial1, tutorial2, easy1, easy2, easy3, easy4, easy5, hard1, hard2, hard3, hard4, hard5, child_rate, parent_rate, exit_fullscreen]);
+    jsPsych.run([enter_fullscreen, task_video_1, task_demo, task_demo_img, child_rate, child_feedback3, child_feedback4, parent_feedback3, parent_feedback4, tutorial1, tutorial2, easy1, easy2, easy3, easy4, easy5, hard1, hard2, hard3, hard4, hard5, child_rate, child_persis, parent_rate, exit_fullscreen]);
 
   </script>
 </html>
