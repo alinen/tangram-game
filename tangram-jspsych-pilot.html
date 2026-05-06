@@ -13,37 +13,8 @@
   </head>
   <body></body>
   <script>
-
-    let fullscreen_start_time = null;
-    let fullscreen_exit_durations = [];
-
     var jsPsych = initJsPsych({
-        on_interaction_data_update: function(data) {
-
-          if (data.event === 'fullscreenenter') {
-            fullscreen_start_time = performance.now(); // more reliable than data.time
-            console.log('Entered fullscreen at:', fullscreen_start_time);
-          }
-
-          // OPTIONAL: keep this ONLY for manual exits
-          if (data.event === 'fullscreenexit') {
-            let exit_time = performance.now();
-            let duration_out = fullscreen_start_time ? (exit_time - fullscreen_start_time) : null;
-
-            fullscreen_exit_durations.push({
-              exit_time,
-              duration_out_of_fullscreen_ms: duration_out
-            });
-
-            jsPsych.data.write({
-              event: 'fullscreenexit_manual',
-              exit_time,
-              duration_out_of_fullscreen_ms: duration_out
-            });
-          }
-        },
-
-      on_finish: function() {
+        on_finish: function() {
         jsPsych.data.displayData();
       }
     });
