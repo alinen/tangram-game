@@ -14,60 +14,39 @@
   <body></body>
   <script>
 
+    let fullscreen_start_time = null;
+    let fullscreen_exit_durations = [];
 
-    var should_be_in_fullscreen = false;
     var jsPsych = initJsPsych({
-      on_interaction_data_update: function(data){
+        on_interaction_data_update: function(data) {
 
-        if (data.event === 'fullscreenexit' && should_be_in_fullscreen){
-
-          if (document.querySelector('#message-div')) return;
-
-          console.log('exited fullscreen');
-
-          jsPsych.getDisplayElement().style.visibility = 'hidden';
-
-          document.body.insertAdjacentHTML('beforeend',
-            `<div id="message-div" style="
-              position: fixed;
-              top: 0; left: 0;
-              width: 100%; height: 100%;
-              background: white;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              text-align: center;
-              z-index: 9999;
-            ">
-              <p>Please remain in full-screen mode during the study.</p>
-              <button id="jspsych-fullscreen-btn" class="jspsych-btn">Continue</button>
-            </div>`
-          );
-
-          document.querySelector('#jspsych-fullscreen-btn').onclick = () => {
-            document.documentElement.requestFullscreen();
-          };
-        }
-
-        if (data.event === 'fullscreenenter'){
-
-          console.log('entered fullscreen');
-
-          var msg_div = document.querySelector('#message-div');
-
-          if (msg_div){
-            msg_div.remove();
-            jsPsych.getDisplayElement().style.visibility = 'visible';
+          if (data.event === 'fullscreenenter') {
+            fullscreen_start_time = performance.now(); // more reliable than data.time
+            console.log('Entered fullscreen at:', fullscreen_start_time);
           }
-        }
-      },
 
-      on_finish: function () {
+          // OPTIONAL: keep this ONLY for manual exits
+          if (data.event === 'fullscreenexit') {
+            let exit_time = performance.now();
+            let duration_out = fullscreen_start_time ? (exit_time - fullscreen_start_time) : null;
+
+            fullscreen_exit_durations.push({
+              exit_time,
+              duration_out_of_fullscreen_ms: duration_out
+            });
+
+            jsPsych.data.write({
+              event: 'fullscreenexit_manual',
+              exit_time,
+              duration_out_of_fullscreen_ms: duration_out
+            });
+          }
+        },
+
+      on_finish: function() {
         jsPsych.data.displayData();
-          }
+      }
     });
-
 
     var enter_fullscreen = {
       type: jsPsychFullscreen,
@@ -75,18 +54,35 @@
       on_start: function() {
         should_be_in_fullscreen = true;
       }
-    }  
- 
+    }; 
 
     var task_video_1 = {
-      type: jsPsychVideoKeyboard,
+      type: jsPsychVideoKeyboardResponse,
       autoplay: true,
       trial_ends_after_video: true,
       choices: "NO_KEYS",
-      stimulus: [
-        'puzzles/video/puzzle-orientation-video_1_updated.mp4'
-      ],
-    }
+      stimulus: `
+        <style>
+          #jspsych-content {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+          video {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+          }
+        </style>
+
+        <video autoplay>
+          <source src="puzzles/video/puzzle-orientation-video_1_updated.mp4" type="video/mp4">
+        </video>
+      `
+    };
     
     var child_rate = {
       type: jsPsychHtmlSliderResponse,
@@ -147,7 +143,7 @@
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
       duration: 120
-    }
+    };
 
     var task_demo_img = {
       type: jsPsychTangram,
@@ -161,7 +157,7 @@
       overlayImageLocation: "TOP_RIGHT",
       overlayImageWidth: 120,
       duration: 120
-    }
+    };
 
     var tutorial1 = {
       type: jsPsychTangram,
@@ -172,7 +168,7 @@
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
       duration: 60
-    }
+    };
 
     var tutorial2 = {
       type: jsPsychTangram,
@@ -183,7 +179,7 @@
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
       duration: 60
-    }
+    };
 
     var easy1 = {
       type: jsPsychTangram,
@@ -194,7 +190,7 @@
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
       duration: 120
-    }
+    };
 
       var easy2 = {
       type: jsPsychTangram,
@@ -205,7 +201,7 @@
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
       duration: 120
-    }
+    };
 
       var easy3 = {
       type: jsPsychTangram,
@@ -216,7 +212,7 @@
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
       duration: 120
-    }
+    };
 
       var easy4 = {
       type: jsPsychTangram,
@@ -227,7 +223,7 @@
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
       duration: 120
-    }
+    };
 
       var easy5 = {
       type: jsPsychTangram,
@@ -238,7 +234,7 @@
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
       duration: 120
-    }
+    };
 
     var hard1 = {
       type: jsPsychTangram,
@@ -252,7 +248,7 @@
       overlayImageLocation: "TOP_RIGHT",
       overlayImageWidth: 120,
       duration: 120
-    }
+    };
 
     var hard2 = {
       type: jsPsychTangram,
@@ -266,7 +262,7 @@
       overlayImageLocation: "TOP_RIGHT",
       overlayImageWidth: 120,
       duration: 120
-    }
+    };
 
     var hard3 = {
       type: jsPsychTangram,
@@ -280,7 +276,7 @@
       overlayImageLocation: "TOP_RIGHT",
       overlayImageWidth: 120,
       duration: 120
-    }
+    };
 
     var hard4 = {
       type: jsPsychTangram,
@@ -294,7 +290,7 @@
       overlayImageLocation: "TOP_RIGHT",
       overlayImageWidth: 120,
       duration: 120
-    }
+    };
 
     var hard5 = {
       type: jsPsychTangram,
@@ -308,7 +304,7 @@
       overlayImageLocation: "TOP_RIGHT",
       overlayImageWidth: 120,
       duration: 120
-    }
+    };
 
     var child_persis = {
       type: jsPsychHtmlButtonResponse, 
@@ -327,7 +323,7 @@
         </div>
       `, 
       choices: ['Yes', 'No']
-    }
+    };
 
     var child_feedback3 = {
       type: jsPsychHtmlButtonResponse,
@@ -346,7 +342,7 @@
         </div>
       `, 
       choices: ['Next'],
-      }
+    };
 
     var child_feedback4 = {
       type: jsPsychHtmlButtonResponse,
@@ -365,7 +361,7 @@
         </div>
       `, 
       choices: ['Next'],
-      }
+    };
 
     var parent_feedback3 = {
       type: jsPsychHtmlButtonResponse,
@@ -390,7 +386,7 @@
         </div>
       `,
       choices: ['Next'],
-      }
+    };
 
     var parent_feedback4 = {
       type: jsPsychHtmlButtonResponse,
@@ -409,7 +405,7 @@
         </div>
       `,
       choices: ['Next'],
-      }
+    };
 
 
     var parent_rate = {
@@ -442,13 +438,10 @@
     var exit_fullscreen = {
       type: jsPsychFullscreen,
       fullscreen_mode: false,
-      delay_after: 0,
-      on_start: function() {
-        should_be_in_fullscreen = false;
-      }
-    }
+      delay_after: 0
+    };
 
-    jsPsych.run([enter_fullscreen, task_video_1, task_demo, task_demo_img, child_rate, child_feedback3, child_feedback4, parent_feedback3, parent_feedback4, tutorial1, tutorial2, easy1, easy2, easy3, easy4, easy5, hard1, hard2, hard3, hard4, hard5, child_rate, child_persis, parent_rate, exit_fullscreen]);
+    jsPsych.run([enter_fullscreen, tutorial1, exit_fullscreen]);
 
   </script>
 </html>
