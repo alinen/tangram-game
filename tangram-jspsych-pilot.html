@@ -11,19 +11,68 @@
     <script src="jspsych/dist/plugin-fullscreen.js"></script>
     <script src="jspsych/dist/plugin-html-button-response.js"></script>
     <style>
-      .fit-video video {
-        width: 100vw;  
-        height: 100vh; 
-        object-fit: cover; 
-      }
+     .fit-video video {
+      width: 80vw;
+      height: 75vh;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+    }
   </style>
   </head>
   <body></body>
   <script>
     var jsPsych = initJsPsych({
-        on_finish: function() {
-        jsPsych.data.displayData();
-      }
+      on_interaction_data_update: function(data) {
+        // participant exits fullscreen
+        if (data.event === 'fullscreenexit') {
+
+          if (document.querySelector('#fullscreen-warning')) return;
+
+          const warning = document.createElement('div');
+          warning.id = 'fullscreen-warning';
+
+          // return to fullscreen message
+          warning.innerHTML = `
+            <div style="
+              position: fixed;
+              bottom: 50px;
+              right: 20px;
+              background: white;
+              border: 2px solid black;
+              padding: 20px;
+              z-index: 9999;
+              box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+              text-align: center;
+              max-width: 300px;
+              font-family: sans-serif;
+            ">
+              <p>Please return to full-screen mode.</p>
+              <button id="return-fullscreen-btn">
+                Return to Fullscreen
+              </button>
+            </div>
+          `;
+
+          document.body.appendChild(warning);
+
+          // button logic
+          document
+            .getElementById('return-fullscreen-btn')
+            .addEventListener('click', function() {
+
+              if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+              }
+
+              warning.remove();
+            });
+        }
+      },
+      // saving data locally 
+      on_finish: function() {
+        jsPsych.data.get().localSave('json', 'NEST-PuzzleTask-Test.json');
+       }
     });
 
     var enter_fullscreen = {
@@ -36,7 +85,31 @@
       autoplay: true,
       trial_ends_after_video: true,
       choices: "NO_KEYS",
-      stimulus:['puzzles/video/puzzle-orientation-video_1_updated.mp4'], 
+      stimulus:['puzzles/video/puzzle_orientation_video_1.mp4'], 
+      width: window.innerWidth,  
+      height: window.innerHeight, 
+      css_classes: ['fit-video'] 
+    };
+
+    var task_video_2 = {
+      type: jsPsychVideoKeyboardResponse,
+      autoplay: true,
+      trial_ends_after_video: true,
+      choices: "NO_KEYS",
+      stimulus:['puzzles/video/puzzle_orientation_video_2.mp4'], 
+      width: window.innerWidth,  
+      height: window.innerHeight, 
+      css_classes: ['fit-video'] 
+    };
+
+    var task_video_3 = {
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      stimulus:['puzzles/video/puzzle_orientation_video_3_control.mp4'], 
       width: window.innerWidth,  
       height: window.innerHeight, 
       css_classes: ['fit-video'] 
@@ -390,88 +463,226 @@
       choices: ['Yes', 'No']
     };
 
+    var feedback_intro = {
+      type: jsPsychVideoKeyboardResponse, 
+      autoplay: true,
+      trial_ends_after_video: true,
+      choices: "NO_KEYS",
+      stimulus:['puzzles/video/puzzle_feedback_video_intro.mp4'], 
+      width: window.innerWidth,  
+      height: window.innerHeight, 
+      css_classes: ['fit-video'] 
+    };
+
     var child_feedback3 = {
-      type: jsPsychHtmlButtonResponse,
-      stimulus: `
-        <div style="
-          height: 70vh;
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      stimulus: ['puzzles/video/puzzle_feedback_video_child_3.mp4'],
+      width: window.innerWidth * 0.6,
+      height: window.innerHeight * 0.4,
+      css_classes: ['fit-video'],
+      prompt: `
+      <style>
+        #jspsych-content {
           display: flex;
           flex-direction: column;
-          justify-content: center;
           align-items: center;
-          text-align: center;
-        ">
-          <p style="font-size: 30px;">
-            When playing the puzzle game, how easy was it to move the pieces?
-          </p>
-        </div>
-      `, 
-      choices: ['Next'],
+          justify-content: flex-start;
+          height: 95vh;
+          padding-top: 5vh;
+        }
+
+        #jspsych-video-button-response-stimulus {
+          order: 1;
+          max-height: 40vh; 
+          width: auto;
+        }
+
+
+        .custom-text-container {
+          order: 2;
+          margin-top: 25px;
+        }
+
+        #jspsych-video-button-response-btngroup {
+          order: 3;
+          margin-top: auto;
+          margin-bottom: 50px;
+        }
+      </style>
+
+      <div class="custom-text-container" style="text-align: center;">
+        <p style="font-size: 30px; margin: 0;">
+          When playing the puzzle game, how easy was it to move the pieces?
+        </p>
+      </div>
+    `
     };
 
     var child_feedback4 = {
-      type: jsPsychHtmlButtonResponse,
-      stimulus: `
-        <div style="
-          height: 70vh;
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      stimulus: ['puzzles/video/puzzle_feedback_video_child_4.mp4'],
+      width: window.innerWidth * 0.6,
+      height: window.innerHeight * 0.4,
+      css_classes: ['fit-video'],
+      prompt: `
+      <style>
+        #jspsych-content {
           display: flex;
           flex-direction: column;
-          justify-content: center;
           align-items: center;
-          text-align: center;
-        ">
-          <p style="font-size: 30px;">
-            Was the instruction video helpful?
-          </p>
-        </div>
-      `, 
-      choices: ['Next'],
+          justify-content: flex-start;
+          height: 95vh;
+          padding-top: 5vh;
+        }
+
+        #jspsych-video-button-response-stimulus {
+          order: 1;
+          max-height: 40vh; 
+          width: auto;
+        }
+
+
+        .custom-text-container {
+          order: 2;
+          margin-top: 25px;
+        }
+
+        #jspsych-video-button-response-btngroup {
+          order: 3;
+          margin-top: auto;
+          margin-bottom: 50px;
+        }
+      </style>
+
+      <div class="custom-text-container" style="text-align: center;">
+        <p style="font-size: 30px; margin: 0;">
+          Was the instruction video helpeful?
+        </p>
+      </div>
+    `
     };
 
     var parent_feedback3 = {
-      type: jsPsychHtmlButtonResponse,
-      stimulus: `
-        <div style="
-          height: 70vh;
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      stimulus: ['puzzles/video/puzzle_feedback_video_parent_3.mp4'],
+      width: window.innerWidth * 0.6,
+      height: window.innerHeight * 0.4,
+      css_classes: ['fit-video'],
+      prompt: `
+      <style>
+        #jspsych-content {
           display: flex;
           flex-direction: column;
-          justify-content: center;
           align-items: center;
-          text-align: center;
-          max-width: 800px;
-          margin: 0 auto;
-          gap: 20px;
-        ">
-          <p style="font-size: 30px;">
-            We are also interested in your thoughts on how easy it was for your child to navigate the game.
+          justify-content: flex-start;
+          height: 95vh;
+          padding-top: 5vh;
+        }
+
+        #jspsych-video-button-response-stimulus {
+          order: 1;
+          max-height: 40vh; 
+          width: auto;
+        }
+
+
+        .custom-text-container {
+          order: 2;
+          margin-top: 25px;
+        }
+
+        #jspsych-video-button-response-btngroup {
+          order: 3;
+          margin-top: auto;
+          margin-bottom: 50px;
+        }
+      </style>
+
+      <div class="custom-text-container" style="text-align: center;">
+        <p style="font-size: 30px; margin: 0;">
+          We are also interested in your thoughts on how easy it was for your child to navigate the game. 
           </p>
-          <p style="font-size: 30px;">
-            Was there anything else during the game that you found your child was struggling with?
-          </p>
-        </div>
-      `,
-      choices: ['Next'],
+           <p style="font-size: 30px; margin: 10px;">
+          Was there anything else during the game that you found your child was struggling with?  
+        </p>
+      </div>
+    `
     };
 
     var parent_feedback4 = {
-      type: jsPsychHtmlButtonResponse,
-      stimulus: `
-        <div style="
-          height: 70vh;
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      stimulus: ['puzzles/video/puzzle_feedback_video_parent_4.mp4'],
+      width: window.innerWidth * 0.6,
+      height: window.innerHeight * 0.4,
+      css_classes: ['fit-video'],
+      prompt: `
+      <style>
+        #jspsych-content {
           display: flex;
           flex-direction: column;
-          justify-content: center;
           align-items: center;
-          text-align: center;
-        ">
-          <p style="font-size: 30px;">
-            Was your child using a mouse or trackpad during the puzzle game? 
-            </p>
-        </div>
-      `,
-      choices: ['Next'],
+          justify-content: flex-start;
+          height: 95vh;
+          padding-top: 5vh;
+        }
+
+        #jspsych-video-button-response-stimulus {
+          order: 1;
+          max-height: 40vh; 
+          width: auto;
+        }
+
+
+        .custom-text-container {
+          order: 2;
+          margin-top: 25px;
+        }
+
+        #jspsych-video-button-response-btngroup {
+          order: 3;
+          margin-top: auto;
+          margin-bottom: 50px;
+        }
+      </style>
+
+      <div class="custom-text-container" style="text-align: center;">
+        <p style="font-size: 30px; margin: 0;">
+          Was your child using a mouse or trackpad during the puzzle game? 
+        </p>
+      </div>
+    `
     };
 
+    var feedback_end = {
+      type: jsPsychVideoKeyboardResponse, 
+      autoplay: true,
+      trial_ends_after_video: true,
+      choices: "NO_KEYS",
+      stimulus:['puzzles/video/puzzle_feedback_video_demo.mp4'], 
+      width: window.innerWidth,  
+      height: window.innerHeight, 
+      css_classes: ['fit-video'] 
+    };
 
     var parent_rate = {
       type: jsPsychSurveyLikert,
@@ -506,6 +717,6 @@
       delay_after: 0
     };
 
-    jsPsych.run([enter_fullscreen, test2, test3, test4, test5, task_demo, hard1, hard5, hard2, hard3, hard1_img, hard4, task_demo_img, hard2, task_video_1, child_rate, child_feedback3, child_feedback4, parent_feedback3, parent_feedback4, tutorial1, tutorial2, easy1, easy2, easy3, easy4, easy5, hard1, hard2, hard3, hard4, hard5, child_rate, child_persis, parent_rate, exit_fullscreen]);
+    jsPsych.run([enter_fullscreen, task_video_1, child_rate, task_video_2, tutorial1, tutorial2, task_video_3, easy1, child_rate, hard1, child_rate, feedback_intro, child_feedback3, child_feedback4, parent_feedback3, parent_feedback4, feedback_end, exit_fullscreen]);
   </script>
 </html>
