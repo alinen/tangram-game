@@ -10,6 +10,7 @@
     <script src="jspsych/dist/plugin-tangram-game.js"></script>
     <script src="jspsych/dist/plugin-fullscreen.js"></script>
     <script src="jspsych/dist/plugin-html-button-response.js"></script>
+    <script src="jspsych/dist/extension-record-video.js"></script>
     <style>
      .fit-video video {
       width: 80vw;
@@ -22,13 +23,9 @@
   </head>
   <body></body>
   <script>
-    var isExperimentFinished = false;
-
     var jsPsych = initJsPsych({
+      //extensions: [{ type: jsPsychExtensionRecordVideo }],
       on_interaction_data_update: function(data) {
-        // ignore return to fullscreen interactions after experiment is finished
-        if (isExperimentFinished) return;
-
         // if participant exits fullscreen
         if (data.event === 'fullscreenexit') {
 
@@ -77,10 +74,11 @@
       on_finish: function() {
         var interactionData = jsPsych.data.getInteractionData();
         // add the interaction data to data file
-        console.log(interactionData.values());
-        jsPsych.data.get().addToAll({
-            interaction_data: JSON.stringify(interactionData.values())
-        });
+        jsPsych.data.get().push({
+          trial_type: 'interaction_summary',
+          interaction_history: interactionData,
+          total_interactions: interactionData.length
+      });
       jsPsych.data.get().localSave('json', 'NEST-PuzzleTask-Test.json');
     }
     });
@@ -89,6 +87,18 @@
       type: jsPsychFullscreen,
       fullscreen_mode: true
     }; 
+
+//    const init_camera = {
+//      type: jsPsychInitializeCamera,
+//      include_audio: true
+//    };
+
+//    const record_start = {
+//      type: jsPsychHtmlButtonResponse,
+//      stimulus: `<div style="width:100px; height:100px; background:red;"></div>`,
+//      choices: ['Done'],
+//      extensions: [{ type: jsPsychExtensionRecordVideo }]
+//    };
 
     var task_video_1 = {
       type: jsPsychVideoKeyboardResponse,
