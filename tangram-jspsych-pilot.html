@@ -22,9 +22,14 @@
   </head>
   <body></body>
   <script>
+    var isExperimentFinished = false;
+
     var jsPsych = initJsPsych({
       on_interaction_data_update: function(data) {
-        // participant exits fullscreen
+        // ignore return to fullscreen interactions after experiment is finished
+        if (isExperimentFinished) return;
+
+        // if participant exits fullscreen
         if (data.event === 'fullscreenexit') {
 
           if (document.querySelector('#fullscreen-warning')) return;
@@ -47,9 +52,9 @@
               max-width: 300px;
               font-family: sans-serif;
             ">
-              <p>Please return to full-screen mode.</p>
+              <p>Please return to full-screen.</p>
               <button id="return-fullscreen-btn">
-                Return to Fullscreen
+                Return to Full-screen
               </button>
             </div>
           `;
@@ -60,19 +65,24 @@
           document
             .getElementById('return-fullscreen-btn')
             .addEventListener('click', function() {
-
               if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
-              }
-
+             }
               warning.remove();
             });
         }
       },
+
       // saving data locally 
       on_finish: function() {
-        jsPsych.data.get().localSave('json', 'NEST-PuzzleTask-Test.json');
-       }
+        var interactionData = jsPsych.data.getInteractionData();
+        // add the interaction data to data file
+        console.log(interactionData.values());
+        jsPsych.data.get().addToAll({
+            interaction_data: JSON.stringify(interactionData.values())
+        });
+      jsPsych.data.get().localSave('json', 'NEST-PuzzleTask-Test.json');
+    }
     });
 
     var enter_fullscreen = {
