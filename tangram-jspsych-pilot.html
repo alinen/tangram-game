@@ -684,10 +684,12 @@
     };
 
     var feedback_end = {
-      type: jsPsychVideoKeyboardResponse, 
+      type: jsPsychVideoButtonResponse, 
       autoplay: true,
-      trial_ends_after_video: true,
-      choices: "NO_KEYS",
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
       stimulus:['puzzles/video/puzzle_feedback_video_demo.mp4'], 
       width: window.innerWidth,  
       height: window.innerHeight, 
