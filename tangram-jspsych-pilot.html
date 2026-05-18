@@ -72,6 +72,7 @@
 
       // saving data locally 
       on_finish: function() {
+        // get interaction data
         var interactionData = jsPsych.data.getInteractionData();
         // add the interaction data to data file
         jsPsych.data.get().push({
@@ -112,10 +113,12 @@
     };
 
     var task_video_2 = {
-      type: jsPsychVideoKeyboardResponse,
+      type: jsPsychVideoButtonResponse,
       autoplay: true,
-      trial_ends_after_video: true,
-      choices: "NO_KEYS",
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
       stimulus:['puzzles/video/puzzle_orientation_video_2.mp4'], 
       width: window.innerWidth,  
       height: window.innerHeight, 
@@ -488,7 +491,7 @@
       autoplay: true,
       trial_ends_after_video: true,
       choices: "NO_KEYS",
-      stimulus:['puzzles/video/puzzle_feedback_video_intro.mp4'], 
+      stimulus:['puzzles/video/puzzle-feedback-intro.mp4'], 
       width: window.innerWidth,  
       height: window.innerHeight, 
       css_classes: ['fit-video'] 
@@ -501,7 +504,7 @@
       response_ends_trial: true,
       response_allowed_while_playing: false,
       choices: ['Next'],
-      stimulus: ['puzzles/video/puzzle_feedback_video_child_3.mp4'],
+      stimulus: ['puzzles/video/puzzle-feedback-child-3.mp4'],
       width: window.innerWidth * 0.6,
       height: window.innerHeight * 0.4,
       css_classes: ['fit-video'],
@@ -550,7 +553,7 @@
       response_ends_trial: true,
       response_allowed_while_playing: false,
       choices: ['Next'],
-      stimulus: ['puzzles/video/puzzle_feedback_video_child_4.mp4'],
+      stimulus: ['puzzles/video/puzzle-feedback-child-4.mp4'],
       width: window.innerWidth * 0.6,
       height: window.innerHeight * 0.4,
       css_classes: ['fit-video'],
@@ -599,7 +602,7 @@
       response_ends_trial: true,
       response_allowed_while_playing: false,
       choices: ['Next'],
-      stimulus: ['puzzles/video/puzzle_feedback_video_parent_3.mp4'],
+      stimulus: ['puzzles/video/puzzle-feedback-parent-3.mp4'],
       width: window.innerWidth * 0.6,
       height: window.innerHeight * 0.4,
       css_classes: ['fit-video'],
@@ -651,7 +654,7 @@
       response_ends_trial: true,
       response_allowed_while_playing: false,
       choices: ['Next'],
-      stimulus: ['puzzles/video/puzzle_feedback_video_parent_4.mp4'],
+      stimulus: ['puzzles/video/puzzle-feedback-parent-4.mp4'],
       width: window.innerWidth * 0.6,
       height: window.innerHeight * 0.4,
       css_classes: ['fit-video'],
@@ -700,7 +703,7 @@
       response_ends_trial: true,
       response_allowed_while_playing: false,
       choices: ['Next'],
-      stimulus:['puzzles/video/puzzle_feedback_video_demo.mp4'], 
+      stimulus:['puzzles/video/puzzle-feedback-end.mp4'], 
       width: window.innerWidth,  
       height: window.innerHeight, 
       css_classes: ['fit-video'] 

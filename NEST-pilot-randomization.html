@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="jspsych/dist/jspsych.js"></script>
+    <link rel="stylesheet" href="jspsych/dist/jspsych.css">
+    <script src="jspsych/dist/plugin-survey-likert.js"></script>
+    <script src="jspsych/dist/plugin-html-slider-response.js"></script>
+    <script src="jspsych/dist/plugin-video-keyboard-response.js"></script>
+    <script src="jspsych/dist/plugin-video-button-response.js"></script>
+    <script src="jspsych/dist/plugin-tangram-game.js"></script>
+    <script src="jspsych/dist/plugin-fullscreen.js"></script>
+    <script src="jspsych/dist/plugin-html-button-response.js"></script>
+    <script src="jspsych/dist/extension-record-video.js"></script>
+    <style>
+     .fit-video video {
+      width: 80vw;
+      height: 75vh;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      }
+    </style>
+    <style>
+     .fit-video video {
+      width: 80vw;
+      height: 75vh;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body></body>
+
+  <script>
+  var jsPsych = initJsPsych({
+   on_interaction_data_update: function(data) {
+    // if participant exits fullscreen
+    if (data.event === 'fullscreenexit') {
+
+     if (document.querySelector('#fullscreen-warning')) return;
+
+      const warning = document.createElement('div');
+      warning.id = 'fullscreen-warning';
+
+          // return to fullscreen message
+          warning.innerHTML = `
+            <div style="
+              position: fixed;
+              bottom: 50px;
+              right: 20px;
+              background: white;
+              border: 2px solid black;
+              padding: 20px;
+              z-index: 9999;
+              box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+              text-align: center;
+              max-width: 300px;
+              font-family: sans-serif;
+            ">
+              <p>Please return to full-screen.</p>
+              <button id="return-fullscreen-btn">
+                Return to Full-screen
+              </button>
+            </div>
+          `;
+
+      document.body.appendChild(warning);
+
+          // button logic
+      document
+        .getElementById('return-fullscreen-btn')
+        .addEventListener('click', function() {
+           if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+           }
+            warning.remove();
+          });
+        }
+      },
+
+      // saving data locally 
+      on_finish: function() {
+        // get interaction data
+        var interactionData = jsPsych.data.getInteractionData();
+        // add the interaction data to data file
+        jsPsych.data.get().push({
+          trial_type: 'interaction_summary',
+          interaction_history: interactionData,
+          total_interactions: interactionData.length
+      });
+      jsPsych.data.get().localSave('json', 'NEST-PuzzleTask-Test.json');
+    }
+    });
+
+    // ---------------------------
+    // Fullscreen trial
+    // ---------------------------
+  var enter_fullscreen = {
+      type: jsPsychFullscreen,
+      fullscreen_mode: true
+    }; 
+  
+    // ---------------------------
+    // Task Orientation Videos
+    // ---------------------------
+      var task_video_1 = {
+      type: jsPsychVideoKeyboardResponse,
+      autoplay: true,
+      trial_ends_after_video: true,
+      choices: "NO_KEYS",
+      stimulus:['puzzles/video/puzzle_orientation_video_1.mp4'], 
+      width: window.innerWidth,  
+      height: window.innerHeight, 
+      css_classes: ['fit-video'] 
+    };
+
+    var task_video_2 = {
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      stimulus:['puzzles/video/puzzle_orientation_video_2.mp4'], 
+      width: window.innerWidth,  
+      height: window.innerHeight, 
+      css_classes: ['fit-video'] 
+    };
+
+    var task_video_3 = {
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      stimulus:['puzzles/video/puzzle_orientation_video_3_control.mp4'], 
+      width: window.innerWidth,  
+      height: window.innerHeight, 
+      css_classes: ['fit-video'] 
+    };  
+
+    // ---------------------------
+    // Child affect rating (after each puzzle)
+    // ---------------------------
+    var child_rate = {
+      type: jsPsychHtmlSliderResponse,
+      stimulus: `
+        <style>
+          #jspsych-content {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            }
+
+          #jspsych-html-slider-response-wrapper {
+            width: 750px;
+            text-align: center;
+          }
+
+          .jspsych-slider {
+            height: 20px;
+          }
+
+          .jspsych-html-slider-response-labels {
+            margin-top: 20px;
+          }
+          #jspsych-html-slider-response-next {
+            display: block;      
+            margin: 80px auto 0; 
+          }
+        </style>
+
+        <div>
+          <p style="font-size:32px;">
+            Child, how frustrated do you feel right now?
+          </p>
+        </div>
+      `,
+      require_movement: true,
+      min: 1,
+      max: 10,
+      step: 1,
+      slider_start: 5,
+      slider_width: 700,
+      labels: [
+        "<img src='puzzles/img/slider_not-frustrated.png' width='150'>",
+        "<img src='puzzles/img/slider_frustrated.png' width='150'>",
+        "<img src='puzzles/img/slider_very-frustrated.png' width='150'>"
+      ],
+      button_label: 'Next'
+    };
+
+    // ---------------------------
+    // Tutorials
+    // ---------------------------
+    var tutorial1 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-letter.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60,
+      data: {
+        trial_name: "tutorial1",
+        difficulty: "tutorial",
+        puzzle_id: "puzzle-letter"
+      }
+    };
+
+    var tutorial2 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-arrow.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60,
+      data: {
+        trial_name: "tutorial2",
+        difficulty: "tutorial",
+        puzzle_id: "puzzle-arrow"
+      }
+    };
+
+    // ---------------------------
+    // Easy puzzle pool (5 total)
+    // ---------------------------
+    var easy_puzzles = [
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-cat.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-cat" }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-rocket.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-rocket" }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-fish.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-fish" }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-music-note.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-music-note" }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-runman.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-runman" }
+      }
+    ];
+
+    // ---------------------------
+    // Hard puzzle pool (5 total)
+    // ---------------------------
+    var hard_puzzles = [
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-hexagon.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-hexagon" }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-incomplete-square.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-incomplete-square" }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-heart.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-heart" }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-pinwheel.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-pinwheel" }
+      },
+      {
+        type: jsPsychTangram,
+        svg: "puzzles/puzzle-barn.svg",
+        interactionSound: "puzzles/tap.mp3",
+        successSound: "puzzles/win_applaud.mp3",
+        failureSound: "puzzles/lose_buzz.mp3",
+        successMessage: "You did it! :)",
+        failureMessage: "Time is up! :(",
+        duration: 120,
+        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-barn" }
+      }
+    ];
+
+    // ---------------------------
+    // Randomization logic
+    // ---------------------------
+    var selected_easy = jsPsych.randomization.sampleWithoutReplacement(easy_puzzles, 2);
+    var selected_hard = jsPsych.randomization.sampleWithoutReplacement(hard_puzzles, 2);
+
+    var block_order = jsPsych.randomization.sampleWithoutReplacement(["EEHH", "HHEE"], 1)[0];
+
+    jsPsych.data.addProperties({ block_order: block_order });
+
+    // ---------------------------
+    // Helper: build puzzle image HTML from puzzle_id
+    // ---------------------------
+    function puzzleImgSrc(puzzle_id) {
+      if (puzzle_id === "puzzle-music-note") {
+        return `puzzles/img/puzzle-music-note.png`;
+      }
+      return `puzzles/img/${puzzle_id}-img.png`;
+    }
+
+    function puzzleImagesHTML(puzzle1, puzzle2) {
+      var id1 = puzzle1.data.puzzle_id;
+      var id2 = puzzle2.data.puzzle_id;
+      return `
+        <div style="display:flex; justify-content:center; align-items:center; gap:60px; margin: 30px auto;">
+          <img src="${puzzleImgSrc(id1)}" style="max-width:220px; max-height:220px; border:3px solid #ccc; border-radius:12px; padding:10px; background:#f9f9f9;">
+          <img src="${puzzleImgSrc(id2)}" style="max-width:220px; max-height:220px; border:3px solid #ccc; border-radius:12px; padding:10px; background:#f9f9f9;">
+        </div>
+      `;
+    }
+
+    // ---------------------------
+    // Feedback trials
+    // ---------------------------
+    var feedback_intro = {
+      type: jsPsychVideoKeyboardResponse, 
+      autoplay: true,
+      trial_ends_after_video: true,
+      choices: "NO_KEYS",
+      stimulus:['puzzles/video/puzzle-feedback-intro.mp4'], 
+      width: window.innerWidth,  
+      height: window.innerHeight, 
+      css_classes: ['fit-video'] 
+    };
+
+    // ---------------------------
+    // Child feedback trials
+    // ---------------------------
+
+    var child_feedback1 = {
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      stimulus: ['puzzles/video/puzzle-feedback-child-1.mp4'], 
+      data: { trial_name: "child_feedback1" },
+      width: window.innerWidth * 0.6,
+      height: window.innerHeight * 0.4,
+      css_classes: ['fit-video'],
+      prompt: `
+        <style>
+          #jspsych-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 95vh;
+            padding-top: 5vh;
+          }
+
+          #jspsych-video-button-response-stimulus {
+            order: 1;
+            max-height: 40vh;
+            width: auto;
+          }
+
+          .custom-text-container {
+            order: 2;
+            margin-top: 25px;
+            text-align: center;
+          }
+
+          .puzzle-images {
+            margin-top: 20px;
+          }
+
+        #jspsych-video-button-response-btngroup {
+          order: 3;
+          margin-top: 20px;
+          margin-bottom: 0px;
+        }
+        </style>
+
+        <div class="custom-text-container">
+          <p style="font-size: 30px; margin: 0;">
+            Hi friend, how did you feel when working on these puzzles?
+          </p>
+
+          <div class="puzzle-images">
+            ${puzzleImagesHTML(selected_easy[0], selected_easy[1])}
+          </div>
+        </div>
+      `
+    };
+
+    var child_feedback2 = {
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      stimulus: ['puzzles/video/puzzle-feedback-child-2.mp4'], 
+      data: { trial_name: "child_feedback2" },
+      width: window.innerWidth * 0.6,
+      height: window.innerHeight * 0.4,
+      css_classes: ['fit-video'],
+      prompt: `
+        <style>
+          #jspsych-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 95vh;
+            padding-top: 5vh;
+          }
+
+          #jspsych-video-button-response-stimulus {
+            order: 1;
+            max-height: 40vh;
+            width: auto;
+          }
+
+          .custom-text-container {
+            order: 2;
+            margin-top: 25px;
+            text-align: center;
+          }
+
+          .puzzle-images {
+            margin-top: 20px;
+          }
+
+        #jspsych-video-button-response-btngroup {
+          order: 3;
+          margin-top: 20px;
+          margin-bottom: 0px;
+        }
+        </style>
+
+        <div class="custom-text-container">
+          <p style="font-size: 30px; margin: 0;">
+            How did you feel when working on these puzzles?
+          </p>
+
+          <div class="puzzle-images">
+            ${puzzleImagesHTML(selected_hard[0], selected_hard[1])}
+          </div>
+        </div>
+      `
+    };
+
+    var child_feedback3 = {
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      stimulus: ['puzzles/video/puzzle-feedback-child-3.mp4'],
+      data: { trial_name: "child_feedback3" },
+      width: window.innerWidth * 0.6,
+      height: window.innerHeight * 0.4,
+      css_classes: ['fit-video'],
+      prompt: `
+      <style>
+        #jspsych-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          height: 95vh;
+          padding-top: 5vh;
+        }
+
+        #jspsych-video-button-response-stimulus {
+          order: 1;
+          max-height: 40vh; 
+          width: auto;
+        }
+
+
+        .custom-text-container {
+          order: 2;
+          margin-top: 25px;
+        }
+
+        #jspsych-video-button-response-btngroup {
+          order: 3;
+          margin-top: 30px;
+          margin-bottom: 0px;
+      }
+      </style>
+
+      <div class="custom-text-container" style="text-align: center;">
+        <p style="font-size: 30px; margin: 0;">
+          When playing the puzzle game, how easy was it to move the pieces?
+        </p>
+      </div>
+    `
+    };
+
+    var child_feedback4 = {
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      stimulus: ['puzzles/video/puzzle-feedback-child-4.mp4'],
+      data: { trial_name: "child_feedback4" },
+      width: window.innerWidth * 0.6,
+      height: window.innerHeight * 0.4,
+      css_classes: ['fit-video'],
+      prompt: `
+      <style>
+        #jspsych-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          height: 95vh;
+          padding-top: 5vh;
+        }
+
+        #jspsych-video-button-response-stimulus {
+          order: 1;
+          max-height: 40vh; 
+          width: auto;
+        }
+
+        .custom-text-container {
+          order: 2;
+          margin-top: 25px;
+        }
+
+        #jspsych-video-button-response-btngroup {
+          order: 3;
+          margin-top: 30px;
+          margin-bottom: 0px;
+        }
+      </style>
+
+      <div class="custom-text-container" style="text-align: center;">
+        <p style="font-size: 30px; margin: 0;">
+          Was the instruction video helpeful?
+        </p>
+      </div>
+    `
+    };
+
+    // ---------------------------
+    // Parent feedback trials
+    // ---------------------------
+    var parent_feedback1 = {
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      data: { trial_name: "parent_feedback1" },
+      stimulus: ['puzzles/video/puzzle-feedback-parent-1.mp4'],
+      width: window.innerWidth * 0.6,
+      height: window.innerHeight * 0.4,
+      css_classes: ['fit-video'],
+      prompt: `
+      <style>
+        #jspsych-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          height: 95vh;
+          padding-top: 5vh;
+        }
+
+        #jspsych-video-button-response-stimulus {
+          order: 1;
+          max-height: 40vh; 
+          width: auto;
+        }
+
+
+        .custom-text-container {
+          order: 2;
+          margin-top: 25px;
+        }
+
+        #jspsych-video-button-response-btngroup {
+          order: 3;
+          margin-top: 20px;
+          margin-bottom: 0px;
+        }
+      </style>
+
+      <div class="custom-text-container" style="text-align: center;">
+        <p style="font-size: 30px; margin: 0;">
+          Parent, did you notice your child becoming frustrated during these puzzles? 
+          </p>
+           <p style="font-size: 30px; margin: 10px;">
+          How did their level of frustration compare to other parts of their day when they might feel frustrated? 
+          </p>
+           <p style="font-size: 30px; margin: 10px;">
+          Were they more frustrated than usual, less frustrated than usual, or about the same?
+        </p>
+
+        <div class="puzzle-images">
+            ${puzzleImagesHTML(selected_easy[0], selected_easy[1])}
+          </div>
+      </div>
+    `
+    };
+
+    var parent_feedback2 = {
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      data: { trial_name: "parent_feedback2" },
+      stimulus: ['puzzles/video/puzzle-feedback-parent-2.mp4'],
+      width: window.innerWidth * 0.6,
+      height: window.innerHeight * 0.4,
+      css_classes: ['fit-video'],
+      prompt: `
+      <style>
+        #jspsych-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          height: 95vh;
+          padding-top: 5vh;
+        }
+
+        #jspsych-video-button-response-stimulus {
+          order: 1;
+          max-height: 40vh; 
+          width: auto;
+        }
+
+
+        .custom-text-container {
+          order: 2;
+          margin-top: 25px;
+        }
+
+        #jspsych-video-button-response-btngroup {
+          order: 3;
+          margin-top: 20px;
+          margin-bottom: 0px;
+        }
+      </style>
+
+      <div class="custom-text-container" style="text-align: center;">
+        <p style="font-size: 30px; margin: 0;">
+          Did you notice your child becoming frustrated during these puzzles? 
+          </p>
+           <p style="font-size: 30px; margin: 10px;">
+          How did their level of frustration compare to other parts of their day when they might feel frustrated?
+          </p>
+           <p style="font-size: 30px; margin: 10px;">
+          Were they more frustrated than usual, less frustrated than usual, or about the same?
+        </p>
+
+        <div class="puzzle-images">
+            ${puzzleImagesHTML(selected_hard[0], selected_hard[1])}
+          </div>
+      </div>
+    `
+    };
+
+    var parent_feedback3 = {
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      data: { trial_name: "parent_feedback3" },
+      stimulus: ['puzzles/video/puzzle-feedback-parent-3.mp4'],
+      width: window.innerWidth * 0.6,
+      height: window.innerHeight * 0.4,
+      css_classes: ['fit-video'],
+      prompt: `
+      <style>
+        #jspsych-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          height: 95vh;
+          padding-top: 5vh;
+        }
+
+        #jspsych-video-button-response-stimulus {
+          order: 1;
+          max-height: 40vh; 
+          width: auto;
+        }
+
+
+        .custom-text-container {
+          order: 2;
+          margin-top: 25px;
+        }
+
+        #jspsych-video-button-response-btngroup {
+          order: 3;
+          margin-top: 30px;
+          margin-bottom: 0px;
+        }
+      </style>
+
+      <div class="custom-text-container" style="text-align: center;">
+        <p style="font-size: 30px; margin: 0;">
+          We are also interested in your thoughts on how easy it was for your child to navigate the game. 
+          </p>
+           <p style="font-size: 30px; margin: 10px;">
+          Was there anything else during the game that you found your child was struggling with?  
+        </p>
+      </div>
+    `
+    };
+
+    var parent_feedback4 = {
+      type: jsPsychVideoButtonResponse,
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      data: { trial_name: "parent_feedback4" },
+      stimulus: ['puzzles/video/puzzle-feedback-parent-4.mp4'],
+      width: window.innerWidth * 0.6,
+      height: window.innerHeight * 0.4,
+      css_classes: ['fit-video'],
+      prompt: `
+      <style>
+        #jspsych-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          height: 95vh;
+          padding-top: 5vh;
+        }
+
+        #jspsych-video-button-response-stimulus {
+          order: 1;
+          max-height: 40vh; 
+          width: auto;
+        }
+
+        .custom-text-container {
+          order: 2;
+          margin-top: 25px;
+        }
+
+        #jspsych-video-button-response-btngroup {
+          order: 3;
+          margin-top: 30px;
+          margin-bottom: 0px;
+        }
+      </style>
+
+      <div class="custom-text-container" style="text-align: center;">
+        <p style="font-size: 30px; margin: 0;">
+          Was your child using a mouse or trackpad during the puzzle game? 
+        </p>
+      </div>
+    `
+    };
+
+    // ---------------------------
+    // Feedback ends
+    // ---------------------------    
+    var feedback_end = {
+      type: jsPsychVideoButtonResponse, 
+      autoplay: true,
+      trial_ends_after_video: false,
+      response_ends_trial: true,
+      response_allowed_while_playing: false,
+      choices: ['Next'],
+      stimulus:['puzzles/video/puzzle-feedback-end.mp4'], 
+      width: window.innerWidth,  
+      height: window.innerHeight, 
+      css_classes: ['fit-video'] 
+    };
+ 
+    var exit_fullscreen = {
+      type: jsPsychFullscreen,
+      fullscreen_mode: false,
+      delay_after: 0
+    };   
+    
+    // ---------------------------
+    // Build main puzzle timeline
+    // ---------------------------
+    var main_puzzle_timeline = [];
+
+    if (block_order === "EEHH") {
+      main_puzzle_timeline.push(selected_easy[0]);
+      main_puzzle_timeline.push(child_rate);
+      main_puzzle_timeline.push(selected_easy[1]);
+      main_puzzle_timeline.push(child_rate);
+      main_puzzle_timeline.push(selected_hard[0]);
+      main_puzzle_timeline.push(child_rate);
+      main_puzzle_timeline.push(selected_hard[1]);
+      main_puzzle_timeline.push(child_rate);
+    } else {
+      main_puzzle_timeline.push(selected_hard[0]);
+      main_puzzle_timeline.push(child_rate);
+      main_puzzle_timeline.push(selected_hard[1]);
+      main_puzzle_timeline.push(child_rate);
+      main_puzzle_timeline.push(selected_easy[0]);
+      main_puzzle_timeline.push(child_rate);
+      main_puzzle_timeline.push(selected_easy[1]);
+      main_puzzle_timeline.push(child_rate);
+    }
+
+    // ---------------------------
+    // Final full timeline
+    // ---------------------------
+    var full_timeline = [
+      enter_fullscreen,
+      task_video_1,
+      child_rate,
+      task_video_2,
+      tutorial1,
+      tutorial2,
+      task_video_3
+    ].concat(main_puzzle_timeline).concat([
+      feedback_intro,
+      child_feedback1,
+      child_feedback2,
+      child_feedback3,
+      child_feedback4,
+      parent_feedback1,
+      parent_feedback2,
+      parent_feedback3,
+      parent_feedback4,
+      feedback_end,
+      exit_fullscreen
+    ]);
+
+    jsPsych.run(full_timeline);
+  </script>
+</html>
