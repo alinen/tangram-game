@@ -20,15 +20,6 @@
       margin: 0 auto;
       }
     </style>
-    <style>
-     .fit-video video {
-      width: 80vw;
-      height: 75vh;
-      object-fit: contain;
-      display: block;
-      margin: 0 auto;
-      }
-    </style>
   </head>
   <body></body>
 
@@ -67,7 +58,7 @@
 
       document.body.appendChild(warning);
 
-          // button logic
+      // button logic
       document
         .getElementById('return-fullscreen-btn')
         .addEventListener('click', function() {
@@ -93,13 +84,31 @@
     }
     });
 
+    var init_mic = {
+      type: jsPsychInitializeMicrophone
+    };
+
+    var record_trial = {
+      type: jsPsychHtmlAudioResponse,
+      stimulus: '<p>Please press the button to start audio recording.</p>',
+      recording_duration: null, 
+      on_finish: function(data) {
+        data.audio_data = data.response;
+
+        // optional: add extra info
+        data.recording_length = 5000;
+
+        console.log(data);
+      }
+    };
+
     // ---------------------------
     // Fullscreen trial
     // ---------------------------
-  var enter_fullscreen = {
-      type: jsPsychFullscreen,
-      fullscreen_mode: true
-    }; 
+      var enter_fullscreen = {
+        type: jsPsychFullscreen,
+        fullscreen_mode: true
+      }; 
   
     // ---------------------------
     // Task Orientation Videos
