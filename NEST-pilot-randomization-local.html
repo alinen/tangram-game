@@ -11,6 +11,9 @@
     <script src="jspsych/dist/plugin-fullscreen.js"></script>
     <script src="jspsych/dist/plugin-html-button-response.js"></script>
     <script src="jspsych/dist/extension-record-video.js"></script>
+    <script src="jspsych/dist/plugin-initialize-microphone.js"></script>
+    <script src="jspsych/dist/plugin-html-audio-response.js"></script>
+    <script src="jspsych/dist/plugin-call-function.js"></script>
     <style>
      .fit-video video {
       width: 80vw;
@@ -24,15 +27,17 @@
   <body></body>
 
   <script>
+  let mediaRecorder;
+  let audioChunks = [];
+  
   var jsPsych = initJsPsych({
-   on_interaction_data_update: function(data) {
-    // if participant exits fullscreen
-    if (data.event === 'fullscreenexit') {
-
-     if (document.querySelector('#fullscreen-warning')) return;
+    on_interaction_data_update: function(data) {
+        // if participant exits fullscreen
+      if (data.event === 'fullscreenexit') {
+      if (document.querySelector('#fullscreen-warning')) return;
 
       const warning = document.createElement('div');
-      warning.id = 'fullscreen-warning';
+        warning.id = 'fullscreen-warning';
 
           // return to fullscreen message
           warning.innerHTML = `
@@ -56,16 +61,16 @@
             </div>
           `;
 
-      document.body.appendChild(warning);
+        document.body.appendChild(warning);
 
-      // button logic
-      document
-        .getElementById('return-fullscreen-btn')
-        .addEventListener('click', function() {
-           if (document.documentElement.requestFullscreen) {
+        // button logic
+        document
+          .getElementById('return-fullscreen-btn')
+          .addEventListener('click', function() {
+              if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
-           }
-            warning.remove();
+              }
+              warning.remove();
           });
         }
       },
@@ -74,20 +79,71 @@
       on_finish: function() {
         // get interaction data
         var interactionData = jsPsych.data.getInteractionData();
+        
         // add the interaction data to data file
-        jsPsych.data.get().push({
+       jsPsych.data.get().push({
           trial_type: 'interaction_summary',
-          interaction_history: interactionData,
-          total_interactions: interactionData.length
-      });
-      jsPsych.data.get().localSave('json', 'NEST-PuzzleTask-Test.json');
-    }
+          interaction_history: interactionData.values(),
+          total_interactions: interactionData.count()
+        });
+
+        // Save files
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+          mediaRecorder.onstop = () => {
+            saveFiles();
+          };
+          // Stop the mic
+          mediaRecorder.stop();
+        } else {
+          // If mic was never started, just save the JSON
+          saveFiles();
+        }
+      }
     });
 
-  
-    // ---------------------------
-    // record extension
-    // ---------------------------
+// Add helper function to trigger downloads
+    function saveFiles() {
+      // Save data output JSON file 
+      jsPsych.data.get().localSave('json', 'NEST-PuzzleTask-Test.json');
+
+      // Save the audio file
+      if (audioChunks.length > 0) {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = audioUrl;
+        a.download = 'NEST-PuzzleTask-Audio.webm'; 
+        document.body.appendChild(a);
+        a.click();
+        
+        window.URL.revokeObjectURL(audioUrl);
+        a.remove();
+      }
+    }
+
+    var start_background_recording = {
+      type: jsPsychCallFunction,
+      async: true,
+      func: function(done) {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(stream => {
+            mediaRecorder = new MediaRecorder(stream);
+            
+            mediaRecorder.ondataavailable = e => {
+              if (e.data.size > 0) audioChunks.push(e.data);
+            };
+            
+            mediaRecorder.start();
+            done(); 
+          })
+          .catch(err => {
+            console.error("Microphone access denied:", err);
+            alert("Microphone access is required to participate. Please refresh and allow access.");
+          });
+      }
+    };
 
     // ---------------------------
     // Fullscreen trial
@@ -605,8 +661,6 @@
 
       <div class="custom-text-container" style="text-align: center;">
         <p style="font-size: 20px; margin: 0;">
-          Was the instruction video helpeful?
-        <p style="font-size: 30px; margin: 0;">
           Was the instruction video helpful?
         </p>
       </div>
@@ -889,6 +943,7 @@
     // Final full timeline
     // ---------------------------
     var full_timeline = [
+      start_background_recording,
       enter_fullscreen,
       task_video_1,
       child_rate,
