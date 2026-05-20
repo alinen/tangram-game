@@ -84,24 +84,6 @@
     }
     });
 
-    var init_mic = {
-      type: jsPsychInitializeMicrophone
-    };
-
-    var record_trial = {
-      type: jsPsychHtmlAudioResponse,
-      stimulus: '<p>Please press the button to start audio recording.</p>',
-      recording_duration: null, 
-      on_finish: function(data) {
-        data.audio_data = data.response;
-
-        // optional: add extra info
-        data.recording_length = 5000;
-
-        console.log(data);
-      }
-    };
-
     // ---------------------------
     // Fullscreen trial
     // ---------------------------
