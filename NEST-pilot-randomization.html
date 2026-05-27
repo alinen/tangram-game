@@ -11,6 +11,7 @@
     <script src="jspsych/dist/plugin-fullscreen.js"></script>
     <script src="jspsych/dist/plugin-html-button-response.js"></script>
     <script src="jspsych/dist/extension-record-video.js"></script>
+    <script src="jspsych/dist/plugin-survey-multi-choice.js"></script>
     <style>
      .fit-video video {
       width: 80vw;
@@ -373,6 +374,31 @@
           <img src="${puzzleImgSrc(id2)}" style="max-width:180px; max-height:180px; border:3px solid #ccc; border-radius:12px; padding:10px; background:#f9f9f9;">
         </div>
       `;
+    }
+    
+    // ---------------------------
+    // Build main puzzle timeline
+    // ---------------------------
+    var main_puzzle_timeline = [];
+
+    if (block_order === "EEHH") {
+      main_puzzle_timeline.push(selected_easy[0]);
+      main_puzzle_timeline.push(child_rate);
+      main_puzzle_timeline.push(selected_easy[1]);
+      main_puzzle_timeline.push(child_rate);
+      main_puzzle_timeline.push(selected_hard[0]);
+      main_puzzle_timeline.push(child_rate);
+      main_puzzle_timeline.push(selected_hard[1]);
+      main_puzzle_timeline.push(child_rate);
+    } else {
+      main_puzzle_timeline.push(selected_hard[0]);
+      main_puzzle_timeline.push(child_rate);
+      main_puzzle_timeline.push(selected_hard[1]);
+      main_puzzle_timeline.push(child_rate);
+      main_puzzle_timeline.push(selected_easy[0]);
+      main_puzzle_timeline.push(child_rate);
+      main_puzzle_timeline.push(selected_easy[1]);
+      main_puzzle_timeline.push(child_rate);
     }
 
     // ---------------------------
@@ -849,37 +875,55 @@
       height: window.innerHeight, 
       css_classes: ['fit-video'] 
     };
+
+
+    var withdrawoption = {
+      type: jsPsychSurveyMultiChoice,
+      questions: [
+        {
+          prompt: `<style>
+  #jspsych-content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    } 
+    .jspsych-survey-multi-choice-options {
+    text-align: center;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .jspsych-btn {
+    display: block;
+    margin: 30px auto 0 auto;
+    text-align: center;
+  }
+</style>
+<div>
+    <p style="font-size: 24px; margin-bottom: 20px;">
+          If you would like to withdraw the recording of your study session, please select 'Yes'. 
+          </p>
+          <p style="font-size: 24px; margin-bottom: 20px;">
+          It will then be deleted by the study team, and no one will review your recording.
+          </p>`, 
+          name: 'WithdrawOption', 
+      options: ['Yes', 'No'], 
+      required: true
+    }] ,
+    button_label: 'Next'
+};
  
     var exit_fullscreen = {
       type: jsPsychFullscreen,
       fullscreen_mode: false,
       delay_after: 0
     };   
-    
-    // ---------------------------
-    // Build main puzzle timeline
-    // ---------------------------
-    var main_puzzle_timeline = [];
-
-    if (block_order === "EEHH") {
-      main_puzzle_timeline.push(selected_easy[0]);
-      main_puzzle_timeline.push(child_rate);
-      main_puzzle_timeline.push(selected_easy[1]);
-      main_puzzle_timeline.push(child_rate);
-      main_puzzle_timeline.push(selected_hard[0]);
-      main_puzzle_timeline.push(child_rate);
-      main_puzzle_timeline.push(selected_hard[1]);
-      main_puzzle_timeline.push(child_rate);
-    } else {
-      main_puzzle_timeline.push(selected_hard[0]);
-      main_puzzle_timeline.push(child_rate);
-      main_puzzle_timeline.push(selected_hard[1]);
-      main_puzzle_timeline.push(child_rate);
-      main_puzzle_timeline.push(selected_easy[0]);
-      main_puzzle_timeline.push(child_rate);
-      main_puzzle_timeline.push(selected_easy[1]);
-      main_puzzle_timeline.push(child_rate);
-    }
 
     // ---------------------------
     // Final full timeline
@@ -903,6 +947,7 @@
       parent_feedback3,
       parent_feedback4,
       feedback_end,
+      withdrawoption,
       exit_fullscreen
     ]);
 
