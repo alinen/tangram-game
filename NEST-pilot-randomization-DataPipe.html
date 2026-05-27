@@ -107,12 +107,11 @@
           })
           .catch(err => {
             console.error("Microphone access denied:", err);
-            alert("Microphone access is required to participate. Please refresh and allow access.");
+            alert("Microphone access is required for audio recording. Please refresh and allow access.");
             done();
           });
       }
     };
-
 
     // ---------------------------
     // Fullscreen trial
