@@ -180,6 +180,7 @@
       width: window.innerWidth,  
       height: window.innerHeight, 
       css_classes: ['fit-video'] 
+
     };
 
     var task_video_3 = {
@@ -520,13 +521,13 @@
 
         #jspsych-video-button-response-btngroup {
           order: 3;
-          margin-top: 0px;
+          margin-top: 40px;
           margin-bottom: 0px;
         }
         </style>
 
         <div class="custom-text-container">
-          <p style="font-size: 20px; margin: 0;">
+          <p style="font-size: 36px;font-weight: 500;argin: 0;">
             Hi friend, how did you feel when working on these puzzles?
           </p>
 
@@ -578,13 +579,13 @@
 
         #jspsych-video-button-response-btngroup {
           order: 3;
-          margin-top: 0px;
+          margin-top: 40px;
           margin-bottom: 0px;
         }
         </style>
 
         <div class="custom-text-container">
-          <p style="font-size: 20px; margin: 0;">
+          <p style="font-size: 36px; margin: 0;">
             How did you feel when working on these puzzles?
           </p>
 
@@ -638,7 +639,7 @@
       </style>
 
       <div class="custom-text-container" style="text-align: center;">
-        <p style="font-size: 20px; margin: 0;">
+        <p style="font-size: 20px;font-weight: 500;margin: 0;">
           When playing the puzzle game, how easy was it to move the pieces?
         </p>
       </div>
@@ -677,11 +678,14 @@
         .custom-text-container {
           order: 2;
           margin-top: 25px;
+          text-align: center;
+          transform: scale(1.4);
+          transform-origin: center top;
         }
 
         #jspsych-video-button-response-btngroup {
           order: 3;
-          margin-top: 0px;
+          margin-top: 50px;
           margin-bottom: 0px;
         }
       </style>
@@ -988,6 +992,18 @@
     // Final full timeline
     // ---------------------------
     var full_timeline = [
+      feedback_intro,
+      child_feedback1,
+      child_feedback2,
+      child_feedback3,
+      child_feedback4,
+      parent_feedback1,
+      parent_feedback2,
+      parent_feedback3,
+      parent_feedback4,
+      feedback_end,
+      withdrawoption,
+      exit_fullscreen,
       start_background_recording,
       enter_fullscreen,
       task_video_1,
