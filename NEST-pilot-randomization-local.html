@@ -15,6 +15,7 @@
     <script src="jspsych/dist/plugin-html-audio-response.js"></script>
     <script src="jspsych/dist/plugin-call-function.js"></script>
     <script src="jspsych/dist/plugin-survey-multi-choice.js"></script>
+    <script src="jspsych/dist/plugin-survey-html-form.js"></script>
     <style>
      .fit-video video {
       width: 80vw;
@@ -146,6 +147,18 @@
       }
     };
     
+    // ---------------------------
+    // Participant_ID
+    // ---------------------------   
+    var np_id = {
+      type: jsPsychSurveyHtmlForm, 
+      preamble: '<p>Please enter your participant ID:</p>',
+      html: '<p><input type="text" required id="test-resp-box" name="response" size="10" /></p>',
+      button_label: 'Next',
+      autocomplete: false, 
+      autofocus: 'test-resp-box',
+      data: { trial_name: "participant_id" },
+    };
 
     // ---------------------------
     // Fullscreen trial
@@ -412,10 +425,6 @@
     var selected_easy = jsPsych.randomization.sampleWithoutReplacement(easy_puzzles, 2);
     var selected_hard = jsPsych.randomization.sampleWithoutReplacement(hard_puzzles, 2);
 
-    var block_order = jsPsych.randomization.sampleWithoutReplacement(["EEHH", "HHEE"], 1)[0];
-
-    jsPsych.data.addProperties({ block_order: block_order });
-
     // ---------------------------
     // Helper: build puzzle image HTML from puzzle_id
     // ---------------------------
@@ -435,32 +444,52 @@
           <img src="${puzzleImgSrc(id2)}" style="max-width:180px; max-height:180px; border:3px solid #ccc; border-radius:12px; padding:10px; background:#f9f9f9;">
         </div>
       `;
-    }
-    
+    };
+
     // ---------------------------
     // Build main puzzle timeline
     // ---------------------------
-    var main_puzzle_timeline = [];
+    var block_order_select = {
+      type: jsPsychHtmlButtonResponse, 
+      stimulus: '<p>Please select the block order for this session:</p>',
+      choices: ['EEHH', 'HHEE'],
+      on_finish: function(data) {
+        var block_order = data.response === 0 ? "EEHH" : "HHEE";
+        jsPsych.data.addProperties({ block_order: block_order });
+      }
+    };
 
-    if (block_order === "EEHH") {
-      main_puzzle_timeline.push(selected_easy[0]);
-      main_puzzle_timeline.push(child_rate);
-      main_puzzle_timeline.push(selected_easy[1]);
-      main_puzzle_timeline.push(child_rate);
-      main_puzzle_timeline.push(selected_hard[0]);
-      main_puzzle_timeline.push(child_rate);
-      main_puzzle_timeline.push(selected_hard[1]);
-      main_puzzle_timeline.push(child_rate);
-    } else {
-      main_puzzle_timeline.push(selected_hard[0]);
-      main_puzzle_timeline.push(child_rate);
-      main_puzzle_timeline.push(selected_hard[1]);
-      main_puzzle_timeline.push(child_rate);
-      main_puzzle_timeline.push(selected_easy[0]);
-      main_puzzle_timeline.push(child_rate);
-      main_puzzle_timeline.push(selected_easy[1]);
-      main_puzzle_timeline.push(child_rate);
-    }
+    // Build the sequences
+    var eehh_sequence = [
+      selected_easy[0], child_rate,
+      selected_easy[1], child_rate,
+      selected_hard[0], child_rate,
+      selected_hard[1], child_rate
+    ];
+
+    var hhee_sequence = [
+      selected_hard[0], child_rate,
+      selected_hard[1], child_rate,
+      selected_easy[0], child_rate,
+      selected_easy[1], child_rate
+    ];
+
+    // Create the conditional nodes
+    var eehh_node = {
+      timeline: eehh_sequence,
+      conditional_function: function() {
+        var current_order = jsPsych.data.get().select('block_order').values[0];
+        return current_order === "EEHH";
+      }
+    };
+
+    var hhee_node = {
+      timeline: hhee_sequence,
+      conditional_function: function() {
+        var current_order = jsPsych.data.get().select('block_order').values[0];
+        return current_order === "HHEE";
+      }
+    };
 
     // ---------------------------
     // Feedback trials
@@ -479,7 +508,6 @@
     // ---------------------------
     // Child feedback trials
     // ---------------------------
-
     var child_feedback1 = {
       type: jsPsychVideoButtonResponse,
       autoplay: true,
@@ -945,43 +973,47 @@
       questions: [
         {
           prompt: `<style>
-  #jspsych-content {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 40px;
-    } 
-    .jspsych-survey-multi-choice-options {
-    text-align: center;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-  }
+            #jspsych-content {
+              height: 100vh;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              text-align: center;
+              padding: 40px;
+              } 
+              .jspsych-survey-multi-choice-options {
+              text-align: center;
+              margin-top: 20px;
+              display: flex;
+              justify-content: center;
+              gap: 40px;
+            }
 
-  .jspsych-btn {
-    display: block;
-    margin: 30px auto 0 auto;
-    text-align: center;
-  }
-</style>
-<div>
-    <p style="font-size: 24px; margin-bottom: 20px;">
-          If you would like to withdraw the recording of your study session, please select 'Yes'. 
-          </p>
-          <p style="font-size: 24px; margin-bottom: 20px;">
-          It will then be deleted by the study team, and no one will review your recording.
-          </p>`, 
+            .jspsych-btn {
+              display: block;
+              margin: 30px auto 0 auto;
+              text-align: center;
+            }
+          </style>
+          <div>
+            <p style="font-size: 24px; margin-bottom: 20px;">
+                  If you would like to withdraw the recording of your study session, please select 'Yes'. 
+            </p>
+            <p style="font-size: 24px; margin-bottom: 20px;">
+                  It will then be deleted by the study team, and no one will review your recording.
+            </p>
+            </div>`, 
           name: 'WithdrawOption', 
-      options: ['Yes', 'No'], 
-      required: true
-    }] ,
-    button_label: 'Next'
-};
- 
+        options: ['Yes', 'No'], 
+        required: true
+      }] ,
+      button_label: 'Next'
+    };
+
+    // ---------------------------
+    // Exit fullscreen
+    // ---------------------------
     var exit_fullscreen = {
       type: jsPsychFullscreen,
       fullscreen_mode: false,
@@ -992,15 +1024,17 @@
     // Final full timeline
     // ---------------------------
     var full_timeline = [
-      start_background_recording,
+      np_id,
+      block_order_select,
       enter_fullscreen,
       task_video_1,
       child_rate,
       task_video_2,
       tutorial1,
       tutorial2,
-      task_video_3
-    ].concat(main_puzzle_timeline).concat([
+      task_video_3,
+      eehh_node,
+      hhee_node,
       feedback_intro,
       child_feedback1,
       child_feedback2,
@@ -1013,7 +1047,7 @@
       feedback_end,
       withdrawoption,
       exit_fullscreen
-    ]);
+    ];
 
     jsPsych.run(full_timeline);
   </script>
