@@ -23,16 +23,17 @@
   </head>
   <body></body>
   <script>
-    var jsPsych = initJsPsych({
-      //extensions: [{ type: jsPsychExtensionRecordVideo }],
-      on_interaction_data_update: function(data) {
+  let mediaRecorder;
+  let audioChunks = [];
+  
+  var jsPsych = initJsPsych({
+    on_interaction_data_update: function(data) {
         // if participant exits fullscreen
-        if (data.event === 'fullscreenexit') {
+      if (data.event === 'fullscreenexit') {
+      if (document.querySelector('#fullscreen-warning')) return;
 
-          if (document.querySelector('#fullscreen-warning')) return;
-
-          const warning = document.createElement('div');
-          warning.id = 'fullscreen-warning';
+      const warning = document.createElement('div');
+        warning.id = 'fullscreen-warning';
 
           // return to fullscreen message
           warning.innerHTML = `
@@ -56,17 +57,17 @@
             </div>
           `;
 
-          document.body.appendChild(warning);
+        document.body.appendChild(warning);
 
-          // button logic
-          document
-            .getElementById('return-fullscreen-btn')
-            .addEventListener('click', function() {
+        // button logic
+        document
+          .getElementById('return-fullscreen-btn')
+          .addEventListener('click', function() {
               if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
-             }
+              }
               warning.remove();
-            });
+          });
         }
       },
 
@@ -74,32 +75,77 @@
       on_finish: function() {
         // get interaction data
         var interactionData = jsPsych.data.getInteractionData();
+        
         // add the interaction data to data file
-        jsPsych.data.get().push({
+       jsPsych.data.get().push({
           trial_type: 'interaction_summary',
-          interaction_history: interactionData,
-          total_interactions: interactionData.length
-      });
-      jsPsych.data.get().localSave('json', 'NEST-PuzzleTask-Test.json');
-    }
+          interaction_history: interactionData.values(),
+          total_interactions: interactionData.count()
+        });
+
+        // Save files
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+          mediaRecorder.onstop = () => {
+            saveFiles();
+          };
+          // Stop the mic
+          mediaRecorder.stop();
+        } else {
+          // If mic was never started, just save the JSON
+          saveFiles();
+        }
+      }
     });
+
+// Add helper function to trigger downloads
+    function saveFiles() {
+      // Save data output JSON file 
+      jsPsych.data.get().localSave('json', 'NEST-PuzzleTask-Test.json');
+
+      // Save the audio file
+      if (audioChunks.length > 0) {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = audioUrl;
+        a.download = 'NEST-PuzzleTask-Audio.webm'; 
+        document.body.appendChild(a);
+        a.click();
+        
+        window.URL.revokeObjectURL(audioUrl);
+        a.remove();
+      }
+    }
+
+    var start_background_recording = {
+      type: jsPsychCallFunction,
+      async: true,
+      func: function(done) {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(stream => {
+            mediaRecorder = new MediaRecorder(stream);
+            
+            mediaRecorder.ondataavailable = e => {
+              if (e.data.size > 0) audioChunks.push(e.data);
+            };
+            
+            mediaRecorder.start();
+            done(); 
+          })
+          .catch(err => {
+            console.error("Microphone access denied:", err);
+            alert("Microphone access is required to participate. Please refresh and allow access.");
+          });
+      }
+    };
+    
 
     var enter_fullscreen = {
       type: jsPsychFullscreen,
       fullscreen_mode: true
     }; 
-
-//    const init_camera = {
-//      type: jsPsychInitializeCamera,
-//      include_audio: true
-//    };
-
-//    const record_start = {
-//      type: jsPsychHtmlButtonResponse,
-//      stimulus: `<div style="width:100px; height:100px; background:red;"></div>`,
-//      choices: ['Done'],
-//      extensions: [{ type: jsPsychExtensionRecordVideo }]
-//    };
 
     var task_video_1 = {
       type: jsPsychVideoKeyboardResponse,

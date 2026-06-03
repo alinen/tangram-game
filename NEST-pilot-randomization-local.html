@@ -29,9 +29,6 @@
   <body></body>
 
   <script>
-  let mediaRecorder;
-  let audioChunks = [];
-  
   var jsPsych = initJsPsych({
     on_interaction_data_update: function(data) {
         // if participant exits fullscreen
@@ -79,73 +76,39 @@
 
       // saving data locally 
       on_finish: function() {
+        experiment_finished = true; 
+
         // get interaction data
         var interactionData = jsPsych.data.getInteractionData();
         
         // add the interaction data to data file
-       jsPsych.data.get().push({
+        jsPsych.data.get().push({
           trial_type: 'interaction_summary',
           interaction_history: interactionData.values(),
           total_interactions: interactionData.count()
         });
-
-        // Save files
-        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-          mediaRecorder.onstop = () => {
-            saveFiles();
-          };
-          // Stop the mic
-          mediaRecorder.stop();
-        } else {
-          // If mic was never started, just save the JSON
-          saveFiles();
-        }
+        saveFiles();
       }
     });
 
-// Add helper function to trigger downloads
+    // Helper function for the final download
     function saveFiles() {
-      // Save data output JSON file 
-      jsPsych.data.get().localSave('json', 'NEST-PuzzleTask-Test.json');
-
-      // Save the audio file
-      if (audioChunks.length > 0) {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = audioUrl;
-        a.download = 'NEST-PuzzleTask-Audio.webm'; 
-        document.body.appendChild(a);
-        a.click();
-        
-        window.URL.revokeObjectURL(audioUrl);
-        a.remove();
-      }
+      jsPsych.data.get().localSave('json', 'NEST-PuzzleTask-NPID.json');
     }
 
-    var start_background_recording = {
-      type: jsPsychCallFunction,
-      async: true,
-      func: function(done) {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-          .then(stream => {
-            mediaRecorder = new MediaRecorder(stream);
-            
-            mediaRecorder.ondataavailable = e => {
-              if (e.data.size > 0) audioChunks.push(e.data);
-            };
-            
-            mediaRecorder.start();
-            done(); 
-          })
-          .catch(err => {
-            console.error("Microphone access denied:", err);
-            alert("Microphone access is required to participate. Please refresh and allow access.");
-          });
+    // ---------------------------
+    // Save Partial Data on Window Close
+    // ---------------------------
+    window.addEventListener('beforeunload', function (e) {
+      // download the partial file if the experiment wasn't fully completed
+      if (!experiment_finished) {
+        jsPsych.data.get().localSave('json', 'NEST-PuzzleTask-NPID_partial data.json');
+        
+        // Trigger the browser's default "Leave Site?" warning popup
+        e.preventDefault();
+        e.returnValue = ''; 
       }
-    };
+    });
     
     // ---------------------------
     // Participant_ID
@@ -189,7 +152,7 @@
       response_ends_trial: true,
       response_allowed_while_playing: false,
       choices: ['Next'],
-      stimulus:['puzzles/video/puzzle_orientation_video_2.mp4'], 
+      stimulus:['puzzles/video/puzzle_orientation_video_2_r.mp4'], 
       width: window.innerWidth,  
       height: window.innerHeight, 
       css_classes: ['fit-video'] 
@@ -203,7 +166,7 @@
       response_ends_trial: true,
       response_allowed_while_playing: false,
       choices: ['Next'],
-      stimulus:['puzzles/video/puzzle_orientation_video_3_control.mp4'], 
+      stimulus:['puzzles/video/puzzle_orientation_video_3_control_r.mp4'], 
       width: window.innerWidth,  
       height: window.innerHeight, 
       css_classes: ['fit-video'] 
@@ -452,7 +415,7 @@
     var block_order_select = {
       type: jsPsychHtmlButtonResponse, 
       stimulus: '<p>Please select the block order for this session:</p>',
-      choices: ['EEHH', 'HHEE'],
+      choices: ['A', 'B'],
       on_finish: function(data) {
         var block_order = data.response === 0 ? "EEHH" : "HHEE";
         jsPsych.data.addProperties({ block_order: block_order });
@@ -788,7 +751,7 @@
 
       <div class="custom-text-container" style="text-align: center;">
         <p style="font-size: 20px; margin: 0;">
-          Parent, did you notice your child becoming frustrated during these puzzles? 
+          Did you notice your child becoming frustrated during these puzzles? 
           </p>
            <p style="font-size: 20px; margin: 10px;">
           How did their level of frustration compare to other parts of their day when they might feel frustrated? 
