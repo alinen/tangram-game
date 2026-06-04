@@ -30,6 +30,11 @@
 
   <script>
   var jsPsych = initJsPsych({
+    on_data_update: function(data) {
+        var currentData = jsPsych.data.get().json();
+        localStorage.setItem('NEST-Pilot_partial_data', currentData);
+    },
+
     on_interaction_data_update: function(data) {
         // if participant exits fullscreen
       if (data.event === 'fullscreenexit') {
@@ -74,6 +79,15 @@
         }
       },
 
+     //on_close: function() {
+       // Grab all currently collected data
+      // var currentData = jsPsych.data.get().json();
+          
+      // Save partial data locally
+     // localStorage.setItem('jspsych_partial_data', currentData);
+     // console.log('Partial data saved to localStorage');
+     // },
+
       // saving data locally 
       on_finish: function() {
         experiment_finished = true; 
@@ -87,29 +101,28 @@
           interaction_history: interactionData.values(),
           total_interactions: interactionData.count()
         });
+        
+        // remove partial data if experiment is done
+        localStorage.removeItem('NEST_partial_data');
         saveFiles();
       }
     });
 
     // Helper function for the final download
     function saveFiles() {
-      jsPsych.data.get().localSave('json', 'NEST-PuzzleTask-NPID.json');
+      jsPsych.data.get().localSave('json', 'NEST-Pilot-NPID.json');
     }
 
     // ---------------------------
     // Save Partial Data on Window Close
     // ---------------------------
-    window.addEventListener('beforeunload', function (e) {
-      // download the partial file if the experiment wasn't fully completed
-      if (!experiment_finished) {
-        jsPsych.data.get().localSave('json', 'NEST-PuzzleTask-NPID_partial data.json');
-        
-        // Trigger the browser's default "Leave Site?" warning popup
-        e.preventDefault();
-        e.returnValue = ''; 
-      }
+    // run `console.log(localStorage.getItem('NEST_partial_data'));` to retrieve partial data from console log
+    window.addEventListener('beforeunload', (event) => {     
+        event.preventDefault();
+        event.returnValue = ''; 
     });
-    
+
+  
     // ---------------------------
     // Participant_ID
     // ---------------------------   
@@ -805,7 +818,6 @@
           width: auto;
         }
 
-
         .custom-text-container {
           order: 2;
           margin-top: 25px;
@@ -873,7 +885,6 @@
           max-height: 30vh; 
           width: auto;
         }
-
 
         .custom-text-container {
           order: 2;
