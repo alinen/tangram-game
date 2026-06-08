@@ -1,50 +1,52 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <script src="jspsych/dist/jspsych.js"></script>
-    <link rel="stylesheet" href="jspsych/dist/jspsych.css">
-    <script src="jspsych/dist/plugin-survey-likert.js"></script>
-    <script src="jspsych/dist/plugin-html-slider-response.js"></script>
-    <script src="jspsych/dist/plugin-video-keyboard-response.js"></script>
-    <script src="jspsych/dist/plugin-video-button-response.js"></script>
-    <script src="jspsych/dist/plugin-fullscreen.js"></script>
-    <script src="jspsych/dist/plugin-html-button-response.js"></script>
-    <script src="jspsych/dist/extension-record-video.js"></script>
-    <script src="jspsych/dist/plugin-initialize-microphone.js"></script>
-    <script src="jspsych/dist/plugin-html-audio-response.js"></script>
-    <script src="jspsych/dist/plugin-call-function.js"></script>
-    <script src="jspsych/dist/plugin-survey-multi-choice.js"></script>
-    <script src="jspsych/dist/plugin-survey-html-form.js"></script>
-    <script src="https://unpkg.com/@jspsych-contrib/plugin-tangram-game"></script>
-    <style>
-     .fit-video video {
+
+<head>
+  <script src="jspsych/dist/jspsych.js"></script>
+  <link rel="stylesheet" href="jspsych/dist/jspsych.css">
+  <script src="jspsych/dist/plugin-survey-likert.js"></script>
+  <script src="jspsych/dist/plugin-html-slider-response.js"></script>
+  <script src="jspsych/dist/plugin-video-keyboard-response.js"></script>
+  <script src="jspsych/dist/plugin-video-button-response.js"></script>
+  <script src="jspsych/dist/plugin-fullscreen.js"></script>
+  <script src="jspsych/dist/plugin-html-button-response.js"></script>
+  <script src="jspsych/dist/extension-record-video.js"></script>
+  <script src="jspsych/dist/plugin-initialize-microphone.js"></script>
+  <script src="jspsych/dist/plugin-html-audio-response.js"></script>
+  <script src="jspsych/dist/plugin-call-function.js"></script>
+  <script src="jspsych/dist/plugin-survey-multi-choice.js"></script>
+  <script src="jspsych/dist/plugin-survey-html-form.js"></script>
+  <script src="https://unpkg.com/@jspsych-contrib/plugin-tangram-game"></script>
+  <style>
+    .fit-video video {
       width: 80vw;
       height: 75vh;
       object-fit: contain;
       display: block;
       margin: 0 auto;
-      }
-    </style>
-  </head>
-  <body></body>
+    }
+  </style>
+</head>
 
-  <script>
+<body></body>
+
+<script>
   var jsPsych = initJsPsych({
-    on_data_update: function(data) {
-        var currentData = jsPsych.data.get().json();
-        localStorage.setItem('NEST-Pilot_partial_data', currentData);
+    on_data_update: function (data) {
+      var currentData = jsPsych.data.get().json();
+      localStorage.setItem('NEST-Pilot_partial_data', currentData);
     },
 
-    on_interaction_data_update: function(data) {
-        // if participant exits fullscreen
+    on_interaction_data_update: function (data) {
+      // if participant exits fullscreen
       if (data.event === 'fullscreenexit') {
-      if (document.querySelector('#fullscreen-warning')) return;
+        if (document.querySelector('#fullscreen-warning')) return;
 
-      const warning = document.createElement('div');
+        const warning = document.createElement('div');
         warning.id = 'fullscreen-warning';
 
-          // return to fullscreen message
-          warning.innerHTML = `
+        // return to fullscreen message
+        warning.innerHTML = `
             <div style="
               position: fixed;
               bottom: 50px;
@@ -70,117 +72,147 @@
         // button logic
         document
           .getElementById('return-fullscreen-btn')
-          .addEventListener('click', function() {
-              if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-              }
-              warning.remove();
+          .addEventListener('click', function () {
+            if (document.documentElement.requestFullscreen) {
+              document.documentElement.requestFullscreen();
+            }
+            warning.remove();
           });
-        }
-      },
-
-      // saving data locally 
-      on_finish: function() {
-        experiment_finished = true; 
-
-        // get interaction data
-        var interactionData = jsPsych.data.getInteractionData();
-        
-        // add the interaction data to data file
-        jsPsych.data.get().push({
-          trial_type: 'interaction_summary',
-          interaction_history: interactionData.values(),
-          total_interactions: interactionData.count()
-        });
-        
-        // remove partial data if experiment is done
-        localStorage.removeItem('NEST_partial_data');
-        saveFiles();
       }
-    });
+    },
 
-    // Helper function for the final download
-    // run `console.log(localStorage.getItem('NEST_partial_data'));` to retrieve partial data from console log
-    function saveFiles() {
-      jsPsych.data.get().localSave('json', 'NEST-Pilot-NPID.json');
+    // saving data locally 
+    on_finish: function () {
+      experiment_finished = true;
+
+      // get interaction data
+      var interactionData = jsPsych.data.getInteractionData();
+
+      // Get participant ID 
+      var np_id_trial = jsPsych.data.get().filter({ trial_name: "participant_id" }).values()[0];
+
+      // map np_id
+      var participantID = np_id_trial ? np_id_trial.response.response : "N/A";
+      var currentBlockOrder = np_id_trial && np_id_trial.block_order ? np_id_trial.block_order : "N/A";
+
+      // map block order
+      var blockOrderValues = jsPsych.data.get().select('block_order').values;
+      var currentBlockOrder = blockOrderValues.find(val => val !== undefined) || "N/A";
+
+      // map withdraw option
+      var withdraw_trial = jsPsych.data.get().filter({ trial_name: "withdraw_option" }).values()[0];
+      var withdrawResponse = withdraw_trial && withdraw_trial.response ? withdraw_trial.response.WithdrawOption : "N/A";
+
+      // add session summary 
+      jsPsych.data.get().values().unshift({
+        trial_type: 'session_summary',
+        participant_id: participantID,
+        block_order: currentBlockOrder,
+        easy_puzzle_1: selected_easy[0].data.puzzle_id,
+        easy_puzzle_2: selected_easy[1].data.puzzle_id,
+        hard_puzzle_1: selected_hard[0].data.puzzle_id,
+        hard_puzzle_2: selected_hard[1].data.puzzle_id,
+        withdraw_option: withdrawResponse
+      });
+
+      // add the interaction data to data file
+      jsPsych.data.get().push({
+        trial_type: 'interaction_summary',
+        interaction_history: interactionData.values(),
+        total_interactions: interactionData.count()
+      });
+
+      // remove partial data if experiment is done
+      localStorage.removeItem('NEST_partial_data');
+      saveFiles();
     }
+  });
 
-    // ---------------------------
-    // Leave Site warning
-    // ---------------------------
-    window.addEventListener('beforeunload', (event) => {     
-        event.preventDefault();
-        event.returnValue = ''; 
-    });
+  // Helper function for the final download
+  // run `console.log(localStorage.getItem('NEST_partial_data'));` to retrieve partial data from console log
+  function saveFiles() {
+    jsPsych.data.get().localSave('json', 'NEST-Pilot-NPID.json');
+  }
 
-    // ---------------------------
-    // Participant_ID
-    // ---------------------------   
-    var np_id = {
-      type: jsPsychSurveyHtmlForm, 
-      preamble: '<p>Please enter your participant ID:</p>',
-      html: '<p><input type="text" required id="test-resp-box" name="response" size="10" /></p>',
-      button_label: 'Next',
-      autocomplete: false, 
-      autofocus: 'test-resp-box',
-      data: { trial_name: "participant_id" },
-    };
+  // ---------------------------
+  // Leave Site warning
+  // ---------------------------
+  window.addEventListener('beforeunload', (event) => {
+    event.preventDefault();
+    event.returnValue = '';
+  });
 
-    // ---------------------------
-    // Fullscreen trial
-    // ---------------------------
-      var enter_fullscreen = {
-        type: jsPsychFullscreen,
-        fullscreen_mode: true
-      }; 
-  
-    // ---------------------------
-    // Task Orientation Videos
-    // ---------------------------
-      var task_video_1 = {
-      type: jsPsychVideoKeyboardResponse,
-      autoplay: true,
-      trial_ends_after_video: true,
-      choices: "NO_KEYS",
-      stimulus:['puzzles/video/puzzle_orientation_video_1.mp4'], 
-      width: window.innerWidth,  
-      height: window.innerHeight, 
-      css_classes: ['fit-video'] 
-    };
+  // ---------------------------
+  // Participant_ID & randomization array
+  // ---------------------------   
+  var np_id = {
+    type: jsPsychSurveyHtmlForm,
+    preamble: '<p>Please enter your participant ID:</p>',
+    html: '<p><input type="text" required id="test-resp-box" name="response" size="10" /></p>',
+    button_label: 'Next',
+    autocomplete: false,
+    autofocus: 'test-resp-box',
+    data: { trial_name: "participant_id" },
+    on_finish: function (data) {
+      jsPsych.data.addProperties({ participant_id: data.response.response });
+    }
+  };
 
-    var task_video_2 = {
-      type: jsPsychVideoButtonResponse,
-      autoplay: true,
-      trial_ends_after_video: false,
-      response_ends_trial: true,
-      response_allowed_while_playing: false,
-      choices: ['Next'],
-      stimulus:['puzzles/video/puzzle_orientation_video_2_r.mp4'], 
-      width: window.innerWidth,  
-      height: window.innerHeight, 
-      css_classes: ['fit-video'] 
+  // ---------------------------
+  // Fullscreen trial
+  // ---------------------------
+  var enter_fullscreen = {
+    type: jsPsychFullscreen,
+    fullscreen_mode: true
+  };
 
-    };
+  // ---------------------------
+  // Task Orientation Videos
+  // ---------------------------
+  var task_video_1 = {
+    type: jsPsychVideoKeyboardResponse,
+    autoplay: true,
+    trial_ends_after_video: true,
+    choices: "NO_KEYS",
+    stimulus: ['puzzles/video/puzzle_orientation_video_1.mp4'],
+    width: window.innerWidth,
+    height: window.innerHeight,
+    css_classes: ['fit-video']
+  };
 
-    var task_video_3 = {
-      type: jsPsychVideoButtonResponse,
-      autoplay: true,
-      trial_ends_after_video: false,
-      response_ends_trial: true,
-      response_allowed_while_playing: false,
-      choices: ['Next'],
-      stimulus:['puzzles/video/puzzle_orientation_video_3_control_v2.mp4'], 
-      width: window.innerWidth,  
-      height: window.innerHeight, 
-      css_classes: ['fit-video'] 
-    };  
+  var task_video_2 = {
+    type: jsPsychVideoButtonResponse,
+    autoplay: true,
+    trial_ends_after_video: false,
+    response_ends_trial: true,
+    response_allowed_while_playing: false,
+    choices: ['Next'],
+    stimulus: ['puzzles/video/puzzle_orientation_video_2_r.mp4'],
+    width: window.innerWidth,
+    height: window.innerHeight,
+    css_classes: ['fit-video']
 
-    // ---------------------------
-    // Child affect rating (after each puzzle)
-    // ---------------------------
-    var child_rate = {
-      type: jsPsychHtmlSliderResponse,
-      stimulus: `
+  };
+
+  var task_video_3 = {
+    type: jsPsychVideoButtonResponse,
+    autoplay: true,
+    trial_ends_after_video: false,
+    response_ends_trial: true,
+    response_allowed_while_playing: false,
+    choices: ['Next'],
+    stimulus: ['puzzles/video/puzzle_orientation_video_3_control_v2.mp4'],
+    width: window.innerWidth,
+    height: window.innerHeight,
+    css_classes: ['fit-video']
+  };
+
+  // ---------------------------
+  // Child affect rating (after each puzzle)
+  // ---------------------------
+  var child_rate = {
+    type: jsPsychHtmlSliderResponse,
+    stimulus: `
         <style>
           #jspsych-content {
             height: 100vh;
@@ -214,281 +246,281 @@
           </p>
         </div>
       `,
-      require_movement: true,
-      min: 1,
-      max: 10,
-      step: 1,
-      slider_start: 5,
-      slider_width: 700,
-      labels: [
-        "<img src='puzzles/img/slider_not-frustrated.png' width='150'>",
-        "<img src='puzzles/img/slider_frustrated.png' width='150'>",
-        "<img src='puzzles/img/slider_very-frustrated.png' width='150'>"
-      ],
-      button_label: 'Next'
-    };
+    require_movement: true,
+    min: 1,
+    max: 10,
+    step: 1,
+    slider_start: 5,
+    slider_width: 700,
+    labels: [
+      "<img src='puzzles/img/slider_not-frustrated.png' width='150'>",
+      "<img src='puzzles/img/slider_frustrated.png' width='150'>",
+      "<img src='puzzles/img/slider_very-frustrated.png' width='150'>"
+    ],
+    button_label: 'Next'
+  };
 
-    // ---------------------------
-    // Tutorials
-    // ---------------------------
-    var tutorial1 = {
-      type: jsPsychTangram,
-      svg: "puzzles/puzzle-letter.svg",
-      interactionSound: "puzzles/tap.mp3",
-      successSound: "puzzles/win_applaud.mp3",
-      failureSound: "puzzles/lose_buzz.mp3",
-      successMessage: "You did it! :)",
-      failureMessage: "Time is up! :(",
-      duration: 60,
-      data: {
-        trial_name: "tutorial1",
-        difficulty: "tutorial",
-        puzzle_id: "puzzle-letter"
-      }
-    };
-
-    var tutorial2 = {
-      type: jsPsychTangram,
-      svg: "puzzles/puzzle-arrow.svg",
-      interactionSound: "puzzles/tap.mp3",
-      successSound: "puzzles/win_applaud.mp3",
-      failureSound: "puzzles/lose_buzz.mp3",
-      successMessage: "You did it! :)",
-      failureMessage: "Time is up! :(",
-      duration: 60,
-      data: {
-        trial_name: "tutorial2",
-        difficulty: "tutorial",
-        puzzle_id: "puzzle-arrow"
-      }
-    };
-
-    // ---------------------------
-    // Easy puzzle pool (5 total)
-    // ---------------------------
-    var easy_puzzles = [
-      {
-        type: jsPsychTangram,
-        svg: "puzzles/puzzle-cat.svg",
-        interactionSound: "puzzles/tap.mp3",
-        successSound: "puzzles/win_applaud.mp3",
-        failureSound: "puzzles/lose_buzz.mp3",
-        successMessage: "You did it! :)",
-        failureMessage: "Time is up! :(",
-        duration: 120,
-        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-cat" }
-      },
-      {
-        type: jsPsychTangram,
-        svg: "puzzles/puzzle-rocket.svg",
-        interactionSound: "puzzles/tap.mp3",
-        successSound: "puzzles/win_applaud.mp3",
-        failureSound: "puzzles/lose_buzz.mp3",
-        successMessage: "You did it! :)",
-        failureMessage: "Time is up! :(",
-        duration: 120,
-        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-rocket" }
-      },
-      {
-        type: jsPsychTangram,
-        svg: "puzzles/puzzle-fish.svg",
-        interactionSound: "puzzles/tap.mp3",
-        successSound: "puzzles/win_applaud.mp3",
-        failureSound: "puzzles/lose_buzz.mp3",
-        successMessage: "You did it! :)",
-        failureMessage: "Time is up! :(",
-        duration: 120,
-        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-fish" }
-      },
-      {
-        type: jsPsychTangram,
-        svg: "puzzles/puzzle-music-note.svg",
-        interactionSound: "puzzles/tap.mp3",
-        successSound: "puzzles/win_applaud.mp3",
-        failureSound: "puzzles/lose_buzz.mp3",
-        successMessage: "You did it! :)",
-        failureMessage: "Time is up! :(",
-        duration: 120,
-        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-music-note" }
-      },
-      {
-        type: jsPsychTangram,
-        svg: "puzzles/puzzle-runman.svg",
-        interactionSound: "puzzles/tap.mp3",
-        successSound: "puzzles/win_applaud.mp3",
-        failureSound: "puzzles/lose_buzz.mp3",
-        successMessage: "You did it! :)",
-        failureMessage: "Time is up! :(",
-        duration: 120,
-        data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-runman" }
-      }
-    ];
-
-    // ---------------------------
-    // Hard puzzle pool (5 total)
-    // ---------------------------
-    var hard_puzzles = [
-      {
-        type: jsPsychTangram,
-        svg: "puzzles/puzzle-hexagon.svg",
-        interactionSound: "puzzles/tap.mp3",
-        successSound: "puzzles/win_applaud.mp3",
-        failureSound: "puzzles/lose_buzz.mp3",
-        successMessage: "You did it! :)",
-        failureMessage: "Time is up! :(",
-        duration: 120,
-        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-hexagon" }
-      },
-      {
-        type: jsPsychTangram,
-        svg: "puzzles/puzzle-incomplete-square.svg",
-        interactionSound: "puzzles/tap.mp3",
-        successSound: "puzzles/win_applaud.mp3",
-        failureSound: "puzzles/lose_buzz.mp3",
-        successMessage: "You did it! :)",
-        failureMessage: "Time is up! :(",
-        duration: 120,
-        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-incomplete-square" }
-      },
-      {
-        type: jsPsychTangram,
-        svg: "puzzles/puzzle-heart.svg",
-        interactionSound: "puzzles/tap.mp3",
-        successSound: "puzzles/win_applaud.mp3",
-        failureSound: "puzzles/lose_buzz.mp3",
-        successMessage: "You did it! :)",
-        failureMessage: "Time is up! :(",
-        duration: 120,
-        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-heart" }
-      },
-      {
-        type: jsPsychTangram,
-        svg: "puzzles/puzzle-pinwheel.svg",
-        interactionSound: "puzzles/tap.mp3",
-        successSound: "puzzles/win_applaud.mp3",
-        failureSound: "puzzles/lose_buzz.mp3",
-        successMessage: "You did it! :)",
-        failureMessage: "Time is up! :(",
-        duration: 120,
-        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-pinwheel" }
-      },
-      {
-        type: jsPsychTangram,
-        svg: "puzzles/puzzle-barn.svg",
-        interactionSound: "puzzles/tap.mp3",
-        successSound: "puzzles/win_applaud.mp3",
-        failureSound: "puzzles/lose_buzz.mp3",
-        successMessage: "You did it! :)",
-        failureMessage: "Time is up! :(",
-        duration: 120,
-        data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-barn" }
-      }
-    ];
-
-    // ---------------------------
-    // Randomization logic
-    // ---------------------------
-    var selected_easy = jsPsych.randomization.sampleWithoutReplacement(easy_puzzles, 2);
-    var selected_hard = jsPsych.randomization.sampleWithoutReplacement(hard_puzzles, 2);
-
-    // ---------------------------
-    // Helper: build puzzle image HTML from puzzle_id
-    // ---------------------------
-    function puzzleImgSrc(puzzle_id) {
-      if (puzzle_id === "puzzle-music-note") {
-        return `puzzles/img/puzzle-music-note.png`;
-      }
-      return `puzzles/img/${puzzle_id}-img.png`;
+  // ---------------------------
+  // Tutorials
+  // ---------------------------
+  var tutorial1 = {
+    type: jsPsychTangram,
+    svg: "puzzles/puzzle-letter.svg",
+    interactionSound: "puzzles/tap.mp3",
+    successSound: "puzzles/win_applaud.mp3",
+    failureSound: "puzzles/lose_buzz.mp3",
+    successMessage: "You did it! :)",
+    failureMessage: "Time is up! :(",
+    duration: 60,
+    data: {
+      trial_name: "tutorial1",
+      difficulty: "tutorial",
+      puzzle_id: "puzzle-letter"
     }
+  };
 
-    function puzzleImagesHTML(puzzle1, puzzle2) {
-      var id1 = puzzle1.data.puzzle_id;
-      var id2 = puzzle2.data.puzzle_id;
-      return `
+  var tutorial2 = {
+    type: jsPsychTangram,
+    svg: "puzzles/puzzle-arrow.svg",
+    interactionSound: "puzzles/tap.mp3",
+    successSound: "puzzles/win_applaud.mp3",
+    failureSound: "puzzles/lose_buzz.mp3",
+    successMessage: "You did it! :)",
+    failureMessage: "Time is up! :(",
+    duration: 60,
+    data: {
+      trial_name: "tutorial2",
+      difficulty: "tutorial",
+      puzzle_id: "puzzle-arrow"
+    }
+  };
+
+  // ---------------------------
+  // Easy puzzle pool (5 total)
+  // ---------------------------
+  var easy_puzzles = [
+    {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-cat.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120,
+      data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-cat" }
+    },
+    {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-rocket.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120,
+      data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-rocket" }
+    },
+    {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-fish.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120,
+      data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-fish" }
+    },
+    {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-music-note.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120,
+      data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-music-note" }
+    },
+    {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-runman.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120,
+      data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-runman" }
+    }
+  ];
+
+  // ---------------------------
+  // Hard puzzle pool (5 total)
+  // ---------------------------
+  var hard_puzzles = [
+    {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-hexagon.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120,
+      data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-hexagon" }
+    },
+    {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-incomplete-square.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120,
+      data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-incomplete-square" }
+    },
+    {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-heart.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120,
+      data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-heart" }
+    },
+    {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-pinwheel.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120,
+      data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-pinwheel" }
+    },
+    {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-barn.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 120,
+      data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-barn" }
+    }
+  ];
+
+  // ---------------------------
+  // Randomization logic
+  // ---------------------------
+  var selected_easy = jsPsych.randomization.sampleWithoutReplacement(easy_puzzles, 2);
+  var selected_hard = jsPsych.randomization.sampleWithoutReplacement(hard_puzzles, 2);
+
+  // ---------------------------
+  // Helper: build puzzle image HTML from puzzle_id
+  // ---------------------------
+  function puzzleImgSrc(puzzle_id) {
+    if (puzzle_id === "puzzle-music-note") {
+      return `puzzles/img/puzzle-music-note.png`;
+    }
+    return `puzzles/img/${puzzle_id}-img.png`;
+  }
+
+  function puzzleImagesHTML(puzzle1, puzzle2) {
+    var id1 = puzzle1.data.puzzle_id;
+    var id2 = puzzle2.data.puzzle_id;
+    return `
         <div style="display:flex; justify-content:center; align-items:center; gap:60px; margin: 30px auto;">
           <img src="${puzzleImgSrc(id1)}" style="max-width:180px; max-height:180px; border:3px solid #ccc; border-radius:12px; padding:10px; background:#f9f9f9;">
           <img src="${puzzleImgSrc(id2)}" style="max-width:180px; max-height:180px; border:3px solid #ccc; border-radius:12px; padding:10px; background:#f9f9f9;">
         </div>
       `;
-    };
+  };
 
-    // ---------------------------
-    // Build main puzzle timeline
-    // ---------------------------
-    var block_order_select = {
-      type: jsPsychHtmlButtonResponse, 
-      stimulus: '<p>Please select the block order for this session:</p>',
-      choices: ['A', 'B'],
-      on_finish: function(data) {
-        var block_order = data.response === 0 ? "EEHH" : "HHEE";
-        jsPsych.data.addProperties({ block_order: block_order });
-      }
-    };
+  // ---------------------------
+  // Build main puzzle timeline
+  // ---------------------------
+  var block_order_select = {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: '<p>Please select the block order for this session:</p>',
+    choices: ['A', 'B'],
+    on_finish: function (data) {
+      var block_order = data.response === 0 ? "EEHH" : "HHEE";
+      jsPsych.data.addProperties({ block_order: block_order });
+    }
+  };
 
-    // Build the sequences
-    var eehh_sequence = [
-      selected_easy[0], child_rate,
-      selected_easy[1], child_rate,
-      selected_hard[0], child_rate,
-      selected_hard[1], child_rate
-    ];
+  // Build the sequences
+  var eehh_sequence = [
+    selected_easy[0], child_rate,
+    selected_easy[1], child_rate,
+    selected_hard[0], child_rate,
+    selected_hard[1], child_rate
+  ];
 
-    var hhee_sequence = [
-      selected_hard[0], child_rate,
-      selected_hard[1], child_rate,
-      selected_easy[0], child_rate,
-      selected_easy[1], child_rate
-    ];
+  var hhee_sequence = [
+    selected_hard[0], child_rate,
+    selected_hard[1], child_rate,
+    selected_easy[0], child_rate,
+    selected_easy[1], child_rate
+  ];
 
-    // Create the conditional nodes
-    var eehh_node = {
-      timeline: eehh_sequence,
-      conditional_function: function() {
-        var current_order = jsPsych.data.get().select('block_order').values[0];
-        return current_order === "EEHH";
-      }
-    };
+  // Create the conditional nodes
+  var eehh_node = {
+    timeline: eehh_sequence,
+    conditional_function: function () {
+      var current_order = jsPsych.data.get().select('block_order').values[0];
+      return current_order === "EEHH";
+    }
+  };
 
-    var hhee_node = {
-      timeline: hhee_sequence,
-      conditional_function: function() {
-        var current_order = jsPsych.data.get().select('block_order').values[0];
-        return current_order === "HHEE";
-      }
-    };
+  var hhee_node = {
+    timeline: hhee_sequence,
+    conditional_function: function () {
+      var current_order = jsPsych.data.get().select('block_order').values[0];
+      return current_order === "HHEE";
+    }
+  };
 
-    // ---------------------------
-    // Feedback trials
-    // ---------------------------
-    var feedback_intro = {
-      type: jsPsychVideoKeyboardResponse, 
-      autoplay: true,
-      trial_ends_after_video: true,
-      choices: "NO_KEYS",
-      stimulus:['puzzles/video/puzzle-feedback-intro.mp4'], 
-      width: window.innerWidth,  
-      height: window.innerHeight, 
-      css_classes: ['fit-video'] 
-    };
+  // ---------------------------
+  // Feedback trials
+  // ---------------------------
+  var feedback_intro = {
+    type: jsPsychVideoKeyboardResponse,
+    autoplay: true,
+    trial_ends_after_video: true,
+    choices: "NO_KEYS",
+    stimulus: ['puzzles/video/puzzle-feedback-intro.mp4'],
+    width: window.innerWidth,
+    height: window.innerHeight,
+    css_classes: ['fit-video']
+  };
 
-    // ---------------------------
-    // Child feedback trials
-    // ---------------------------
-    var child_feedback1 = {
-      type: jsPsychVideoButtonResponse,
-      autoplay: true,
-      trial_ends_after_video: false,
-      response_ends_trial: true,
-      response_allowed_while_playing: true,
-      enable_button_after: 8000,
-      choices: ['Next'],
-      stimulus: ['puzzles/video/puzzle-feedback-child-1.mp4'], 
-      data: { trial_name: "child_feedback1" },
-      width: window.innerWidth * 0.6,
-      height: window.innerHeight * 0.4,
-      css_classes: ['fit-video'],
+  // ---------------------------
+  // Child feedback trials
+  // ---------------------------
+  var child_feedback1 = {
+    type: jsPsychVideoButtonResponse,
+    autoplay: true,
+    trial_ends_after_video: false,
+    response_ends_trial: true,
+    response_allowed_while_playing: true,
+    enable_button_after: 8000,
+    choices: ['Next'],
+    stimulus: ['puzzles/video/puzzle-feedback-child-1.mp4'],
+    data: { trial_name: "child_feedback1" },
+    width: window.innerWidth * 0.6,
+    height: window.innerHeight * 0.4,
+    css_classes: ['fit-video'],
 
-      prompt: `
+    prompt: `
         <style>
           #jspsych-content {
             display: flex;
@@ -532,22 +564,22 @@
           </div>
         </div>
       `
-    };
+  };
 
-    var child_feedback2 = {
-      type: jsPsychVideoButtonResponse,
-      autoplay: true,
-      trial_ends_after_video: false,
-      response_ends_trial: true,
-      response_allowed_while_playing: true,
-      enable_button_after: 7000,
-      choices: ['Next'],
-      stimulus: ['puzzles/video/puzzle-feedback-child-2.mp4'], 
-      data: { trial_name: "child_feedback2" },
-      width: window.innerWidth * 0.6,
-      height: window.innerHeight * 0.4,
-      css_classes: ['fit-video'],
-      prompt: `
+  var child_feedback2 = {
+    type: jsPsychVideoButtonResponse,
+    autoplay: true,
+    trial_ends_after_video: false,
+    response_ends_trial: true,
+    response_allowed_while_playing: true,
+    enable_button_after: 7000,
+    choices: ['Next'],
+    stimulus: ['puzzles/video/puzzle-feedback-child-2.mp4'],
+    data: { trial_name: "child_feedback2" },
+    width: window.innerWidth * 0.6,
+    height: window.innerHeight * 0.4,
+    css_classes: ['fit-video'],
+    prompt: `
         <style>
           #jspsych-content {
             display: flex;
@@ -591,22 +623,22 @@
           </div>
         </div>
       `
-    };
+  };
 
-    var child_feedback3 = {
-      type: jsPsychVideoButtonResponse,
-      autoplay: true,
-      trial_ends_after_video: false,
-      response_ends_trial: true,
-      response_allowed_while_playing: true,
-      enable_button_after: 9000,
-      choices: ['Next'],
-      stimulus: ['puzzles/video/puzzle-feedback-child-3.mp4'],
-      data: { trial_name: "child_feedback3" },
-      width: window.innerWidth * 0.6,
-      height: window.innerHeight * 0.4,
-      css_classes: ['fit-video'],
-      prompt: `
+  var child_feedback3 = {
+    type: jsPsychVideoButtonResponse,
+    autoplay: true,
+    trial_ends_after_video: false,
+    response_ends_trial: true,
+    response_allowed_while_playing: true,
+    enable_button_after: 9000,
+    choices: ['Next'],
+    stimulus: ['puzzles/video/puzzle-feedback-child-3.mp4'],
+    data: { trial_name: "child_feedback3" },
+    width: window.innerWidth * 0.6,
+    height: window.innerHeight * 0.4,
+    css_classes: ['fit-video'],
+    prompt: `
       <style>
         #jspsych-content {
           display: flex;
@@ -651,22 +683,22 @@
         </p>
       </div>
     `
-    };
+  };
 
-    var child_feedback4 = {
-      type: jsPsychVideoButtonResponse,
-      autoplay: true,
-      trial_ends_after_video: false,
-      response_ends_trial: true,
-      response_allowed_while_playing: true,
-      enable_button_after: 6000,
-      choices: ['Next'],
-      stimulus: ['puzzles/video/puzzle-feedback-child-4.mp4'],
-      data: { trial_name: "child_feedback4" },
-      width: window.innerWidth * 0.6,
-      height: window.innerHeight * 0.4,
-      css_classes: ['fit-video'],
-      prompt: `
+  var child_feedback4 = {
+    type: jsPsychVideoButtonResponse,
+    autoplay: true,
+    trial_ends_after_video: false,
+    response_ends_trial: true,
+    response_allowed_while_playing: true,
+    enable_button_after: 6000,
+    choices: ['Next'],
+    stimulus: ['puzzles/video/puzzle-feedback-child-4.mp4'],
+    data: { trial_name: "child_feedback4" },
+    width: window.innerWidth * 0.6,
+    height: window.innerHeight * 0.4,
+    css_classes: ['fit-video'],
+    prompt: `
       <style>
         #jspsych-content {
           display: flex;
@@ -710,25 +742,25 @@
         </p>
       </div>
     `
-    };
+  };
 
-    // ---------------------------
-    // Parent feedback trials
-    // ---------------------------
-    var parent_feedback1 = {
-      type: jsPsychVideoButtonResponse,
-      autoplay: true,
-      trial_ends_after_video: false,
-      response_ends_trial: true,
-      response_allowed_while_playing: true,
-      enable_button_after: 20000,
-      choices: ['Next'],
-      data: { trial_name: "parent_feedback1" },
-      stimulus: ['puzzles/video/puzzle-feedback-parent-1.mp4'],
-      width: window.innerWidth * 0.6,
-      height: window.innerHeight * 0.4,
-      css_classes: ['fit-video'],
-      prompt: `
+  // ---------------------------
+  // Parent feedback trials
+  // ---------------------------
+  var parent_feedback1 = {
+    type: jsPsychVideoButtonResponse,
+    autoplay: true,
+    trial_ends_after_video: false,
+    response_ends_trial: true,
+    response_allowed_while_playing: true,
+    enable_button_after: 20000,
+    choices: ['Next'],
+    data: { trial_name: "parent_feedback1" },
+    stimulus: ['puzzles/video/puzzle-feedback-parent-1.mp4'],
+    width: window.innerWidth * 0.6,
+    height: window.innerHeight * 0.4,
+    css_classes: ['fit-video'],
+    prompt: `
       <style>
         #jspsych-content {
           display: flex;
@@ -783,22 +815,22 @@
           </div>
       </div>
     `
-    };
+  };
 
-    var parent_feedback2 = {
-      type: jsPsychVideoButtonResponse,
-      autoplay: true,
-      trial_ends_after_video: false,
-      response_ends_trial: true,
-      response_allowed_while_playing: true,
-      enable_button_after: 20000,
-      choices: ['Next'],
-      data: { trial_name: "parent_feedback2" },
-      stimulus: ['puzzles/video/puzzle-feedback-parent-2.mp4'],
-      width: window.innerWidth * 0.6,
-      height: window.innerHeight * 0.4,
-      css_classes: ['fit-video'],
-      prompt: `
+  var parent_feedback2 = {
+    type: jsPsychVideoButtonResponse,
+    autoplay: true,
+    trial_ends_after_video: false,
+    response_ends_trial: true,
+    response_allowed_while_playing: true,
+    enable_button_after: 20000,
+    choices: ['Next'],
+    data: { trial_name: "parent_feedback2" },
+    stimulus: ['puzzles/video/puzzle-feedback-parent-2.mp4'],
+    width: window.innerWidth * 0.6,
+    height: window.innerHeight * 0.4,
+    css_classes: ['fit-video'],
+    prompt: `
       <style>
         #jspsych-content {
           display: flex;
@@ -852,22 +884,22 @@
           </div>
       </div>
     `
-    };
+  };
 
-    var parent_feedback3 = {
-      type: jsPsychVideoButtonResponse,
-      autoplay: true,
-      trial_ends_after_video: false,
-      response_ends_trial: true,
-      response_allowed_while_playing: true,
-      enable_button_after: 12000,
-      choices: ['Next'],
-      data: { trial_name: "parent_feedback3" },
-      stimulus: ['puzzles/video/puzzle-feedback-parent-3.mp4'],
-      width: window.innerWidth * 0.6,
-      height: window.innerHeight * 0.4,
-      css_classes: ['fit-video'],
-      prompt: `
+  var parent_feedback3 = {
+    type: jsPsychVideoButtonResponse,
+    autoplay: true,
+    trial_ends_after_video: false,
+    response_ends_trial: true,
+    response_allowed_while_playing: true,
+    enable_button_after: 12000,
+    choices: ['Next'],
+    data: { trial_name: "parent_feedback3" },
+    stimulus: ['puzzles/video/puzzle-feedback-parent-3.mp4'],
+    width: window.innerWidth * 0.6,
+    height: window.innerHeight * 0.4,
+    css_classes: ['fit-video'],
+    prompt: `
       <style>
         #jspsych-content {
           display: flex;
@@ -914,21 +946,21 @@
         </p>
       </div>
     `
-    };
+  };
 
-    var parent_feedback4 = {
-      type: jsPsychVideoButtonResponse,
-      autoplay: true,
-      trial_ends_after_video: false,
-      response_ends_trial: true,
-      response_allowed_while_playing: false,
-      choices: ['Next'],
-      data: { trial_name: "parent_feedback4" },
-      stimulus: ['puzzles/video/puzzle-feedback-parent-4.mp4'],
-      width: window.innerWidth * 0.6,
-      height: window.innerHeight * 0.4,
-      css_classes: ['fit-video'],
-      prompt: `
+  var parent_feedback4 = {
+    type: jsPsychVideoButtonResponse,
+    autoplay: true,
+    trial_ends_after_video: false,
+    response_ends_trial: true,
+    response_allowed_while_playing: false,
+    choices: ['Next'],
+    data: { trial_name: "parent_feedback4" },
+    stimulus: ['puzzles/video/puzzle-feedback-parent-4.mp4'],
+    width: window.innerWidth * 0.6,
+    height: window.innerHeight * 0.4,
+    css_classes: ['fit-video'],
+    prompt: `
       <style>
         #jspsych-content {
           display: flex;
@@ -972,30 +1004,30 @@
         </p>
       </div>
     `
-    };
+  };
 
-    // ---------------------------
-    // Feedback ends
-    // ---------------------------    
-    var feedback_end = {
-      type: jsPsychVideoButtonResponse, 
-      autoplay: true,
-      trial_ends_after_video: false,
-      response_ends_trial: true,
-      response_allowed_while_playing: false,
-      choices: ['Next'],
-      stimulus:['puzzles/video/puzzle-feedback-end.mp4'], 
-      width: window.innerWidth,  
-      height: window.innerHeight, 
-      css_classes: ['fit-video'] 
-    };
+  // ---------------------------
+  // Feedback ends
+  // ---------------------------    
+  var feedback_end = {
+    type: jsPsychVideoButtonResponse,
+    autoplay: true,
+    trial_ends_after_video: false,
+    response_ends_trial: true,
+    response_allowed_while_playing: false,
+    choices: ['Next'],
+    stimulus: ['puzzles/video/puzzle-feedback-end.mp4'],
+    width: window.innerWidth,
+    height: window.innerHeight,
+    css_classes: ['fit-video']
+  };
 
 
-    var withdrawoption = {
-      type: jsPsychSurveyMultiChoice,
-      questions: [
-        {
-          prompt: `<style>
+  var withdrawoption = {
+    type: jsPsychSurveyMultiChoice,
+    questions: [
+      {
+        prompt: `<style>
             #jspsych-content {
               height: 100vh;
               display: flex;
@@ -1026,52 +1058,37 @@
             <p style="font-size: 24px; margin-bottom: 20px;">
                   It will then be deleted by the study team, and no one will review your recording.
             </p>
-            </div>`, 
-          name: 'WithdrawOption', 
-        options: ['Yes', 'No'], 
+            </div>`,
+        name: 'WithdrawOption',
+        options: ['Yes', 'No'],
         required: true
-      }] ,
-      button_label: 'Next'
-    };
+      }],
+    button_label: 'Next',
+    data: { trial_name: "withdraw_option" }
+  };
 
-    // ---------------------------
-    // Exit fullscreen
-    // ---------------------------
-    var exit_fullscreen = {
-      type: jsPsychFullscreen,
-      fullscreen_mode: false,
-      delay_after: 0
-    };   
+  // ---------------------------
+  // Exit fullscreen
+  // ---------------------------
+  var exit_fullscreen = {
+    type: jsPsychFullscreen,
+    fullscreen_mode: false,
+    delay_after: 0
+  };
 
-    // ---------------------------
-    // Final full timeline
-    // ---------------------------
-    var full_timeline = [
-      np_id,
-      block_order_select,
-      enter_fullscreen,
-      task_video_1,
-      child_rate,
-      task_video_2,
-      tutorial1,
-      tutorial2,
-      task_video_3,
-      eehh_node,
-      hhee_node,
-      feedback_intro,
-      child_feedback1,
-      child_feedback2,
-      child_feedback3,
-      child_feedback4,
-      parent_feedback1,
-      parent_feedback2,
-      parent_feedback3,
-      parent_feedback4,
-      feedback_end,
-      withdrawoption,
-      exit_fullscreen
-    ];
+  // ---------------------------
+  // Final full timeline
+  // ---------------------------
+  var full_timeline = [
+    np_id,
+    block_order_select,
+    enter_fullscreen,
+    eehh_node,
+    hhee_node,
+    withdrawoption
+  ];
 
-    jsPsych.run(full_timeline);
-  </script>
+  jsPsych.run(full_timeline);
+</script>
+
 </html>
