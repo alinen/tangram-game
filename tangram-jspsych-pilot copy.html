@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="jspsych/dist/jspsych.js"></script>
+    <link rel="stylesheet" href="jspsych/dist/jspsych.css">
+    <script src="jspsych/dist/plugin-survey-likert.js"></script>
+    <script src="jspsych/dist/plugin-html-slider-response.js"></script>
+    <script src="jspsych/dist/plugin-video-keyboard-response.js"></script>
+    <script src="jspsych/dist/plugin-video-button-response.js"></script>
+    <script src="jspsych/dist/plugin-tangram-game.js"></script>
+    <script src="jspsych/dist/plugin-fullscreen.js"></script>
+    <script src="jspsych/dist/plugin-html-button-response.js"></script>
+    <script src="jspsych/dist/extension-record-video.js"></script>
+    <style>
+     .fit-video video {
+      width: 80vw;
+      height: 75vh;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+  </head>
+  <body></body>
+  <script>
+var jsPsych = initJsPsych({
+    on_data_update: function(data) {
+        var currentData = jsPsych.data.get().json();
+        localStorage.setItem('NEST-Pilot_partial_data', currentData);
+    },
+
+    on_interaction_data_update: function(data) {
+        // if participant exits fullscreen
+      if (data.event === 'fullscreenexit') {
+      if (document.querySelector('#fullscreen-warning')) return;
+
+      const warning = document.createElement('div');
+        warning.id = 'fullscreen-warning';
+
+          // return to fullscreen message
+          warning.innerHTML = `
+            <div style="
+              position: fixed;
+              bottom: 50px;
+              right: 20px;
+              background: white;
+              border: 2px solid black;
+              padding: 20px;
+              z-index: 9999;
+              box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+              text-align: center;
+              max-width: 300px;
+              font-family: sans-serif;
+            ">
+              <p>Please return to full-screen.</p>
+              <button id="return-fullscreen-btn">
+                Return to Full-screen
+              </button>
+            </div>
+          `;
+
+        document.body.appendChild(warning);
+
+        // button logic
+        document
+          .getElementById('return-fullscreen-btn')
+          .addEventListener('click', function() {
+              if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+              }
+              warning.remove();
+          });
+        }
+      },
+
+     //on_close: function() {
+       // Grab all currently collected data
+      // var currentData = jsPsych.data.get().json();
+          
+      // Save partial data locally
+     // localStorage.setItem('jspsych_partial_data', currentData);
+     // console.log('Partial data saved to localStorage');
+     // },
+
+      // saving data locally 
+      on_finish: function() {
+        experiment_finished = true; 
+
+        // get interaction data
+        var interactionData = jsPsych.data.getInteractionData();
+        
+        // add the interaction data to data file
+        jsPsych.data.get().push({
+          trial_type: 'interaction_summary',
+          interaction_history: interactionData.values(),
+          total_interactions: interactionData.count()
+        });
+        
+        // remove partial data if experiment is done
+        localStorage.removeItem('NEST_partial_data');
+        saveFiles();
+      }
+    });
+
+    // Helper function for the final download
+    function saveFiles() {
+      jsPsych.data.get().localSave('json', 'NEST-Pilot-NPID.json');
+    }
+
+    // ---------------------------
+    // Save Partial Data on Window Close
+    // ---------------------------
+    // run `console.log(localStorage.getItem('NEST_partial_data'));` to retrieve partial data from console log
+    window.addEventListener('beforeunload', (event) => {     
+        event.preventDefault();
+        event.returnValue = ''; 
+    });
+
+    var enter_fullscreen = {
+      type: jsPsychFullscreen,
+      fullscreen_mode: true
+    }; 
+
+    
+    var child_rate = {
+      type: jsPsychHtmlSliderResponse,
+      stimulus: `
+        <style>
+          #jspsych-content {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            }
+
+          #jspsych-html-slider-response-wrapper {
+            width: 750px;
+            text-align: center;
+          }
+
+          .jspsych-slider {
+            height: 20px;
+          }
+
+          .jspsych-html-slider-response-labels {
+            margin-top: 20px;
+          }
+          #jspsych-html-slider-response-next {
+            display: block;      
+            margin: 80px auto 0; 
+          }
+        </style>
+
+        <div>
+          <p style="font-size:32px;">
+            Child, how frustrated do you feel right now?
+          </p>
+        </div>
+      `,
+      require_movement: true,
+      min: 1,
+      max: 10,
+      step: 1,
+      slider_start: 5,
+      slider_width: 700,
+      labels: [
+        "<img src='puzzles/img/slider_not-frustrated.png' width='150'>",
+        "<img src='puzzles/img/slider_frustrated.png' width='150'>",
+        "<img src='puzzles/img/slider_very-frustrated.png' width='150'>"
+      ],
+      button_label: 'Next'
+    };
+  
+    var tutorial1 = {
+      type: jsPsychTangram,
+      svg: 'puzzles/puzzle-letter.svg',
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60
+    };
+
+    var tutorial2 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-arrow.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60
+    };
+
+    var easy1 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-cat.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60
+    };
+
+      var easy2 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-rocket.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60
+    };
+
+      var easy3 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-fish.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60
+    };
+
+      var easy4 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-music-note.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60
+    };
+
+      var easy5 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-runman.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60
+    };
+
+    var hard1 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-pinwheel.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60
+    };
+
+    var hard2 = {
+      type: jsPsychTangram,
+      svg: 'puzzles/puzzle-incomplete-square.svg',
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60
+    };
+
+    var hard3 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-heart.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60
+    };
+
+    var hard4 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-hexagon.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60
+    };
+
+    var hard5 = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-barn.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60
+    };
+
+    var hard1_img = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-pinwheel.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 120,
+      duration: 120
+    };
+
+    var hard2_img = {
+      type: jsPsychTangram,
+      svg: 'puzzles/puzzle-incomplete-square.svg',
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 120,
+      duration: 120
+    };
+
+    var hard3_img = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-heart.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 120,
+      duration: 120
+    };
+
+    var hard4_img = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-hexagon.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 120,
+      duration: 120
+    };
+
+    var hard5_img = {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-barn.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      overlayImage: "puzzles/ParentalCue_nobg.png",
+      overlayImageLocation: "TOP_RIGHT",
+      overlayImageWidth: 120,
+      duration: 120
+    };
+
+
+    var exit_fullscreen = {
+      type: jsPsychFullscreen,
+      fullscreen_mode: false,
+      delay_after: 0
+    };
+
+    jsPsych.run([enter_fullscreen, easy1, child_rate, easy2, child_rate, easy3, child_rate, easy4, child_rate, easy5, child_rate, hard1, child_rate, hard2, child_rate, hard3, child_rate, hard4, child_rate, hard5, child_rate, exit_fullscreen]);
+  </script>
+</html>

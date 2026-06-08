@@ -7,7 +7,6 @@
     <script src="jspsych/dist/plugin-html-slider-response.js"></script>
     <script src="jspsych/dist/plugin-video-keyboard-response.js"></script>
     <script src="jspsych/dist/plugin-video-button-response.js"></script>
-    <script src="jspsych/dist/plugin-tangram-game.js"></script>
     <script src="jspsych/dist/plugin-fullscreen.js"></script>
     <script src="jspsych/dist/plugin-html-button-response.js"></script>
     <script src="jspsych/dist/extension-record-video.js"></script>
@@ -16,6 +15,7 @@
     <script src="jspsych/dist/plugin-call-function.js"></script>
     <script src="jspsych/dist/plugin-survey-multi-choice.js"></script>
     <script src="jspsych/dist/plugin-survey-html-form.js"></script>
+    <script src="https://unpkg.com/@jspsych-contrib/plugin-tangram-game"></script>
     <style>
      .fit-video video {
       width: 80vw;
@@ -109,14 +109,14 @@
     });
 
     // Helper function for the final download
+    // run `console.log(localStorage.getItem('NEST_partial_data'));` to retrieve partial data from console log
     function saveFiles() {
       jsPsych.data.get().localSave('json', 'NEST-Pilot-NPID.json');
     }
 
     // ---------------------------
-    // Save Partial Data on Window Close
+    // Leave Site warning
     // ---------------------------
-    // run `console.log(localStorage.getItem('NEST_partial_data'));` to retrieve partial data from console log
     window.addEventListener('beforeunload', (event) => {     
         event.preventDefault();
         event.returnValue = ''; 
