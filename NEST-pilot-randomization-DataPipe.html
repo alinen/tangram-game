@@ -73,45 +73,13 @@
         }
       }
   });
-    
+  
+  // ---------------------------
+  // DataPipe and OSF ID
+  // ---------------------------
   const subject_id = jsPsych.randomization.randomID(5);
   const experiment_id = "nzNDjDHs2IVM";
 
-  let mediaRecorder;
-  let audioChunks = [];
-  
-
-  // Helper to convert Audio Blob to Base64 for DataPipe
-  function blobToBase64(blob) {
-    return new Promise((resolve, _) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result.split(',')[1]);
-      reader.readAsDataURL(blob);
-    });
-  }
-
-  var start_background_recording = {
-      type: jsPsychCallFunction,
-      async: true,
-      func: function(done) {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-          .then(stream => {
-            mediaRecorder = new MediaRecorder(stream);
-            
-            mediaRecorder.ondataavailable = e => {
-              if (e.data.size > 0) audioChunks.push(e.data);
-            };
-            
-            mediaRecorder.start();
-            done(); 
-          })
-          .catch(err => {
-            console.error("Microphone access denied:", err);
-            alert("Microphone access is required for audio recording. Please refresh and allow access.");
-            done();
-          });
-      }
-    };
 
     // ---------------------------
     // Fullscreen trial
@@ -885,30 +853,6 @@
     // ---------------------------
     // DataPipe upload trials
     // ---------------------------
-    // Upload audio recording to DataPipe
-    var stop_and_upload_audio = {
-      type: jsPsychCallFunction,
-      async: true,
-      func: async function(done) {
-        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-          mediaRecorder.onstop = async () => {
-            if (audioChunks.length > 0) {
-              const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-              const base64Audio = await blobToBase64(audioBlob); // Convert to Base64
-              const audioFilename = `${subject_id}_audio.webm`;
-              
-              // Upload Audio to DataPipe
-              await jsPsychPipe.saveBase64Data(experiment_id, audioFilename, base64Audio);
-            }
-            done(); // Move to the JSON saving trial
-          };
-          mediaRecorder.stop();
-        } else {
-          done(); // Move on if mic never started
-        }
-      }
-    };
-
     // interaction data
     var package_interaction_data = {
       type: jsPsychCallFunction,
