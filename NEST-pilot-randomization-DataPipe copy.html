@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+  
   <head>
     <script src="jspsych/dist/jspsych.js"></script>
     <link rel="stylesheet" href="jspsych/dist/jspsych.css">
@@ -179,7 +180,7 @@
       type: jsPsychCallFunction,
       async: true,
       func: function(done) {
-        navigator.mediaDevices.getUserMedia({ audio: true })
+        navigator.mediaDevices.getUserMedia({ audio: true }) 
           .then(stream => {
             mediaRecorder = new MediaRecorder(stream);
             
