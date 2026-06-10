@@ -307,7 +307,7 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 120,
+      duration: 60,
       data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-cat" }
     },
     {
@@ -318,7 +318,7 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 120,
+      duration: 60,
       data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-rocket" }
     },
     {
@@ -329,7 +329,7 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 120,
+      duration: 60,
       data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-fish" }
     },
     {
@@ -340,7 +340,7 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 120,
+      duration: 60,
       data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-music-note" }
     },
     {
@@ -351,7 +351,7 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 120,
+      duration: 60,
       data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-runman" }
     }
   ];
@@ -368,7 +368,7 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 120,
+      duration: 60,
       data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-hexagon" }
     },
     {
@@ -379,7 +379,7 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 120,
+      duration: 60,
       data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-incomplete-square" }
     },
     {
@@ -390,7 +390,7 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 120,
+      duration: 60,
       data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-heart" }
     },
     {
@@ -401,7 +401,7 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 120,
+      duration: 60,
       data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-pinwheel" }
     },
     {
@@ -412,7 +412,7 @@
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 120,
+      duration: 60,
       data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-barn" }
     }
   ];
@@ -1023,7 +1023,7 @@
   };
 
 
-  var withdrawoption = {
+  var keep_option = {
     type: jsPsychSurveyMultiChoice,
     questions: [
       {
@@ -1036,7 +1036,7 @@
               align-items: center;
               text-align: center;
               padding: 40px;
-              } 
+              }
               .jspsych-survey-multi-choice-options {
               text-align: center;
               margin-top: 20px;
@@ -1053,10 +1053,10 @@
           </style>
           <div>
             <p style="font-size: 24px; margin-bottom: 20px;">
-                  If you would like to withdraw the recording of your study session, please select 'Yes'. 
+                  Can we keep your screen/audio recording of your study session?.
             </p>
             <p style="font-size: 24px; margin-bottom: 20px;">
-                  It will then be deleted by the study team, and no one will review your recording.
+                  It will then be deleted by the study team, and no one will review your screen/audio recording.
             </p>
             </div>`,
         name: 'WithdrawOption',
@@ -1064,7 +1064,7 @@
         required: true
       }],
     button_label: 'Next',
-    data: { trial_name: "withdraw_option" }
+    data: { trial_name: "keep_data_option" }
   };
 
   // ---------------------------
@@ -1106,4 +1106,4 @@
   jsPsych.run(full_timeline);
 </script>
 
-</html>
+</html> 
