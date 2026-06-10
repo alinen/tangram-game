@@ -180,7 +180,8 @@ var jsPsych = initJsPsych({
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 60
+      duration: 60, 
+      data: { trial_name: "tutorial1", difficulty: "tutorial", puzzle_id: "puzzle-letter" }
     };
 
     var tutorial2 = {
@@ -191,7 +192,8 @@ var jsPsych = initJsPsych({
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 60
+      duration: 60, 
+      data: { trial_name: "tutorial2", difficulty: "tutorial", puzzle_id: "puzzle-arrow" }
     };
 
     var easy1 = {
@@ -202,7 +204,8 @@ var jsPsych = initJsPsych({
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 60
+      duration: 60, 
+       data: { trial_name: "easy_1", difficulty: "easy", puzzle_id: "puzzle-cat" }
     };
 
       var easy2 = {
@@ -213,7 +216,8 @@ var jsPsych = initJsPsych({
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 60
+      duration: 60,
+      data: { trial_name: "easy_2", difficulty: "easy", puzzle_id: "puzzle-rocket" }
     };
 
       var easy3 = {
@@ -224,7 +228,8 @@ var jsPsych = initJsPsych({
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 60
+      duration: 60,
+      data: { trial_name: "easy_3", difficulty: "easy", puzzle_id: "puzzle-fish" }
     };
 
       var easy4 = {
@@ -235,7 +240,8 @@ var jsPsych = initJsPsych({
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 60
+      duration: 60,
+      data: { trial_name: "easy_4", difficulty: "easy", puzzle_id: "puzzle-music-note" }
     };
 
       var easy5 = {
@@ -246,7 +252,8 @@ var jsPsych = initJsPsych({
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 60
+      duration: 60,
+      data: { trial_name: "easy_5", difficulty: "easy", puzzle_id: "puzzle-runman" }
     };
 
     var hard1 = {
@@ -257,18 +264,20 @@ var jsPsych = initJsPsych({
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 60
+      duration: 60,
+      data: { trial_name: "hard_1", difficulty: "hard", puzzle_id: "puzzle-pinwheel" }
     };
 
     var hard2 = {
       type: jsPsychTangram,
-      svg: 'puzzles/puzzle-incomplete-square.svg',
+      svg: 'puzzles/puzzle-square.svg',
       interactionSound: "puzzles/tap.mp3",
       successSound: "puzzles/win_applaud.mp3",
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 60
+      duration: 60,
+      data: { trial_name: "hard_2", difficulty: "hard", puzzle_id: "puzzle-square" }
     };
 
     var hard3 = {
@@ -279,7 +288,8 @@ var jsPsych = initJsPsych({
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 60
+      duration: 60,
+      data: { trial_name: "hard_3", difficulty: "hard", puzzle_id: "puzzle-heart" }
     };
 
     var hard4 = {
@@ -290,7 +300,8 @@ var jsPsych = initJsPsych({
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 60
+      duration: 60,
+      data: { trial_name: "hard_4", difficulty: "hard", puzzle_id: "puzzle-hexagon" }
     };
 
     var hard5 = {
@@ -301,7 +312,8 @@ var jsPsych = initJsPsych({
       failureSound: "puzzles/lose_buzz.mp3",
       successMessage: "You did it! :)",
       failureMessage: "Time is up! :(",
-      duration: 60
+      duration: 60,
+      data: { trial_name: "hard_5", difficulty: "hard", puzzle_id: "puzzle-barn" }
     };
 
     var hard1_img = {
@@ -315,7 +327,8 @@ var jsPsych = initJsPsych({
       overlayImage: "puzzles/ParentalCue_nobg.png",
       overlayImageLocation: "TOP_RIGHT",
       overlayImageWidth: 120,
-      duration: 120
+      duration: 120,
+      data: { trial_name: "hard_1_img", difficulty: "hard", puzzle_id: "puzzle-pinwheel" }
     };
 
     var hard2_img = {
@@ -329,7 +342,8 @@ var jsPsych = initJsPsych({
       overlayImage: "puzzles/ParentalCue_nobg.png",
       overlayImageLocation: "TOP_RIGHT",
       overlayImageWidth: 120,
-      duration: 120
+      duration: 120,
+      data: { trial_name: "hard_2_img", difficulty: "hard", puzzle_id: "puzzle-square" }
     };
 
     var hard3_img = {
@@ -343,7 +357,8 @@ var jsPsych = initJsPsych({
       overlayImage: "puzzles/ParentalCue_nobg.png",
       overlayImageLocation: "TOP_RIGHT",
       overlayImageWidth: 120,
-      duration: 120
+      duration: 120,
+      data: { trial_name: "hard_3_img", difficulty: "hard", puzzle_id: "puzzle-heart" }
     };
 
     var hard4_img = {
@@ -357,7 +372,8 @@ var jsPsych = initJsPsych({
       overlayImage: "puzzles/ParentalCue_nobg.png",
       overlayImageLocation: "TOP_RIGHT",
       overlayImageWidth: 120,
-      duration: 120
+      duration: 120,
+      data: { trial_name: "hard_4_img", difficulty: "hard", puzzle_id: "puzzle-hexagon" }
     };
 
     var hard5_img = {
@@ -371,7 +387,8 @@ var jsPsych = initJsPsych({
       overlayImage: "puzzles/ParentalCue_nobg.png",
       overlayImageLocation: "TOP_RIGHT",
       overlayImageWidth: 120,
-      duration: 120
+      duration: 120,
+      data: { trial_name: "hard_5_img", difficulty: "hard", puzzle_id: "puzzle-barn" }
     };
 
 

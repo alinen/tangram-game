@@ -5,11 +5,10 @@
   <script src="jspsych/dist/jspsych.js"></script>
   <link rel="stylesheet" href="jspsych/dist/jspsych.css">
   <script src="jspsych/dist/plugin-survey-likert.js"></script>
-  <script src="jspsych/dist/plugin-survey-html-form.js"></script>
-  <script src="jspsych/dist/plugin-survey-multi-choice.js"></script>
   <script src="jspsych/dist/plugin-html-slider-response.js"></script>
   <script src="jspsych/dist/plugin-video-keyboard-response.js"></script>
   <script src="jspsych/dist/plugin-video-button-response.js"></script>
+  <script src="jspsych/dist/plugin-tangram-game.js"></script>
   <script src="jspsych/dist/plugin-fullscreen.js"></script>
   <script src="jspsych/dist/plugin-html-button-response.js"></script>
   <script src="jspsych/dist/extension-record-video.js"></script>
@@ -17,7 +16,6 @@
   <script src="jspsych/dist/plugin-html-audio-response.js"></script>
   <script src="jspsych/dist/plugin-call-function.js"></script>
   <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
-  <script src="https://unpkg.com/@jspsych-contrib/plugin-tangram-game"></script>
   <style>
     .fit-video video {
       width: 80vw;
@@ -33,11 +31,6 @@
 
 <script>
   var jsPsych = initJsPsych({
-    on_data_update: function (data) {
-      var currentData = jsPsych.data.get().json();
-      localStorage.setItem('NEST-Pilot_partial_data', currentData);
-    },
-
     on_interaction_data_update: function (data) {
       // if participant exits fullscreen
       if (data.event === 'fullscreenexit') {
@@ -49,24 +42,24 @@
         // return to fullscreen message
         warning.innerHTML = `
             <div style="
-            position: fixed;
-            bottom: 50px;
-            right: 20px;
-            background: white;
-            border: 2px solid black;
-            padding: 20px;
-            z-index: 9999;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            text-align: center;
-            max-width: 300px;
-            font-family: sans-serif;
+              position: fixed;
+              bottom: 50px;
+              right: 20px;
+              background: white;
+              border: 2px solid black;
+              padding: 20px;
+              z-index: 9999;
+              box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+              text-align: center;
+              max-width: 300px;
+              font-family: sans-serif;
             ">
-            <p>Please return to full-screen.</p>
-            <button id="return-fullscreen-btn">
-              Return to Full-screen
-            </button>
-          </div>
-        `;
+              <p>Please return to full-screen.</p>
+              <button id="return-fullscreen-btn">
+                Return to Full-screen
+              </button>
+            </div>
+          `;
 
         document.body.appendChild(warning);
 
@@ -80,123 +73,15 @@
             warning.remove();
           });
       }
-    },
-
-
-    // saving data locally 
-    on_finish: function () {
-      experiment_finished = true;
-
-      // get interaction data
-      var interactionData = jsPsych.data.getInteractionData();
-
-      // Get participant ID 
-      var np_id_trial = jsPsych.data.get().filter({ trial_name: "participant_id" }).values()[0];
-
-      // map np_id
-      var participantID = np_id_trial ? np_id_trial.response.response : "N/A";
-      var currentBlockOrder = np_id_trial && np_id_trial.block_order ? np_id_trial.block_order : "N/A";
-
-      // map block order
-      var blockOrderValues = jsPsych.data.get().select('block_order').values;
-      var currentBlockOrder = blockOrderValues.find(val => val !== undefined) || "N/A";
-
-      // map withdraw option
-      var withdraw_trial = jsPsych.data.get().filter({ trial_name: "withdraw_option" }).values()[0];
-      var withdrawResponse = withdraw_trial && withdraw_trial.response ? withdraw_trial.response.WithdrawOption : "N/A";
-
-      // add session summary 
-      jsPsych.data.get().values().unshift({
-        trial_type: 'session_summary',
-        participant_id: participantID,
-        block_order: currentBlockOrder,
-        easy_puzzle_1: selected_easy[0].data.puzzle_id,
-        easy_puzzle_2: selected_easy[1].data.puzzle_id,
-        hard_puzzle_1: selected_hard[0].data.puzzle_id,
-        hard_puzzle_2: selected_hard[1].data.puzzle_id,
-        withdraw_option: withdrawResponse
-      });
-      // add the interaction data to data file
-      jsPsych.data.get().push({
-        trial_type: 'interaction_summary',
-        interaction_history: interactionData.values(),
-        total_interactions: interactionData.count()
-      });
-
-      // remove partial data if experiment is done
-      localStorage.removeItem('NEST_partial_data');
-      saveFiles();
     }
   });
 
-  // Helper function for the final download
-  // run `console.log(localStorage.getItem('NEST_partial_data'));` to retrieve partial data from console log
-  function saveFiles() {
-    jsPsych.data.get().localSave('json', 'NEST-Pilot-NPID.json');
-  }
-
-
   // ---------------------------
-  // Leave Site warning
+  // DataPipe and OSF ID
   // ---------------------------
-  window.addEventListener('beforeunload', (event) => {
-    event.preventDefault();
-    event.returnValue = '';
-  });
-
-
-
   const subject_id = jsPsych.randomization.randomID(5);
   const experiment_id = "nzNDjDHs2IVM";
 
-  // ---------------------------
-  // Participant_ID & randomization array
-  // ---------------------------   
-  var np_id = {
-    type: jsPsychSurveyHtmlForm,
-    preamble: '<p>Please enter your participant ID:</p>',
-    html: '<p><input type="text" required id="test-resp-box" name="response" size="10" /></p>',
-    button_label: 'Next',
-    autocomplete: false,
-    autofocus: 'test-resp-box',
-    data: { trial_name: "participant_id" },
-    on_finish: function (data) {
-      jsPsych.data.addProperties({ participant_id: data.response.response });
-    }
-  };
-
-
-  // Helper to convert Audio Blob to Base64 for DataPipe
-  function blobToBase64(blob) {
-    return new Promise((resolve, _) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result.split(',')[1]);
-      reader.readAsDataURL(blob);
-    });
-  }
-
-  var start_background_recording = {
-    type: jsPsychCallFunction,
-    async: true,
-    func: function (done) {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-          mediaRecorder = new MediaRecorder(stream);
-
-          mediaRecorder.ondataavailable = e => {
-            if (e.data.size > 0) audioChunks.push(e.data);
-          };
-
-          mediaRecorder.start();
-          done();
-        })
-        .catch(err => {
-          console.error("Microphone access denied:", err);
-          alert("Microphone access is required for audio recording. Please refresh and allow access.");
-          done();
-        });
-    }
-  };
 
   // ---------------------------
   // Fullscreen trial
@@ -462,7 +347,9 @@
   var selected_easy = jsPsych.randomization.sampleWithoutReplacement(easy_puzzles, 2);
   var selected_hard = jsPsych.randomization.sampleWithoutReplacement(hard_puzzles, 2);
 
+  var block_order = jsPsych.randomization.sampleWithoutReplacement(["EEHH", "HHEE"], 1)[0];
 
+  jsPsych.data.addProperties({ block_order: block_order });
 
   // ---------------------------
   // Helper: build puzzle image HTML from puzzle_id
@@ -483,52 +370,7 @@
           <img src="${puzzleImgSrc(id2)}" style="max-width:180px; max-height:180px; border:3px solid #ccc; border-radius:12px; padding:10px; background:#f9f9f9;">
         </div>
       `;
-  };
-
-  // ---------------------------
-  // Build main puzzle timeline
-  // ---------------------------
-  var block_order_select = {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: '<p>Please select the block order for this session:</p>',
-    choices: ['A', 'B'],
-    on_finish: function (data) {
-      var block_order = data.response === 0 ? "EEHH" : "HHEE";
-      jsPsych.data.addProperties({ block_order: block_order });
-    }
-  };
-
-  // Build the sequences
-  var eehh_sequence = [
-    selected_easy[0], child_rate,
-    selected_easy[1], child_rate,
-    selected_hard[0], child_rate,
-    selected_hard[1], child_rate
-  ];
-
-  var hhee_sequence = [
-    selected_hard[0], child_rate,
-    selected_hard[1], child_rate,
-    selected_easy[0], child_rate,
-    selected_easy[1], child_rate
-  ];
-
-  // Create the conditional nodes
-  var eehh_node = {
-    timeline: eehh_sequence,
-    conditional_function: function () {
-      var current_order = jsPsych.data.get().select('block_order').values[0];
-      return current_order === "EEHH";
-    }
-  };
-
-  var hhee_node = {
-    timeline: hhee_sequence,
-    conditional_function: function () {
-      var current_order = jsPsych.data.get().select('block_order').values[0];
-      return current_order === "HHEE";
-    }
-  };
+  }
 
   // ---------------------------
   // Feedback trials
@@ -553,15 +395,13 @@
     autoplay: true,
     trial_ends_after_video: false,
     response_ends_trial: true,
-    response_allowed_while_playing: true,
-    enable_button_after: 8000,
+    response_allowed_while_playing: false,
     choices: ['Next'],
     stimulus: ['puzzles/video/puzzle-feedback-child-1.mp4'],
     data: { trial_name: "child_feedback1" },
     width: window.innerWidth * 0.6,
     height: window.innerHeight * 0.4,
     css_classes: ['fit-video'],
-
     prompt: `
         <style>
           #jspsych-content {
@@ -576,7 +416,7 @@
           #jspsych-video-button-response-stimulus {
             order: 1;
             max-height: 30vh;
-            width: 120%;
+            width: auto;
           }
 
           .custom-text-container {
@@ -591,13 +431,13 @@
 
         #jspsych-video-button-response-btngroup {
           order: 3;
-          margin-top: 40px;
+          margin-top: 0px;
           margin-bottom: 0px;
         }
         </style>
 
         <div class="custom-text-container">
-          <p style="font-size: 36px; font-weight: 500;margin:0;">
+          <p style="font-size: 20px; margin: 0;">
             Hi friend, how did you feel when working on these puzzles?
           </p>
 
@@ -613,8 +453,7 @@
     autoplay: true,
     trial_ends_after_video: false,
     response_ends_trial: true,
-    response_allowed_while_playing: true,
-    enable_button_after: 7000,
+    response_allowed_while_playing: false,
     choices: ['Next'],
     stimulus: ['puzzles/video/puzzle-feedback-child-2.mp4'],
     data: { trial_name: "child_feedback2" },
@@ -650,13 +489,13 @@
 
         #jspsych-video-button-response-btngroup {
           order: 3;
-          margin-top: 40px;
+          margin-top: 0px;
           margin-bottom: 0px;
         }
         </style>
 
         <div class="custom-text-container">
-          <p style="font-size: 36px; margin: 0;">
+          <p style="font-size: 20px; margin: 0;">
             How did you feel when working on these puzzles?
           </p>
 
@@ -672,8 +511,7 @@
     autoplay: true,
     trial_ends_after_video: false,
     response_ends_trial: true,
-    response_allowed_while_playing: true,
-    enable_button_after: 9000,
+    response_allowed_while_playing: false,
     choices: ['Next'],
     stimulus: ['puzzles/video/puzzle-feedback-child-3.mp4'],
     data: { trial_name: "child_feedback3" },
@@ -697,30 +535,21 @@
           width: auto;
         }
 
+
         .custom-text-container {
           order: 2;
           margin-top: 25px;
-          text-align: center;
-          width: 120%;
-        }
-
-        .custom-text-container p {
-          font-size: 32px;
-          font-weight: 400;
-          line-height:  1.3;
-          margin: 0;
         }
 
         #jspsych-video-button-response-btngroup {
           order: 3;
-          margin-top: 25px;
+          margin-top: 0px;
           margin-bottom: 0px;
-        
-        }
+      }
       </style>
 
       <div class="custom-text-container" style="text-align: center;">
-        <p>
+        <p style="font-size: 20px; margin: 0;">
           When playing the puzzle game, how easy was it to move the pieces?
         </p>
       </div>
@@ -732,8 +561,7 @@
     autoplay: true,
     trial_ends_after_video: false,
     response_ends_trial: true,
-    response_allowed_while_playing: true,
-    enable_button_after: 6000,
+    response_allowed_while_playing: false,
     choices: ['Next'],
     stimulus: ['puzzles/video/puzzle-feedback-child-4.mp4'],
     data: { trial_name: "child_feedback4" },
@@ -760,26 +588,17 @@
         .custom-text-container {
           order: 2;
           margin-top: 25px;
-          text-align: center;
-          width: 120%;
-        }
-
-        .custom-text-container p {
-          font-size: 32px;
-          font-weight: 400;
-          line-height:  1.3;
-          margin: 0;
         }
 
         #jspsych-video-button-response-btngroup {
           order: 3;
-          margin-top: 25px;
+          margin-top: 0px;
           margin-bottom: 0px;
         }
       </style>
 
       <div class="custom-text-container" style="text-align: center;">
-        <p>
+        <p style="font-size: 20px; margin: 0;">
           Was the instruction video helpful?
         </p>
       </div>
@@ -794,8 +613,7 @@
     autoplay: true,
     trial_ends_after_video: false,
     response_ends_trial: true,
-    response_allowed_while_playing: true,
-    enable_button_after: 20000,
+    response_allowed_while_playing: false,
     choices: ['Next'],
     data: { trial_name: "parent_feedback1" },
     stimulus: ['puzzles/video/puzzle-feedback-parent-1.mp4'],
@@ -823,16 +641,7 @@
         .custom-text-container {
           order: 2;
           margin-top: 25px;
-          text-align: center;
-          width: 120%;
         }
-
-        .custom-text-container p {
-          font-size: 30px;
-          font-weight: 400;
-          line-height:  1.3;
-          margin: 0;
-       } 
 
         #jspsych-video-button-response-btngroup {
           order: 3;
@@ -842,13 +651,13 @@
       </style>
 
       <div class="custom-text-container" style="text-align: center;">
-        <p>
-          Did you notice your child becoming frustrated during these puzzles? 
+        <p style="font-size: 20px; margin: 0;">
+          Parent, did you notice your child becoming frustrated during these puzzles? 
           </p>
-           <p>
+           <p style="font-size: 20px; margin: 10px;">
           How did their level of frustration compare to other parts of their day when they might feel frustrated? 
           </p>
-           <p>
+           <p style="font-size: 20px; margin: 10px;">
           Were they more frustrated than usual, less frustrated than usual, or about the same?
         </p>
 
@@ -864,8 +673,7 @@
     autoplay: true,
     trial_ends_after_video: false,
     response_ends_trial: true,
-    response_allowed_while_playing: true,
-    enable_button_after: 20000,
+    response_allowed_while_playing: false,
     choices: ['Next'],
     data: { trial_name: "parent_feedback2" },
     stimulus: ['puzzles/video/puzzle-feedback-parent-2.mp4'],
@@ -889,19 +697,11 @@
           width: auto;
         }
 
+
         .custom-text-container {
           order: 2;
           margin-top: 25px;
-          text-align: center;
-          width: 120%;
         }
-
-        .custom-text-container p {
-          font-size: 30px;
-          font-weight: 400;
-          line-height:  1.3;
-          margin: 0;
-        } 
 
         #jspsych-video-button-response-btngroup {
           order: 3;
@@ -911,13 +711,13 @@
       </style>
 
       <div class="custom-text-container" style="text-align: center;">
-        <p>
+        <p style="font-size: 20px; margin: 0;">
           Did you notice your child becoming frustrated during these puzzles? 
           </p>
-           <p>
+           <p style="font-size: 20px; margin: 10px;">
           How did their level of frustration compare to other parts of their day when they might feel frustrated?
           </p>
-           <p>
+           <p style="font-size: 20px; margin: 10px;">
           Were they more frustrated than usual, less frustrated than usual, or about the same?
         </p>
 
@@ -933,8 +733,7 @@
     autoplay: true,
     trial_ends_after_video: false,
     response_ends_trial: true,
-    response_allowed_while_playing: true,
-    enable_button_after: 12000,
+    response_allowed_while_playing: false,
     choices: ['Next'],
     data: { trial_name: "parent_feedback3" },
     stimulus: ['puzzles/video/puzzle-feedback-parent-3.mp4'],
@@ -958,19 +757,11 @@
           width: auto;
         }
 
+
         .custom-text-container {
           order: 2;
           margin-top: 25px;
-          text-align: center;
-          width: 120%;
         }
-
-        .custom-text-container p {
-          font-size: 30px;
-          font-weight: 400;
-          line-height:  1.3;
-          margin: 0;
-        } 
 
         #jspsych-video-button-response-btngroup {
           order: 3;
@@ -980,10 +771,10 @@
       </style>
 
       <div class="custom-text-container" style="text-align: center;">
-        <p>
+        <p style="font-size: 20px; margin: 0;">
           We are also interested in your thoughts on how easy it was for your child to navigate the game. 
           </p>
-           <p>
+           <p style="font-size: 20px; margin: 10px;">
           Was there anything else during the game that you found your child was struggling with?  
         </p>
       </div>
@@ -1022,16 +813,7 @@
         .custom-text-container {
           order: 2;
           margin-top: 25px;
-          text-align: center;
-          width: 120%;
         }
-
-        .custom-text-container p {
-          font-size: 30px;
-          font-weight: 400;
-          line-height:  1.3;
-          margin: 0;
-        } 
 
         #jspsych-video-button-response-btngroup {
           order: 3;
@@ -1041,7 +823,7 @@
       </style>
 
       <div class="custom-text-container" style="text-align: center;">
-        <p>
+        <p style="font-size: 20px; margin: 0;">
           Was your child using a mouse or trackpad during the puzzle game? 
         </p>
       </div>
@@ -1064,56 +846,6 @@
     css_classes: ['fit-video']
   };
 
-  // ---------------------------
-  // Keep data & recording withdraw
-  // ---------------------------
-  var keep_option = {
-    type: jsPsychSurveyMultiChoice,
-    questions: [
-      {
-        prompt: `<style>
-            #jspsych-content {
-              height: 100vh;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              text-align: center;
-              padding: 40px;
-              }
-              .jspsych-survey-multi-choice-options {
-              text-align: center;
-              margin-top: 20px;
-              display: flex;
-              justify-content: center;
-              gap: 40px;
-            }
-
-            .jspsych-btn {
-              display: block;
-              margin: 30px auto 0 auto;
-              text-align: center;
-            }
-          </style>
-          <div>
-            <p style="font-size: 24px; margin-bottom: 20px;">
-                  Can we keep your screen/audio recording of your study session?.
-            </p>
-            <p style="font-size: 24px; margin-bottom: 20px;">
-                  It will then be deleted by the study team, and no one will review your screen/audio recording.
-            </p>
-            </div>`,
-        name: 'WithdrawOption',
-        options: ['Yes', 'No'],
-        required: true
-      }],
-    button_label: 'Next',
-    data: { trial_name: "keep_data_option" }
-  };
-
-  // ---------------------------
-  // Exit fullscreen
-  // ---------------------------
   var exit_fullscreen = {
     type: jsPsychFullscreen,
     fullscreen_mode: false,
@@ -1123,30 +855,6 @@
   // ---------------------------
   // DataPipe upload trials
   // ---------------------------
-  // Upload audio recording to DataPipe
-  var stop_and_upload_audio = {
-    type: jsPsychCallFunction,
-    async: true,
-    func: async function (done) {
-      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-        mediaRecorder.onstop = async () => {
-          if (audioChunks.length > 0) {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-            const base64Audio = await blobToBase64(audioBlob); // Convert to Base64
-            const audioFilename = `${subject_id}_audio.webm`;
-
-            // Upload Audio to DataPipe
-            await jsPsychPipe.saveBase64Data(experiment_id, audioFilename, base64Audio);
-          }
-          done(); // Move to the JSON saving trial
-        };
-        mediaRecorder.stop();
-      } else {
-        done(); // Move on if mic never started
-      }
-    }
-  };
-
   // interaction data
   var package_interaction_data = {
     type: jsPsychCallFunction,
@@ -1169,23 +877,44 @@
     data_string: () => jsPsych.data.get().json()
   };
 
+  // ---------------------------
+  // Build main puzzle timeline
+  // ---------------------------
+  var main_puzzle_timeline = [];
+
+  if (block_order === "EEHH") {
+    main_puzzle_timeline.push(selected_easy[0]);
+    main_puzzle_timeline.push(child_rate);
+    main_puzzle_timeline.push(selected_easy[1]);
+    main_puzzle_timeline.push(child_rate);
+    main_puzzle_timeline.push(selected_hard[0]);
+    main_puzzle_timeline.push(child_rate);
+    main_puzzle_timeline.push(selected_hard[1]);
+    main_puzzle_timeline.push(child_rate);
+  } else {
+    main_puzzle_timeline.push(selected_hard[0]);
+    main_puzzle_timeline.push(child_rate);
+    main_puzzle_timeline.push(selected_hard[1]);
+    main_puzzle_timeline.push(child_rate);
+    main_puzzle_timeline.push(selected_easy[0]);
+    main_puzzle_timeline.push(child_rate);
+    main_puzzle_timeline.push(selected_easy[1]);
+    main_puzzle_timeline.push(child_rate);
+  }
 
   // ---------------------------
   // Final full timeline
   // ---------------------------
   var full_timeline = [
     start_background_recording,
-    np_id,
-    block_order_select,
     enter_fullscreen,
     task_video_1,
     child_rate,
     task_video_2,
     tutorial1,
     tutorial2,
-    task_video_3,
-    eehh_node,
-    hhee_node,
+    task_video_3
+  ].concat(main_puzzle_timeline).concat([
     feedback_intro,
     child_feedback1,
     child_feedback2,
@@ -1195,11 +924,12 @@
     parent_feedback2,
     parent_feedback3,
     parent_feedback4,
+    feedback_end,
     exit_fullscreen,
     stop_and_upload_audio,
     package_interaction_data,
     save_json_to_datapipe
-  ];
+  ]);
 
   jsPsych.run(full_timeline);
 </script>
