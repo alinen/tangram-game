@@ -82,30 +82,24 @@
       }
     },
 
-
     // saving data locally 
     on_finish: function () {
       experiment_finished = true;
 
       // get interaction data
       var interactionData = jsPsych.data.getInteractionData();
-
       // Get participant ID 
       var np_id_trial = jsPsych.data.get().filter({ trial_name: "participant_id" }).values()[0];
-
       // map np_id
       var participantID = np_id_trial ? np_id_trial.response.response : "N/A";
       var currentBlockOrder = np_id_trial && np_id_trial.block_order ? np_id_trial.block_order : "N/A";
-
       // map block order
       var blockOrderValues = jsPsych.data.get().select('block_order').values;
       var currentBlockOrder = blockOrderValues.find(val => val !== undefined) || "N/A";
-
       // map withdraw option
       var keep_trial = jsPsych.data.get().filter({ trial_name: "keep_data_option" }).values()[0];
       var KeepResponse = keep_trial && keep_trial.response ? keep_trial.response.KeepOption : "N/A";
-
-      // add session summary 
+      // add session summary  
       jsPsych.data.get().values().unshift({
         trial_type: 'session_summary',
         participant_id: participantID,
@@ -116,6 +110,7 @@
         hard_puzzle_2: selected_hard[1].data.puzzle_id,
         keep_option: KeepResponse
       });
+
       // add the interaction data to data file
       jsPsych.data.get().push({
         trial_type: 'interaction_summary',

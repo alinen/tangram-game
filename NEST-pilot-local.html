@@ -87,37 +87,37 @@
 
       // get interaction data
       var interactionData = jsPsych.data.getInteractionData();
-
       // Get participant ID 
       var np_id_trial = jsPsych.data.get().filter({ trial_name: "participant_id" }).values()[0];
-
       // map np_id
       var participantID = np_id_trial ? np_id_trial.response.response : "N/A";
-      
-      // map block order & version
-      var currentBlockOrder = jsPsych.data.get().select('block_order').values[0] || "N/A";
-      var currentVersion = jsPsych.data.get().select('version').values[0] || "N/A";
-
-      // assign specific puzzles based on selected version
-      var ep1 = currentVersion === "1" ? "puzzle-cat" : "puzzle-fish";
-      var ep2 = currentVersion === "1" ? "puzzle-rocket" : "puzzle-runman";
-      var hp1 = currentVersion === "1" ? "puzzle-hexagon" : "puzzle-heart";
-      var hp2 = currentVersion === "1" ? "puzzle-square" : "puzzle-pinwheel";
-
+      var currentBlockOrder = np_id_trial && np_id_trial.block_order ? np_id_trial.block_order : "N/A";
+      // map block order
+      var blockOrderValues = jsPsych.data.get().select('block_order').values;
+      var currentBlockOrder = blockOrderValues.find(val => val !== undefined) || "N/A";
+      // map version
+      var versionValues = jsPsych.data.get().select('version').values;
+      var currentVersion = versionValues.find(val => val !== undefined) || "N/A";
       // map withdraw option
       var keep_trial = jsPsych.data.get().filter({ trial_name: "keep_data_option" }).values()[0];
-      var KeepResponse = keep_trial && keep_trial.response ? keep_trial.response.KeepOption : "N/A";
-
-      // add session summary 
+      var KeepResponse = "N/A"; 
+      if (keep_trial && keep_trial.response) {
+        var resp = keep_trial.response;
+        if (typeof resp === 'string') {
+          try { resp = JSON.parse(resp); } catch (e) { }
+        }
+        KeepResponse = resp.KeepOption || resp.Q0 || "N/A";
+      }
+       // add session summary 
       jsPsych.data.get().values().unshift({
         trial_type: 'session_summary',
         participant_id: participantID,
         block_order: currentBlockOrder,
         version: currentVersion,
-        easy_puzzle_1: ep1,
-        easy_puzzle_2: ep2,
-        hard_puzzle_1: hp1,
-        hard_puzzle_2: hp2,
+        easy_puzzle_1: currentVersion === "1" ? "puzzle-cat" : "puzzle-fish",
+        easy_puzzle_2: currentVersion === "1" ? "puzzle-rocket" : "puzzle-runman",
+        hard_puzzle_1: currentVersion === "1" ? "puzzle-hexagon" : "puzzle-heart",
+        hard_puzzle_2: currentVersion === "1" ? "puzzle-square" : "puzzle-pinwheel",
         keep_option: KeepResponse
       });
 
@@ -135,6 +135,7 @@
   });
 
   // Helper function for the final download
+  // run `console.log(localStorage.getItem('NEST_partial_data'));` to retrieve partial data from console log
   function saveFiles() {
     jsPsych.data.get().localSave('json', 'NEST-Pilot-NPID.json');
   }
@@ -319,16 +320,16 @@
   // ---------------------------
 
   // Version 1: Cat, Rocket, Hexagon, Square
-  var easy_v1_1 = { type: jsPsychTangram, svg: "puzzles/puzzle-cat.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 120, data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-cat" } };
-  var easy_v1_2 = { type: jsPsychTangram, svg: "puzzles/puzzle-rocket.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 120, data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-rocket" } };
+  var easy_v1_1 = { type: jsPsychTangram, svg: "puzzles/puzzle-cat.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 60, data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-cat" } };
+  var easy_v1_2 = { type: jsPsychTangram, svg: "puzzles/puzzle-rocket.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 60, data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-rocket" } };
   var hard_v1_1 = { type: jsPsychTangram, svg: "puzzles/puzzle-hexagon.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 120, data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-hexagon" } };
   var hard_v1_2 = { type: jsPsychTangram, svg: "puzzles/puzzle-square.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 120, data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-square" } };
 
   // Version 2: Fish, Runman, Heart, Pinwheel
   var easy_v2_1 = { type: jsPsychTangram, svg: "puzzles/puzzle-fish.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 60, data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-fish" } };
   var easy_v2_2 = { type: jsPsychTangram, svg: "puzzles/puzzle-runman.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 60, data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-runman" } };
-  var hard_v2_1 = { type: jsPsychTangram, svg: "puzzles/puzzle-heart.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 60, data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-heart" } };
-  var hard_v2_2 = { type: jsPsychTangram, svg: "puzzles/puzzle-pinwheel.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 60, data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-pinwheel" } };
+  var hard_v2_1 = { type: jsPsychTangram, svg: "puzzles/puzzle-heart.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 120, data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-heart" } };
+  var hard_v2_2 = { type: jsPsychTangram, svg: "puzzles/puzzle-pinwheel.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 120, data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-pinwheel" } };
 
 
   // ---------------------------
@@ -915,13 +916,13 @@
           </style>
           <div>
             <p style="font-size: 24px; margin-bottom: 20px;">
-                  Can we keep your screen/audio recording of your study session?.
+                  Can we keep your screen/audio recording of your study session?
             </p>
             <p style="font-size: 24px; margin-bottom: 20px;">
-                  It will then be deleted by the study team, and no one will review your screen/audio recording.
+                  If you select 'No', it will then be deleted by the study team, and no one will review your screen/audio recording.
             </p>
             </div>`,
-        name: 'WithdrawOption',
+        name: 'KeepOption',
         options: ['Yes', 'No'],
         required: true
       }],

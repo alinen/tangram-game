@@ -90,18 +90,23 @@
 
       // Get participant ID 
       var np_id_trial = jsPsych.data.get().filter({ trial_name: "participant_id" }).values()[0];
-
-      // map np_id
       var participantID = np_id_trial ? np_id_trial.response.response : "N/A";
-      var currentBlockOrder = np_id_trial && np_id_trial.block_order ? np_id_trial.block_order : "N/A";
 
-      // map block order
+      // map block order 
       var blockOrderValues = jsPsych.data.get().select('block_order').values;
       var currentBlockOrder = blockOrderValues.find(val => val !== undefined) || "N/A";
 
       // map withdraw option
       var keep_trial = jsPsych.data.get().filter({ trial_name: "keep_data_option" }).values()[0];
-      var KeepResponse = keep_trial && keep_trial.response ? keep_trial.response.KeepOption : "N/A";
+      var KeepResponse = "N/A"; 
+
+      if (keep_trial && keep_trial.response) {
+        var resp = keep_trial.response;
+        if (typeof resp === 'string') {
+          try { resp = JSON.parse(resp); } catch (e) { }
+        }
+        KeepResponse = resp.KeepOption || resp.Q0 || "N/A";
+      }
 
       // add session summary 
       jsPsych.data.get().values().unshift({
@@ -1061,7 +1066,7 @@
                   It will then be deleted by the study team, and no one will review your screen/audio recording.
             </p>
             </div>`,
-        name: 'WithdrawOption',
+        name: 'KeepOption',
         options: ['Yes', 'No'],
         required: true
       }],
@@ -1102,9 +1107,9 @@
     parent_feedback2,
     parent_feedback3,
     parent_feedback4,
-    keep_option, 
+    keep_option,
     exit_fullscreen
-  ]; 
+  ];
 
   jsPsych.run(full_timeline);
 </script>
