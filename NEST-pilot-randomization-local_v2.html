@@ -105,8 +105,8 @@
       var hp2 = currentVersion === "1" ? "puzzle-square" : "puzzle-pinwheel";
 
       // map withdraw option
-      var withdraw_trial = jsPsych.data.get().filter({ trial_name: "keep_data_option" }).values()[0];
-      var withdrawResponse = withdraw_trial && withdraw_trial.response ? withdraw_trial.response.WithdrawOption : "N/A";
+      var keep_trial = jsPsych.data.get().filter({ trial_name: "keep_data_option" }).values()[0];
+      var KeepResponse = keep_trial && keep_trial.response ? keep_trial.response.KeepOption : "N/A";
 
       // add session summary 
       jsPsych.data.get().values().unshift({
@@ -118,7 +118,7 @@
         easy_puzzle_2: ep2,
         hard_puzzle_1: hp1,
         hard_puzzle_2: hp2,
-        withdraw_option: withdrawResponse
+        keep_option: KeepResponse
       });
 
       // add the interaction data to data file
@@ -298,7 +298,7 @@
     failureSound: "puzzles/lose_buzz.mp3",
     successMessage: "You did it! :)",
     failureMessage: "Time is up! :(",
-    duration: 300,
+    duration: 10800,
     data: { trial_name: "tutorial1", difficulty: "tutorial", puzzle_id: "puzzle-letter" }
   };
 
@@ -310,7 +310,7 @@
     failureSound: "puzzles/lose_buzz.mp3",
     successMessage: "You did it! :)",
     failureMessage: "Time is up! :(",
-    duration: 300,
+    duration: 10800,
     data: { trial_name: "tutorial2", difficulty: "tutorial", puzzle_id: "puzzle-arrow" }
   };
 
