@@ -890,7 +890,7 @@
     css_classes: ['fit-video']
   };
 
-  // ---------------------------
+// ---------------------------
   // Keep data & recording withdraw
   // ---------------------------
   var keep_option = {
@@ -906,8 +906,8 @@
               align-items: center;
               text-align: center;
               padding: 40px;
-              }
-              .jspsych-survey-multi-choice-options {
+            }
+            .jspsych-survey-multi-choice-options {
               text-align: center;
               margin-top: 20px;
               display: flex;
@@ -927,11 +927,12 @@
             <p style="font-size: 24px; margin-bottom: 20px;">
                   If you select 'No', it will then be deleted by the study team, and no one will review your screen/audio recording.
             </p>
-            </div>`,
+          </div>`,
         name: 'KeepOption',
         options: ['Yes', 'No'],
         required: true
-      }],
+      }
+    ],
     button_label: 'Next',
     data: { trial_name: "keep_data_option" }
   };
@@ -943,20 +944,9 @@
     type: jsPsychFullscreen,
     fullscreen_mode: false,
     delay_after: 0
-  };
+  }; 
 
-  // ---------------------------
-  // DataPipe upload trials
-  // ---------------------------
-  var save_json_to_datapipe = {
-    type: jsPsychPipe,
-    action: "save",
-    experiment_id: experiment_id,
-    filename: `${subject_id}_data.json`,
-    data_string: () => jsPsych.data.get().json()
-  };
-
-
+ 
   // ---------------------------
   // Final full timeline
   // ---------------------------
@@ -986,7 +976,6 @@
     parent_feedback4,
     keep_option,
     exit_fullscreen,
-    save_json_to_datapipe 
   ];
 
   jsPsych.run(full_timeline);
