@@ -16,6 +16,7 @@
   <script src="jspsych/dist/plugin-call-function.js"></script>
   <script src="jspsych/dist/plugin-survey-multi-choice.js"></script>
   <script src="jspsych/dist/plugin-survey-html-form.js"></script>
+  <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
   <script src="https://unpkg.com/@jspsych-contrib/plugin-tangram-game"></script>
   <style>
     .fit-video video {
@@ -130,7 +131,6 @@
 
       // remove partial data if experiment is done
       localStorage.removeItem('NEST-Pilot_partial_data');
-      saveFiles();
     }
   });
 
@@ -946,6 +946,17 @@
     delay_after: 0
   }; 
 
+  // ---------------------------
+  // DataPipe upload trials
+  // ---------------------------
+  var save_json_to_datapipe = {
+    type: jsPsychPipe,
+    action: "save",
+    experiment_id: experiment_id,
+    filename: `${subject_id}_data.json`,
+    data_string: () => jsPsych.data.get().json()
+  };
+
  
   // ---------------------------
   // Final full timeline
@@ -976,6 +987,7 @@
     parent_feedback4,
     keep_option,
     exit_fullscreen,
+    save_json_to_datapipe
   ];
 
   jsPsych.run(full_timeline);
