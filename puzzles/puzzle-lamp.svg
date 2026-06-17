@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="600"
+   height="300"
+   viewBox="0 0 600 300"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="puzzle-lamp.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title1">puzzle-lamp</title>
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="2.0613745"
+     inkscape:cx="250.80353"
+     inkscape:cy="159.35969"
+     inkscape:window-width="1920"
+     inkscape:window-height="974"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="OutlineLayer">
+    <inkscape:grid
+       type="xygrid"
+       id="grid964"
+       originx="-139.84983"
+       originy="-19.740954"
+       spacingy="1"
+       spacingx="1"
+       units="mm" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect972"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect854"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect850"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="PuzzleLayer"
+     inkscape:label="PuzzleLayer">
+    <path
+       style="opacity:1;fill:#ffcc4d;fill-opacity:1;stroke:none;stroke-width:1.36277"
+       d="m 76.823142,147.38923 96.362168,-0.25473 -48.05375,48.30845 z"
+       id="T3"
+       inkscape:label="Triangle3"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="opacity:1;fill:#ff49e1;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
+       d="M 28.703572,147.63173 76.884568,147.47812 28.550006,99.45069 Z"
+       id="T4"
+       inkscape:label="Triangle4"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="opacity:1;fill:#66fff4;fill-opacity:1;stroke:none;stroke-width:1.36277"
+       d="m 173.30735,195.28231 48.1875,-48.17504 -48.18126,-0.006 -48.18748,48.17502 z"
+       id="P"
+       sodipodi:nodetypes="ccccc"
+       inkscape:label="Parallelegram" />
+    <path
+       style="opacity:1;fill:#ad54ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
+       d="m 149.22178,195.36755 -33.90256,34.23523 68.1378,-0.33274 z"
+       id="T5"
+       inkscape:label="Triangle5"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="opacity:1;fill:#66ff43;fill-opacity:1;stroke:none;stroke-width:2.72554;stroke-linecap:butt;stroke-opacity:1"
+       d="m 221.45665,79.068765 34.01373,34.124805 -34.1248,34.01372 -34.01371,-34.12481 z"
+       id="S"
+       inkscape:label="Square" />
+  </g>
+  <g
+     inkscape:label="OutlineLayer"
+     inkscape:groupmode="layer"
+     id="OutlineLayer"
+     transform="translate(0.36136717,0.79441293)">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.88976"
+       d="m 28.260312,98.168681 48.026208,47.783649 144.68501,0.36384 -33.95449,-33.99748 34.01513,-34.009331 34.13984,34.139841 -34.01856,33.86697 -48.17781,48.11717 -24.07374,0.12127 34.17016,33.89729 -68.09777,0.3032 33.86697,-34.17017 -24.04342,-0.0606 -48.390042,-47.90492 -48.026208,0.18191 z"
+       id="path1" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="TimebarLayer"
+     inkscape:label="Timebar"
+     style="image-rendering:auto">
+    <rect
+       style="fill:#00b500;fill-opacity:1;stroke:none;stroke-width:2.90695;stroke-dasharray:none;stroke-opacity:1"
+       id="TimebarInterior"
+       width="600"
+       height="10"
+       x="0"
+       y="290"
+       inkscape:label="Interior" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.45347;stroke-dasharray:none;stroke-opacity:1"
+       id="TimebarOutline"
+       width="600"
+       height="10"
+       x="0"
+       y="290"
+       inkscape:label="Outline" />
+  </g>
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>puzzle-lamp</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
