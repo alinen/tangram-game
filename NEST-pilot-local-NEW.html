@@ -114,7 +114,7 @@
         participant_id: participantID,
         block_order: currentBlockOrder,
         version: currentVersion,
-        easy_puzzle_1: currentVersion === "1" ? "puzzle-cat" : "puzzle-fish",
+        easy_puzzle_1: currentVersion === "1" ? "puzzle-lamp" : "puzzle-snail",
         easy_puzzle_2: currentVersion === "1" ? "puzzle-rocket" : "puzzle-runman",
         hard_puzzle_1: currentVersion === "1" ? "puzzle-hexagon" : "puzzle-heart",
         hard_puzzle_2: currentVersion === "1" ? "puzzle-square" : "puzzle-pinwheel",
@@ -319,9 +319,9 @@
   // Puzzle Task Versions
   // ---------------------------
 
-  // Version 1: Cat, Rocket, Hexagon, Square
-  var easy_v1_1 = { type: jsPsychTangram, svg: "puzzles/puzzle-cat.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 120, data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-cat" } };
-  var easy_v1_2 = { type: jsPsychTangram, svg: "puzzles/puzzle-rocket.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 120, data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-rocket" } };
+  // Version 1: Lamp, Snail, Hexagon, Square
+  var easy_v1_1 = { type: jsPsychTangram, svg: "puzzles/puzzle-lamp.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 120, data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-lamp" } };
+  var easy_v1_2 = { type: jsPsychTangram, svg: "puzzles/puzzle-snail.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 120, data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-snail" } };
   var hard_v1_1 = { type: jsPsychTangram, svg: "puzzles/puzzle-hexagon.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 60, data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-hexagon" } };
   var hard_v1_2 = { type: jsPsychTangram, svg: "puzzles/puzzle-square.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 60, data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-square" } };
 
@@ -417,8 +417,8 @@
     css_classes: ['fit-video'],
     prompt: function() {
       var version = jsPsych.data.get().select('version').values[0];
-      var id1 = version === "1" ? "puzzle-cat" : "puzzle-fish";
-      var id2 = version === "1" ? "puzzle-rocket" : "puzzle-runman";
+      var id1 = version === "1" ? "puzzle-lamp" : "puzzle-fish";
+      var id2 = version === "1" ? "puzzle-snail" : "puzzle-runman";
 
       return `
         <style>
@@ -646,8 +646,8 @@
     css_classes: ['fit-video'],
     prompt: function() {
       var version = jsPsych.data.get().select('version').values[0];
-      var id1 = version === "1" ? "puzzle-cat" : "puzzle-fish";
-      var id2 = version === "1" ? "puzzle-rocket" : "puzzle-runman";
+      var id1 = version === "1" ? "puzzle-lamp" : "puzzle-fish";
+      var id2 = version === "1" ? "puzzle-snail" : "puzzle-runman";
 
       return `
         <style>
