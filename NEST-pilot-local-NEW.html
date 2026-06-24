@@ -91,13 +91,6 @@
       var np_id_trial = jsPsych.data.get().filter({ trial_name: "participant_id" }).values()[0];
       // map np_id
       var participantID = np_id_trial ? np_id_trial.response.response : "N/A";
-      var currentBlockOrder = np_id_trial && np_id_trial.block_order ? np_id_trial.block_order : "N/A";
-      // map block order
-      var blockOrderValues = jsPsych.data.get().select('block_order').values;
-      var currentBlockOrder = blockOrderValues.find(val => val !== undefined) || "N/A";
-      // map version
-      var versionValues = jsPsych.data.get().select('version').values;
-      var currentVersion = versionValues.find(val => val !== undefined) || "N/A";
       // map withdraw option
       var keep_trial = jsPsych.data.get().filter({ trial_name: "keep_data_option" }).values()[0];
       var KeepResponse = "N/A"; 
@@ -111,15 +104,13 @@
        // add session summary 
       jsPsych.data.get().values().unshift({
         trial_type: 'session_summary',
-        participant_id: participantID,
-        block_order: currentBlockOrder,
-        version: currentVersion,
-        hard_puzzle_1: currentVersion === "1" ? "puzzle-cat" : "puzzle-fish",
-        hard_puzzle_2: currentVersion === "1" ? "puzzle-rocket" : "puzzle-runman",
-        easy_puzzle_1: currentVersion === "1" ? "puzzle-snail" : "puzzle-heart",
-        easy_puzzle_2: currentVersion === "1" ? "puzzle-lamp" : "puzzle-pinwheel",
-        keep_option: KeepResponse 
-      });
+        participant_id: participantID, 
+        veasy_puzzle_1: selected_veasy[0].data.puzzle_id,
+        veasy_puzzle_2: selected_veasy[1].data.puzzle_id,
+        easy_puzzle_1: selected_easy[0].data.puzzle_id,
+        easy_puzzle_2: selected_easy[1].data.puzzle_id,
+        keep_option: KeepResponse
+      }); 
 
       // add the interaction data to data file
       jsPsych.data.get().push({
@@ -162,30 +153,7 @@
     on_finish: function (data) {
       jsPsych.data.addProperties({ participant_id: data.response.response });
     }
-  };
-
-  // ---------------------------
-  // Block Order & Version Select
-  // ---------------------------
-  var block_order_select = {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: '<p>Please select the block order for this session:</p>',
-    choices: ['A', 'B'],
-    on_finish: function (data) {
-      var block_order = data.response === 0 ? "EEHH" : "HHEE";
-      jsPsych.data.addProperties({ block_order: block_order });
-    }
-  };
-
-  var version_select = {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: '<p>Please select the game version for this session:</p>',
-    choices: ['Version 1', 'Version 2'],
-    on_finish: function (data) {
-      var version = data.response === 0 ? "1" : "2";
-      jsPsych.data.addProperties({ version: version });
-    }
-  };
+  }; 
 
   // ---------------------------
   // Fullscreen trial
@@ -316,55 +284,54 @@
   };
 
   // ---------------------------
-  // Puzzle Task Versions
+  // Easy/Very Easy puzzle pool
   // ---------------------------
-
-  // Version 1: Lamp, Snail, Hexagon, Square
-  var hard_v1_1 = { type: jsPsychTangram, svg: "puzzles/puzzle-cat.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 60, data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-lamp" } };
-  var hard_v1_2 = { type: jsPsychTangram, svg: "puzzles/puzzle-rocket.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 60, data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-snail" } };
-  var easy_v1_1 = { type: jsPsychTangram, svg: "puzzles/puzzle-snail.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 120, data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-hexagon" } };
-  var easy_v1_2 = { type: jsPsychTangram, svg: "puzzles/puzzle-lamp.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 120, data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-square" } };
-
-  // Version 2: Fish, Runman, Heart, Pinwheel
-  var hard_v2_1 = { type: jsPsychTangram, svg: "puzzles/puzzle-fish.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 120, data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-fish" } };
-  var hard_v2_2 = { type: jsPsychTangram, svg: "puzzles/puzzle-runman.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 120, data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-runman" } };
-  var easy_v2_1 = { type: jsPsychTangram, svg: "puzzles/puzzle-heart.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 60, data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-heart" } };
-  var easy_v2_2 = { type: jsPsychTangram, svg: "puzzles/puzzle-pinwheel.svg", interactionSound: "puzzles/tap.mp3", successSound: "puzzles/win_applaud.mp3", failureSound: "puzzles/lose_buzz.mp3", successMessage: "You did it! :)", failureMessage: "Time is up! :(", duration: 60, data: { trial_name: "hard_puzzle", difficulty: "hard", puzzle_id: "puzzle-pinwheel" } };
-
-
-  // ---------------------------
-  // Build main puzzle timelines (Conditional Nodes)
-  // ---------------------------
-  
-  // Version 1 Nodes
-  var v1_eehh_node = {
-    timeline: [easy_v1_1, child_rate, easy_v1_2, child_rate, hard_v1_1, child_rate, hard_v1_2, child_rate],
-    conditional_function: function () {
-      return jsPsych.data.get().select('block_order').values[0] === "EEHH" && jsPsych.data.get().select('version').values[0] === "1";
+  var easy_puzzles = [
+    {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-lamp.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 90,
+      data: { trial_name: "veasy_puzzle", difficulty: "veasy", puzzle_id: "puzzle-lamp" }
+    },
+    {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-snail.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 90,
+      data: { trial_name: "veasy_puzzle", difficulty: "veasy", puzzle_id: "puzzle-snail" }
+    },
+    {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-cat.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60,
+      data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-cat" }
+    },
+    {
+      type: jsPsychTangram,
+      svg: "puzzles/puzzle-rocket.svg",
+      interactionSound: "puzzles/tap.mp3",
+      successSound: "puzzles/win_applaud.mp3",
+      failureSound: "puzzles/lose_buzz.mp3",
+      successMessage: "You did it! :)",
+      failureMessage: "Time is up! :(",
+      duration: 60,
+      data: { trial_name: "easy_puzzle", difficulty: "easy", puzzle_id: "puzzle-rocket" }
     }
-  };
-
-  var v1_hhee_node = {
-    timeline: [hard_v1_1, child_rate, hard_v1_2, child_rate, easy_v1_1, child_rate, easy_v1_2, child_rate],
-    conditional_function: function () {
-      return jsPsych.data.get().select('block_order').values[0] === "HHEE" && jsPsych.data.get().select('version').values[0] === "1";
-    }
-  };
-
-  // Version 2 Nodes
-  var v2_eehh_node = {
-    timeline: [easy_v2_1, child_rate, easy_v2_2, child_rate, hard_v2_1, child_rate, hard_v2_2, child_rate],
-    conditional_function: function () {
-      return jsPsych.data.get().select('block_order').values[0] === "EEHH" && jsPsych.data.get().select('version').values[0] === "2";
-    }
-  };
-
-  var v2_hhee_node = {
-    timeline: [hard_v2_1, child_rate, hard_v2_2, child_rate, easy_v2_1, child_rate, easy_v2_2, child_rate],
-    conditional_function: function () {
-      return jsPsych.data.get().select('block_order').values[0] === "HHEE" && jsPsych.data.get().select('version').values[0] === "2";
-    }
-  };
+  ]; 
 
   // ---------------------------
   // Helper: build dynamic puzzle image HTML for feedback
@@ -401,7 +368,7 @@
     css_classes: ['fit-video']
   };
 
-  // ---------------------------
+ // ---------------------------
   // Child feedback trials
   // ---------------------------
   var child_feedback1 = {
@@ -418,11 +385,10 @@
     height: window.innerHeight * 0.4,
     css_classes: ['fit-video'],
     prompt: function() {
-      var version = jsPsych.data.get().select('version').values[0];
-      var id1 = version === "1" ? "puzzle-lamp" : "puzzle-fish";
-      var id2 = version === "1" ? "puzzle-snail" : "puzzle-runman"; 
-      var id3 = version === "1" ? "puzzle-cat" : "puzzle-heart";
-      var id4 = version === "1" ? "puzzle-rocket" : "puzzle-pinwheel"; 
+      var id1 = "puzzle-cat";
+      var id2 = "puzzle-rocket";
+      var id3 = "puzzle-lamp";
+      var id4 = "puzzle-snail";
 
       return `
         <style>
@@ -445,10 +411,10 @@
             text-align: center;
           }
           .puzzle-images {
-            margin-top: 20px; 
+            margin-top: 20px;
             display: flex;
             justify-content: center;
-            gap: 40px; 
+            gap: 15px;
           }
           #jspsych-video-button-response-btngroup {
             order: 3;
@@ -457,18 +423,20 @@
           }
         </style>
         <div class="custom-text-container">
-          <p style="font-size: 36px; font-weight: 500;margin:0;">
-          </p> Hi friend, how did you feel when working on these puzzles? </p>
-          </p> Were some puzzles easier than others?</p>
+          <p style="font-size: 36px; font-weight: 500; margin: 0;">
+            Hi friend, how did you feel when working on these puzzles?
+          </p>
+          <p style="font-size: 36px; font-weight: 500; margin: 0;">
+            Were some puzzles easier than others?
+          </p>
           <div class="puzzle-images">
             ${puzzleImagesHTML(id1, id2, id3, id4)}
           </div>
         </div>
       `;
     }
-  };
+  }; 
 
-  
   var child_feedback2 = {
     type: jsPsychVideoButtonResponse,
     autoplay: true,
@@ -521,7 +489,7 @@
         </p>
       </div>
     `
-  };
+  }; 
 
   var child_feedback3 = {
     type: jsPsychVideoButtonResponse,
@@ -594,11 +562,10 @@
     height: window.innerHeight * 0.4,
     css_classes: ['fit-video'],
     prompt: function() {
-      var version = jsPsych.data.get().select('version').values[0];
-      var id1 = version === "1" ? "puzzle-lamp" : "puzzle-fish";
-      var id2 = version === "1" ? "puzzle-snail" : "puzzle-runman";
-      var id3 = version === "1" ? "puzzle-cat" : "puzzle-heart";
-      var id4 = version === "1" ? "puzzle-rocket" : "puzzle-pinwheel"; 
+      var id1 = "puzzle-cat";
+      var id2 = "puzzle-rocket";
+      var id3 = "puzzle-lamp";
+      var id4 = "puzzle-snail";
 
       return `
         <style>
@@ -625,17 +592,23 @@
           .custom-text-container p {
             font-size: 24px;
             font-weight: 400;
-            line-height:  1.3;
+            line-height: 1.3;
             margin: 0;
           } 
+          .puzzle-images {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+          }
           #jspsych-video-button-response-btngroup {
             order: 3;
-            margin-top: 0px;
+            margin-top: 20px;
             margin-bottom: 0px;
           }
         </style>
-        <div class="custom-text-container" style="text-align: center;">
-          <p>Did you notice your child becoming upset during these puzzles?</p>
+        <div class="custom-text-container">
+          <p>Did you notice your child becoming frustrated during these puzzles?</p>
           <p>Were they more upset during certain puzzles compared to others?</p>
           <div class="puzzle-images">
               ${puzzleImagesHTML(id1, id2, id3, id4)}
@@ -645,7 +618,6 @@
     }
   };
 
- 
 
   var parent_feedback2 = {
     type: jsPsychVideoButtonResponse,
@@ -833,8 +805,6 @@
   // ---------------------------
   var full_timeline = [
     np_id,
-    block_order_select,
-    version_select, 
     enter_fullscreen,
     task_video_1,
     child_rate,
@@ -842,10 +812,10 @@
     tutorial1,
     tutorial2,
     task_video_3,
-    v1_eehh_node,
-    v1_hhee_node,
-    v2_eehh_node,
-    v2_hhee_node,
+    easy_puzzles[0], 
+    easy_puzzles[1], 
+    easy_puzzles[2], 
+    easy_puzzles[3], 
     feedback_intro,
     child_feedback1,
     child_feedback2,
@@ -855,7 +825,8 @@
     parent_feedback3, 
     keep_option, 
     exit_fullscreen
-  ]; 
+  ];
+
 
   jsPsych.run(full_timeline);
 </script>
