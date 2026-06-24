@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <script src="https://unpkg.com/jspsych@8"></script>
+  <link rel="stylesheet" href="https://unpkg.com/jspsych/css/jspsych.css">
+
+  <!-- Tangram plugin -->
+  <script src="jspsych/dist/plugin-tangram-game.js"></script>
+</head>
+
+<body></body>
+
+<script>
+
+const jsPsych = initJsPsych({
+  on_finish: function() {
+    jsPsych.data.displayData();
+  }
+});
+
+const practiceSquare = {
+  type: jsPsychTangram,
+
+  // Your SVG file
+  svg: "puzzles/puzzle-practice-square.svg",
+
+  // Sounds
+  interactionSound: "puzzles/tap.mp3",
+  successSound: "puzzles/win_applaud.mp3",
+  failureSound: "puzzles/sad-trombone.wav",
+
+  // Messages
+  successMessage: "You did it! :)",
+  failureMessage: "Time is up! :(",
+
+  // Time limit (seconds)
+  duration: 120,
+
+  data: {
+    trial_name: "practice_square",
+    difficulty: "practice",
+    puzzle_id: "practice-square"
+  }
+};
+
+jsPsych.run([practiceSquare]);
+
+</script>
+</html>
