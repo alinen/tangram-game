@@ -348,6 +348,9 @@ var child_rate = {
     }
   ]; 
 
+  var selected_veasy = [easy_puzzles[0], easy_puzzles[1]];
+  var selected_easy = [easy_puzzles[2], easy_puzzles[3]]; 
+
 // ---------------------------
 // Helper: build dynamic puzzle image HTML for feedback 
 //----------------------------
@@ -400,7 +403,7 @@ function puzzleImagesHTML(id1, id2, id3, id4) {
     response_allowed_while_playing: true,
     enable_button_after: 7000,
     choices: ['Next'],
-    stimulus: ['puzzles/video/puzzle-feedback-child-1.mp4'],
+    stimulus: ['puzzles/video/puzzle-feedback-child-1-new.mp4'],
     data: { trial_name: "child_feedback1" },
     width: window.innerWidth * 0.6,
     height: window.innerHeight * 0.4,
@@ -583,7 +586,7 @@ function puzzleImagesHTML(id1, id2, id3, id4) {
     enable_button_after: 20000,
     choices: ['Next'],
     data: { trial_name: "parent_feedback1" },
-    stimulus: ['puzzles/video/puzzle-feedback-parent-1.mp4'],
+    stimulus: ['puzzles/video/puzzle-feedback-parent-1-new.mp4'],
     width: window.innerWidth * 0.6,
     height: window.innerHeight * 0.4,
     css_classes: ['fit-video'],
@@ -841,9 +844,13 @@ function puzzleImagesHTML(id1, id2, id3, id4) {
     tutorial2,
     task_video_3,
     easy_puzzles[0], 
+    child_rate,
     easy_puzzles[1], 
+    child_rate,
     easy_puzzles[2], 
+    child_rate,
     easy_puzzles[3], 
+    child_rate, 
     feedback_intro,
     child_feedback1,
     child_feedback2,
@@ -851,8 +858,9 @@ function puzzleImagesHTML(id1, id2, id3, id4) {
     parent_feedback1,
     parent_feedback2,
     parent_feedback3, 
-    keep_option, 
+    keep_option,
     exit_fullscreen
+    
   ];
 
 
