@@ -276,6 +276,30 @@ var child_rate = {
   // ---------------------------
   var tutorial1 = {
     type: jsPsychTangram,
+    svg: "puzzles/puzzle-practice-square.svg",
+    interactionSound: "puzzles/tap.mp3",
+    successSound: "puzzles/win_applaud.mp3",
+    failureSound: "puzzles/lose_buzz.mp3",
+    successMessage: "You did it! :)",
+    failureMessage: "Time is up! :(",
+    duration: 10800,
+    data: { trial_name: "tutorial1", difficulty: "tutorial", puzzle_id: "puzzle-practice-square" }
+  };
+  
+  var tutorial2 = {
+    type: jsPsychTangram,
+    svg: "puzzles/puzzle-practice-triangle.svg",
+    interactionSound: "puzzles/tap.mp3",
+    successSound: "puzzles/win_applaud.mp3",
+    failureSound: "puzzles/lose_buzz.mp3",
+    successMessage: "You did it! :)",
+    failureMessage: "Time is up! :(",
+    duration: 10800,
+    data: { trial_name: "tutorial2", difficulty: "tutorial", puzzle_id: "puzzle-practice-triangle" }
+  };
+  
+  var tutorial3 = {
+    type: jsPsychTangram,
     svg: "puzzles/puzzle-letter.svg",
     interactionSound: "puzzles/tap.mp3",
     successSound: "puzzles/win_applaud.mp3",
@@ -284,18 +308,6 @@ var child_rate = {
     failureMessage: "Time is up! :(",
     duration: 10800,
     data: { trial_name: "tutorial1", difficulty: "tutorial", puzzle_id: "puzzle-letter" }
-  };
-
-  var tutorial2 = {
-    type: jsPsychTangram,
-    svg: "puzzles/puzzle-arrow.svg",
-    interactionSound: "puzzles/tap.mp3",
-    successSound: "puzzles/win_applaud.mp3",
-    failureSound: "puzzles/lose_buzz.mp3",
-    successMessage: "You did it! :)",
-    failureMessage: "Time is up! :(",
-    duration: 10800,
-    data: { trial_name: "tutorial2", difficulty: "tutorial", puzzle_id: "puzzle-arrow" }
   };
 
   // ---------------------------
@@ -583,7 +595,7 @@ function puzzleImagesHTML(id1, id2, id3, id4) {
     trial_ends_after_video: false,
     response_ends_trial: true,
     response_allowed_while_playing: true,
-    enable_button_after: 20000,
+    enable_button_after: 130000,
     choices: ['Next'],
     data: { trial_name: "parent_feedback1" },
     stimulus: ['puzzles/video/puzzle-feedback-parent-1-new.mp4'],
@@ -842,6 +854,7 @@ function puzzleImagesHTML(id1, id2, id3, id4) {
     task_video_2,
     tutorial1,
     tutorial2,
+    tutorial3,
     task_video_3,
     easy_puzzles[0], 
     child_rate,
