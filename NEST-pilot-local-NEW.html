@@ -203,58 +203,73 @@
     css_classes: ['fit-video']
   };
 
-  // ---------------------------
-  // Child affect rating (after each puzzle)
-  // ---------------------------
-  var child_rate = {
-    type: jsPsychHtmlSliderResponse,
-    stimulus: `
-        <style>
-          #jspsych-content {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            }
+// store selection outside the trial
+var child_rate_response = null;
 
-          #jspsych-html-slider-response-wrapper {
-            width: 750px;
-            text-align: center;
-          }
+// ---------------------------
+// Child frustration rating trial
+// ---------------------------
 
-          .jspsych-slider {
-            height: 20px;
-          }
+var child_rate = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <style>
+      #jspsych-content {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      #jspsych-html-button-response-btngroup {
+        margin-top: 60px;
+      }
+      .smiley-img {
+        width: 180px;
+        height: 180px;
+        object-fit: contain;
+        cursor: pointer;
+        border: 4px solid transparent;
+        border-radius: 12px;
+        padding: 8px;
+        transition: border 0.2s;
+      }
+      .smiley-img:nth-child(3) {
+        object-fit: fill;
+      }
+      .smiley-img.selected {
+        border: 4px solid #f5a623;
+      }
+    </style>
+    <div>
+      <p style="font-size: 32px; font-weight: 500; margin-bottom: 40px;">
+        Child, how frustrated do you feel right now?
+      </p>
+      <div style="display: flex; justify-content: center; align-items: center; gap: 40px;">
+        <img class="smiley-img" src="puzzles/img/1_Very_Happy.png" data-value="1">
+        <img class="smiley-img" src="puzzles/img/2_A_Little_Happy.png" data-value="2">
+        <img class="smiley-img" src="puzzles/img/3_A_Little_Frustrated.png" data-value="3">
+        <img class="smiley-img" src="puzzles/img/4_Very_Frustrated.png" data-value="4">
+      </div>
+    </div>
+  `,
+  choices: ['Next'],
+  on_load: function() {
+    child_rate_response = null;
 
-          .jspsych-html-slider-response-labels {
-            margin-top: 20px;
-          }
-          #jspsych-html-slider-response-next {
-            display: block;      
-            margin: 80px auto 0; 
-          }
-        </style>
-
-        <div>
-          <p style="font-size:32px;">
-            Child, how frustrated do you feel right now?
-          </p>
-        </div>
-      `,
-    require_movement: true,
-    min: 1,
-    max: 100,
-    step: 1,
-    slider_start: 50,
-    slider_width: 700,
-    labels: [
-      "<img src='puzzles/img/slider_not-frustrated.png' width='150'>",
-      "<img src='puzzles/img/slider_frustrated.png' width='150'>",
-      "<img src='puzzles/img/slider_very-frustrated.png' width='150'>"
-    ],
-    button_label: 'Next'
-  };
+    document.querySelectorAll('.smiley-img').forEach(function(img) {
+      img.addEventListener('click', function() {
+        document.querySelectorAll('.smiley-img').forEach(i => i.classList.remove('selected'));
+        this.classList.add('selected');
+        child_rate_response = parseInt(this.getAttribute('data-value'));
+      });
+    });
+  },
+  on_finish: function(data) {
+    data.smiley_response = child_rate_response;
+  },
+  data: { trial_name: "child_rate" }
+}; 
 
   // ---------------------------
   // Tutorials
