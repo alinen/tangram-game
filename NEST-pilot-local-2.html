@@ -237,6 +237,12 @@ var child_rate = {
       .smiley-img.selected {
         border: 4px solid #f5a623;
       }
+        #jspsych-html-button-response-btngroup button {
+        font-size: 24px;
+        padding: 16px 40px;
+        border-radius: 10px;
+      }
+
     </style>
     <div>
       <p style="font-size: 32px; font-weight: 500; margin-bottom: 40px;">
@@ -252,16 +258,27 @@ var child_rate = {
   `,
   choices: ['Next'],
   on_load: function() {
-    child_rate_response = null;
+    child_rate_response = null; 
 
-    document.querySelectorAll('.smiley-img').forEach(function(img) {
+
+    const nextButton = document.querySelector('#jspsych-html-button-response-btngroup button');
+    if (nextButton) {
+      nextButton.disabled = true;
+    }
+
+  document.querySelectorAll('.smiley-img').forEach(function(img) {
       img.addEventListener('click', function() {
         document.querySelectorAll('.smiley-img').forEach(i => i.classList.remove('selected'));
         this.classList.add('selected');
         child_rate_response = parseInt(this.getAttribute('data-value'));
+
+        if (nextButton) {
+          nextButton.disabled = false;
+        }
       });
     });
-  },
+  }, 
+
   on_finish: function(data) {
     data.smiley_response = child_rate_response;
   },
