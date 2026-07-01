@@ -171,7 +171,7 @@
     autoplay: true,
     trial_ends_after_video: true,
     choices: "NO_KEYS",
-    stimulus: ['puzzles/video/puzzle-orientation-video2-final.mp4'],
+    stimulus: ['puzzles/video/puzzle_orientation_video1_630.mp4'],
     width: window.innerWidth,
     height: window.innerHeight,
     css_classes: ['fit-video']
@@ -419,9 +419,9 @@ function puzzleImagesHTML(id1, id2, id3, id4) {
   };
 
   // ---------------------------
-  // Child feedback trials
+  // Child feedback trial
   // ---------------------------
-  var child_feedback1 = {
+  var feedback = {
     type: jsPsychVideoButtonResponse,
     autoplay: true,
     trial_ends_after_video: false,
@@ -429,199 +429,13 @@ function puzzleImagesHTML(id1, id2, id3, id4) {
     response_allowed_while_playing: true,
     enable_button_after: 12000,
     choices: ['Next'],
-    stimulus: ['puzzles/video/puzzle-feedback-child-1-new.mp4'],
-    data: { trial_name: "child_feedback1" },
-    width: window.innerWidth * 0.6,
+    stimulus: ['puzzles/video/puzzle-feedback-question1-630.mp4'],
+    data: { trial_name: "feedback" },
+    width: window.innerWidth * 0.7,
     height: window.innerHeight * 0.4,
     css_classes: ['fit-video'],
     prompt: function() {
-      var id1 = "puzzle-incomplete-square";
-      var id2 = "puzzle-pinwheel";
-      var id3 = "puzzle-lamp";
-      var id4 = "puzzle-snail";
-
-      return `
-        <style>
-          #jspsych-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: 95vh;
-            padding-top: 5vh;
-          }
-          #jspsych-video-button-response-stimulus {
-          order: 1;
-          max-height: 30vh;
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          }
-
-         .custom-text-container p {
-         font-size: 36px;
-         font-weight: 500;
-         margin: 0 0 20px 0;
-         } 
-         
-         .puzzle-images {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-          }
-          #jspsych-video-button-response-btngroup {
-            order: 3;
-            margin-top: 40px;
-            margin-bottom: 0px;
-          }
-        </style>
-        <div class="custom-text-container">
-          <p style="font-size: 36px; font-weight: 500;">
-            Hi friend, how did you feel when working on these puzzles?
-            </p>
-            <p style="font-size: 36px; font-weight: 500;">
-              Were some puzzles easier than others?
-              </p>
-          <div>
-            ${puzzleImagesHTML(id1, id2, id3, id4)}
-          </div>
-        </div>
-      `;
-    }
-  }; 
-
-  var child_feedback2 = {
-    type: jsPsychVideoButtonResponse,
-    autoplay: true,
-    trial_ends_after_video: false,
-    response_ends_trial: true,
-    response_allowed_while_playing: true,
-    enable_button_after: 7000,
-    choices: ['Next'],
-    stimulus: ['puzzles/video/puzzle-feedback-child-3.mp4'],
-    data: { trial_name: "child_feedback3" },
-    width: window.innerWidth * 0.6,
-    height: window.innerHeight * 0.4,
-    css_classes: ['fit-video'],
-    prompt: `
-      <style>
-        #jspsych-content {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: flex-start;
-          height: 95vh;
-          padding-top: 5vh;
-        }
-        #jspsych-video-button-response-stimulus {
-          order: 1;
-          max-height: 30vh; 
-          width: auto;
-        }
-        .custom-text-container {
-          order: 2;
-          margin-top: 25px;
-          text-align: center;
-          width: 120%;
-        }
-        .custom-text-container p {
-          font-size: 32px;
-          font-weight: 400;
-          line-height:  1.3;
-          margin: 0;
-        }
-        #jspsych-video-button-response-btngroup {
-          order: 3;
-          margin-top: 25px;
-          margin-bottom: 0px;
-        }
-      </style>
-      <div class="custom-text-container" style="text-align: center;">
-        <p>
-          When playing the puzzle game, how easy was it to move the pieces?
-        </p>
-      </div>
-    `
-  }; 
-
-  var child_feedback3 = {
-    type: jsPsychVideoButtonResponse,
-    autoplay: true,
-    trial_ends_after_video: false,
-    response_ends_trial: true,
-    response_allowed_while_playing: true,
-    enable_button_after: 4000,
-    choices: ['Next'],
-    stimulus: ['puzzles/video/puzzle-feedback-child-4.mp4'],
-    data: { trial_name: "child_feedback4" },
-    width: window.innerWidth * 0.6,
-    height: window.innerHeight * 0.4,
-    css_classes: ['fit-video'],
-    prompt: `
-      <style>
-        #jspsych-content {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: flex-start;
-          height: 95vh;
-          padding-top: 5vh;
-        }
-        #jspsych-video-button-response-stimulus {
-          order: 1;
-          max-height: 30vh; 
-          width: auto;
-        }
-        .custom-text-container {
-          order: 2;
-          margin-top: 25px;
-          text-align: center;
-          width: 120%;
-        }
-        .custom-text-container p {
-          font-size: 32px;
-          font-weight: 400;
-          line-height:  1.3;
-          margin: 0;
-        }
-        #jspsych-video-button-response-btngroup {
-          order: 3;
-          margin-top: 25px;
-          margin-bottom: 0px;
-        }
-      </style>
-      <div class="custom-text-container" style="text-align: center;">
-        <p>
-          Was the instruction video helpful?
-        </p>
-      </div>
-    `
-  };
-
-  // ---------------------------
-  // Parent feedback trials
-  // ---------------------------
-  var parent_feedback1 = {
-    type: jsPsychVideoButtonResponse,
-    autoplay: true,
-    trial_ends_after_video: false,
-    response_ends_trial: true,
-    response_allowed_while_playing: true,
-    enable_button_after: 12000, 
-    choices: ['Next'],
-    data: { trial_name: "parent_feedback1" },
-    stimulus: ['puzzles/video/puzzle-feedback-parent-1-new.mp4'],
-    width: window.innerWidth * 0.6,
-    height: window.innerHeight * 0.4,
-    css_classes: ['fit-video'],
-    prompt: function() {
-      var id1 = "puzzle-incomplete-square";
-      var id2 = "puzzle-pinwheel";
-      var id3 = "puzzle-lamp";
-      var id4 = "puzzle-snail";
-
+  
       return `
         <style>
           #jspsych-content {
@@ -634,157 +448,43 @@ function puzzleImagesHTML(id1, id2, id3, id4) {
           }
           #jspsych-video-button-response-stimulus {
             order: 1;
-            max-height: 30vh; 
+            max-height: 45vh;
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
           }
-          .custom-text-container {
+
+            .custom-text-container {
             order: 2;
-            margin-top: 25px;
+            margin-top: 30px; 
             text-align: center;
-            width: 120%;
+            width: 100%;
+            max-width: 100%; 
           }
-          .custom-text-container p {
-            font-size: 36px;
+
+         .custom-text-container p {
+            font-size: 26px;
             font-weight: 500;
-            line-height: 1.3;
-            margin: 0 0 20px 0;
-          } 
-          .puzzle-images {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
+            line-height: 1.8;
+            margin: 0 0 12px 0;
           }
+
           #jspsych-video-button-response-btngroup {
             order: 3;
-            margin-top: 20px;
+            margin-top: 40px;
             margin-bottom: 0px;
           }
         </style>
         <div class="custom-text-container">
-          <p>Did you notice your child becoming frustrated during these puzzles?</p>
-          <p>Were they more upset during certain puzzles compared to others?</p>
-          <div>
-              ${puzzleImagesHTML(id1, id2, id3, id4)}
-          </div>
-        </div>
+          <p>Parent and child, how do you feel about the puzzle task?</p>
+          <p>Is there anything you think we should change?</p>
+          <p style="color: #d9534f; margin-top: 20px;">Child, please talk first.</p>
+        </div> 
       `;
     }
-  };
-
-
-  var parent_feedback2 = {
-    type: jsPsychVideoButtonResponse,
-    autoplay: true,
-    trial_ends_after_video: false,
-    response_ends_trial: true,
-    response_allowed_while_playing: true,
-    enable_button_after: 11000,
-    choices: ['Next'],
-    data: { trial_name: "parent_feedback3" },
-    stimulus: ['puzzles/video/puzzle-feedback-parent-3.mp4'],
-    width: window.innerWidth * 0.6,
-    height: window.innerHeight * 0.4,
-    css_classes: ['fit-video'],
-    prompt: `
-      <style>
-        #jspsych-content {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: flex-start;
-          height: 95vh;
-          padding-top: 5vh;
-        }
-        #jspsych-video-button-response-stimulus {
-          order: 1;
-          max-height: 30vh; 
-          width: auto;
-        }
-        .custom-text-container {
-          order: 2;
-          margin-top: 25px;
-          text-align: center;
-          width: 120%;
-        }
-        .custom-text-container p {
-          font-size: 24px;
-          font-weight: 400;
-          line-height:  1.3;
-          margin: 0;
-        } 
-        #jspsych-video-button-response-btngroup {
-          order: 3;
-          margin-top: 0px;
-          margin-bottom: 0px;
-        }
-      </style>
-      <div class="custom-text-container" style="text-align: center;">
-        <p>
-          We are also interested in your thoughts on how easy it was for your child to navigate the game. 
-        </p>
-        <p>
-          Was there anything else during the game that you found your child was struggling with?  
-        </p>
-      </div>
-    `
-  };
-
-  var parent_feedback3 = {
-    type: jsPsychVideoButtonResponse,
-    autoplay: true,
-    trial_ends_after_video: false,
-    response_ends_trial: true,
-    response_allowed_while_playing: false,
-    choices: ['Next'],
-    data: { trial_name: "parent_feedback4" },
-    stimulus: ['puzzles/video/puzzle-feedback-parent-4.mp4'],
-    width: window.innerWidth * 0.6,
-    height: window.innerHeight * 0.4,
-    css_classes: ['fit-video'],
-    prompt: `
-      <style>
-        #jspsych-content {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: flex-start;
-          height: 95vh;
-          padding-top: 5vh;
-        }
-        #jspsych-video-button-response-stimulus {
-          order: 1;
-          max-height: 30vh; 
-          width: auto;
-        }
-        .custom-text-container {
-          order: 2;
-          margin-top: 25px;
-          text-align: center;
-          width: 120%;
-        }
-        .custom-text-container p {
-          font-size: 24px;
-          font-weight: 400;
-          line-height:  1.3;
-          margin: 0;
-        } 
-        #jspsych-video-button-response-btngroup {
-          order: 3;
-          margin-top: 30px;
-          margin-bottom: 0px;
-        }
-      </style>
-      <div class="custom-text-container" style="text-align: center;">
-        <p>
-          Was your child using a mouse or trackpad during the puzzle game? 
-        </p>
-      </div>
-    `
-  };
+  }; 
+ 
 
   // ---------------------------
   // Feedback ends
@@ -879,12 +579,7 @@ function puzzleImagesHTML(id1, id2, id3, id4) {
     puzzles[3], 
     child_rate, 
     feedback_intro,
-    child_feedback1,
-    child_feedback2,
-    child_feedback3, 
-    parent_feedback1,
-    parent_feedback2,
-    parent_feedback3, 
+    feedback,
     keep_option,
     exit_fullscreen
     
