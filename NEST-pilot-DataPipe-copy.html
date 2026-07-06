@@ -171,6 +171,37 @@
   };
 
   // ---------------------------
+  // Device Selection
+  // ---------------------------
+  var device_selection = {
+  type: jsPsychHtmlButtonResponse, 
+  stimulus: `
+      <style>
+        #jspsych-content {
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        #jspsych-html-button-response-btngroup button {
+          font-size: 24px;
+          padding: 16px 40px;
+          border-radius: 10px;
+          margin: 0 20px;
+        }
+      </style>
+      <div>
+        <p style="font-size: 32px; font-weight: 500; margin-bottom: 40px;">
+          Are you using a mouse or a trackpad today?
+        </p>
+      </div>
+    `,
+    choices: ['Mouse', 'Trackpad'],
+    data: { trial_name: "device_selection" }
+  };
+
+  // ---------------------------
   // Task Orientation Videos
   // ---------------------------
   var task_video_1 = {
@@ -572,6 +603,7 @@ var child_rate = {
     np_id,
     enter_fullscreen,
     task_video_1,
+    device_selection,
     child_rate,
     task_video_2,
     tutorial1,
