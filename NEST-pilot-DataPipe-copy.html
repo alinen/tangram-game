@@ -201,6 +201,28 @@
     data: { trial_name: "device_selection" }
   };
 
+  var device_video = {
+    type: jsPsychVideoButtonResponse,
+    autoplay: true,
+    trial_ends_after_video: false,
+    response_ends_trial: true,
+    response_allowed_while_playing: false,
+    choices: ['Next'],
+    stimulus: function() {
+      var last_trial = jsPsych.data.get().filter({ trial_name: "device_selection" }).values()[0];
+      
+      // Index 0 is 'Mouse', Index 1 is 'Trackpad'
+      if (last_trial && last_trial.response === 0) {
+        return ['puzzles/video/puzzle-tutorial-zoom-mouse.mp4']; 
+      } else {
+        return ['puzzles/video/puzzle-tutorial-zoom-trackpad.mp4']; 
+      }
+    },
+    width: window.innerWidth,
+    height: window.innerHeight,
+    css_classes: ['fit-video']
+  }; 
+
   // ---------------------------
   // Task Orientation Videos
   // ---------------------------
@@ -603,9 +625,10 @@ var child_rate = {
     np_id,
     enter_fullscreen,
     task_video_1,
-    device_selection,
-    child_rate,
-    task_video_2,
+    child_rate, 
+    task_video_2, 
+    device_selection, 
+    device_video, 
     tutorial1,
     tutorial2,
     task_video_3,
