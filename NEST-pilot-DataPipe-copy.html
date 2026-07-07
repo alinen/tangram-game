@@ -174,48 +174,83 @@
   // Device Selection
   // ---------------------------
   var device_selection = {
-  type: jsPsychHtmlButtonResponse, 
-  stimulus: `
-      <style>
-        #jspsych-content {
-          height: 100vh;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-        #jspsych-html-button-response-btngroup button {
-          font-size: 24px;
-          padding: 16px 40px;
-          border-radius: 10px;
-          margin: 0 20px;
-        }
-      </style>
-      <div>
-        <p style="font-size: 32px; font-weight: 500; margin-bottom: 40px;">
-          Are you using a mouse or a trackpad today?
-        </p>
-      </div>
-    `,
+  type: jsPsychVideoButtonResponse, 
+  stimulus: ['puzzles/video/puzzle-trackpad-or-mouse.mp4'],
+  autoplay: true,
+    trial_ends_after_video: false,
+    response_ends_trial: true,
+    response_allowed_while_playing: true, 
     choices: ['Mouse', 'Trackpad'],
+    width: window.innerWidth * 0.6, 
+    height: window.innerHeight * 0.3,
+    css_classes: ['fit-video'],
+    prompt: function() {
+      return `
+        <style>
+          #jspsych-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 90vh;
+            padding-top: 5vh;
+          }
+          #jspsych-video-button-response-stimulus {
+            order: 1;
+            max-height: 35vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          .device-text-container {
+            order: 2;
+            margin-top: 30px; 
+            text-align: center;
+            width: 100%;
+          }
+          .device-text-container p {
+            font-size: 32px; 
+            font-weight: 500; 
+            margin-bottom: 10px;
+          }
+          #jspsych-video-button-response-btngroup {
+            order: 3;
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+          }
+          #jspsych-video-button-response-btngroup button {
+            font-size: 24px;
+            padding: 16px 40px;
+            border-radius: 10px;
+          }
+        </style>
+        <div class="device-text-container">
+          <p>Parent,</p>
+          <p>Is your child using a trackpad or mouse during the game today?</p>
+        </div> 
+      `;
+    },
     data: { trial_name: "device_selection" }
   };
 
   var device_video = {
     type: jsPsychVideoButtonResponse,
     autoplay: true,
-    trial_ends_after_video: false,
+    trial_ends_after_video: false, 
     response_ends_trial: true,
-    response_allowed_while_playing: false,
+    response_allowed_while_playing: false, 
     choices: ['Next'],
     stimulus: function() {
       var last_trial = jsPsych.data.get().filter({ trial_name: "device_selection" }).values()[0];
       
       // Index 0 is 'Mouse', Index 1 is 'Trackpad'
       if (last_trial && last_trial.response === 0) {
-        return ['puzzles/video/puzzle-tutorial-zoom-mouse.mp4']; 
+        return ['puzzles/video/mouse.mp4']; 
       } else {
-        return ['puzzles/video/puzzle-tutorial-zoom-trackpad.mp4']; 
+        return ['puzzles/video/trackpad.mp4']; 
       }
     },
     width: window.innerWidth,
