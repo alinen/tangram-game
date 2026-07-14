@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="600"
+   height="300"
+   viewBox="0 0 600 300"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.4.3 (0d15f750, 2025-12-25)"
+   sodipodi:docname="puzzle-square.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="1.8273253"
+     inkscape:cx="189.07416"
+     inkscape:cy="96.042012"
+     inkscape:window-width="1470"
+     inkscape:window-height="830"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="OutlineLayer">
+    <inkscape:grid
+       type="xygrid"
+       id="grid964"
+       originx="-139.84983"
+       originy="-19.740954"
+       spacingy="1"
+       spacingx="1"
+       units="mm" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect972"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect854"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect850"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="PuzzleLayer"
+     inkscape:label="PuzzleLayer">
+    <path
+       style="opacity:1;fill:#ff7676;fill-opacity:1;stroke:none;stroke-width:1.36277"
+       d="m 39.721686,39.108977 -0.0672,96.362483 96.429694,-96.295263 z"
+       id="T1"
+       sodipodi:nodetypes="cccc"
+       inkscape:label="Triangle1" />
+    <path
+       style="opacity:1;fill:#6265ff;fill-opacity:1;stroke:none;stroke-width:1.36277"
+       d="m 136.1751,135.24948 0.19006,-96.3623 -96.552388,96.17225 z"
+       id="T2"
+       inkscape:label="Triangle2"
+       sodipodi:nodetypes="cccc" />
+  </g>
+  <g
+     inkscape:label="OutlineLayer"
+     inkscape:groupmode="layer"
+     id="OutlineLayer"
+     transform="translate(0.36136717,0.79441293)">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.88976378;stroke-dasharray:none"
+       d="m 39.437297,38.632454 96.420163,0.482906 -0.16096,95.61532 -96.098234,0.16097 z"
+       id="path1"
+       transform="translate(-0.36136717,-0.79441293)" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="TimebarLayer"
+     inkscape:label="Timebar"
+     style="image-rendering:auto">
+    <rect
+       style="fill:#00b500;fill-opacity:1;stroke:none;stroke-width:2.90695;stroke-dasharray:none;stroke-opacity:1"
+       id="TimebarInterior"
+       width="600"
+       height="10"
+       x="0"
+       y="290"
+       inkscape:label="Interior" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.45347;stroke-dasharray:none;stroke-opacity:1"
+       id="TimebarOutline"
+       width="600"
+       height="10"
+       x="0"
+       y="290"
+       inkscape:label="Outline" />
+  </g>
+</svg>
