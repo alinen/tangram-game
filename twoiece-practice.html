@@ -20,6 +20,13 @@ const jsPsych = initJsPsych({
   }
 });
 
+
+// Fullscreen trial
+const enterFullscreen = {
+  type: jsPsychFullscreen,
+  fullscreen_mode: true
+};
+
 const practiceSquare = {
   type: jsPsychTangram,
 
@@ -45,7 +52,10 @@ const practiceSquare = {
   }
 };
 
-jsPsych.run([practiceSquare]);
+jsPsych.run([
+  enterFullscreen,
+  practiceSquare
+]);
 
 </script>
 </html>
