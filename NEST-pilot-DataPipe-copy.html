@@ -249,7 +249,7 @@
     trial_ends_after_video: false, 
     response_ends_trial: true,
     response_allowed_while_playing: false, 
-    choices: ['Next'],
+    choices: ["Next"],
     stimulus: function() {
       var last_trial = jsPsych.data.get().filter({ trial_name: "device_selection" }).values()[0];
       
@@ -263,32 +263,6 @@
     width: window.innerWidth,
     height: window.innerHeight,
     css_classes: ['fit-video']
-  }; 
-
-
-  // ---------------------------
-  // Practice Ready Check
-  // ---------------------------
-  var practice_ready = {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: `
-      <style>
-        #jspsych-content {
-          height: 100vh;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-      </style>
-      <div>
-        <p style="font-size: 36px; font-weight: 500; text-align: center; margin-bottom: 20px;">
-          Child, are you ready to do some practice puzzles with us?
-        </p>
-      </div>
-    `,
-    choices: ['Yes, let\'s go!'],
-    data: { trial_name: "practice_ready_check" }
   }; 
 
 
@@ -751,7 +725,6 @@ var child_rate = {
     task_video_2, 
     device_selection, 
     device_video, 
-    practice_ready,
     tutorial1,
     tutorial2,
     task_video_3,
