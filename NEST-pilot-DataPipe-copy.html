@@ -510,9 +510,63 @@ var child_rate = {
   };
 
   // ---------------------------
-  // Child feedback trial
+  // Child feedback trials
   // ---------------------------
-  var feedback_child = {
+  var child_feedback1 = {
+    type: jsPsychVideoButtonResponse,
+    autoplay: true,
+    trial_ends_after_video: false,
+    response_ends_trial: true,
+    response_allowed_while_playing: true,
+    enable_button_after: 4000,
+    choices: ['Next'],
+    stimulus: ['puzzles/video/puzzle-feedback-child-4.mp4'],
+    data: { trial_name: "child_feedback4" },
+    width: window.innerWidth * 0.6,
+    height: window.innerHeight * 0.4,
+    css_classes: ['fit-video'],
+    prompt: `
+      <style>
+        #jspsych-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          height: 95vh;
+          padding-top: 5vh;
+        }
+        #jspsych-video-button-response-stimulus {
+          order: 1;
+          max-height: 30vh; 
+          width: auto;
+        }
+        .custom-text-container {
+          order: 2;
+          margin-top: 25px;
+          text-align: center;
+          width: 120%;
+        }
+        .custom-text-container p {
+          font-size: 32px;
+          font-weight: 400;
+          line-height:  1.3;
+          margin: 0;
+        }
+        #jspsych-video-button-response-btngroup {
+          order: 3;
+          margin-top: 25px;
+          margin-bottom: 0px;
+        }
+      </style>
+      <div class="custom-text-container" style="text-align: center;">
+        <p>
+          Was the instruction video helpful?
+        </p>
+      </div>
+    `
+  };
+
+  var child_feedback2 = {
     type: jsPsychVideoButtonResponse,
     autoplay: true,
     trial_ends_after_video: false,
@@ -679,7 +733,8 @@ var child_rate = {
     puzzles[3], 
     child_rate, 
     feedback_intro,
-    feedback_child, 
+    child_feedback1,
+    child_feedback2,
     keep_option,
     exit_fullscreen,
     save_json_to_datapipe
