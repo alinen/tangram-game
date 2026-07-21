@@ -640,7 +640,65 @@ var child_rate = {
     width: window.innerWidth,
     height: window.innerHeight,
     css_classes: ['fit-video']
-  };
+  }; 
+
+// ---------------------------
+// Celebration Screen
+// ---------------------------
+var celebration = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <style>
+      #jspsych-content {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .celebration-title {
+        font-size: 48px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 20px;
+      }
+      .celebration-subtitle {
+        font-size: 28px;
+        color: #555;
+        margin-bottom: 30px;
+      }
+    </style>
+    <div>
+      <h1 class="celebration-title">Good Job! </h1>
+      <p class="celebration-subtitle">You worked super hard on all those puzzles!</p>
+      <p class="celebration-subtitle">We now have a fun video for you to watch.</p>
+    </div>
+  `,
+  choices: ['Watch Fun Video! '],
+  on_load: function() {
+    // Play the applaud sound when screen loads
+    var audio = new Audio('puzzles/win_applaud.mp3');
+    audio.play().catch(function(e) { console.log('Audio autoplay blocked', e); });
+  },
+  data: { trial_name: "celebration_screen" }
+};
+
+// ---------------------------
+// Mood Booster Video 
+// ---------------------------
+var mood_booster = {
+  type: jsPsychVideoButtonResponse,
+  autoplay: true,
+  trial_ends_after_video: false,
+  response_ends_trial: true,
+  response_allowed_while_playing: false, 
+  choices: ['Next'],
+  stimulus: ['puzzles/video/MoodVideo-short.mp4'], 
+  width: window.innerWidth,
+  height: window.innerHeight,
+  css_classes: ['fit-video'],
+  data: { trial_name: "mood_booster" }
+}; 
 
 // ---------------------------
   // Keep data & recording withdraw
@@ -735,6 +793,8 @@ var child_rate = {
     feedback_intro,
     child_feedback1,
     child_feedback2,
+    celebration,
+    mood_booster,
     keep_option,
     exit_fullscreen,
     save_json_to_datapipe
