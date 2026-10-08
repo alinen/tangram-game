@@ -251,19 +251,23 @@
     response_allowed_while_playing: false, 
     choices: ["Next"],
     stimulus: function() {
-      var last_trial = jsPsych.data.get().filter({ trial_name: "device_selection" }).values()[0];
+      var last_trial = jsPsych.data.get()
+      .filter({ trial_name: "device_selection" })
+      .values()[0];
       
       // Index 0 is 'Mouse', Index 1 is 'Trackpad'
       if (last_trial && last_trial.response === 0) {
         return ['puzzles/video_new/puzzle_mouse_tutorial_716.mp4']; 
       } else {
-        return ['puzzles/video_new/puzzle_trackpad_tutorial_716.mp4']; 
+        return ['puzzles/video_new/puzzle_trackpad_tutorial_717.mp4']; 
       }
     },
     width: window.innerWidth,
     height: window.innerHeight,
     css_classes: ['fit-video']
   }; 
+
+  
 
 
   // ---------------------------
